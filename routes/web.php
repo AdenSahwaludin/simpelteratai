@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -35,3 +36,11 @@ Route::get('/orangtua/dashboard', function () {
 })
     ->middleware('check.orangtua.role')
     ->name('orangtua.dashboard');
+
+// Profile routes (for all authenticated users)
+Route::middleware(['auth.check'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/password', [ProfileController::class, 'passwordForm'])->name('profile.password');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+});

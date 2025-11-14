@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Guru;
 use App\Models\OrangTua;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -14,8 +15,21 @@ class LoginController extends Controller
     /**
      * Show the login form.
      */
-    public function showLoginForm(): View
+    public function showLoginForm(): View|RedirectResponse
     {
+        // Check if user is already logged in
+        if (Auth::guard('admin')->check()) {
+            return redirect('/admin/dashboard');
+        }
+
+        if (Auth::guard('guru')->check()) {
+            return redirect('/guru/dashboard');
+        }
+
+        if (Auth::guard('orangtua')->check()) {
+            return redirect('/orangtua/dashboard');
+        }
+
         return view('auth.login');
     }
 
