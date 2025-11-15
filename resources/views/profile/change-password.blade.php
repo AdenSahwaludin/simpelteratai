@@ -87,8 +87,6 @@
                         <input type="password" id="current_password"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12 @error('current_password') error border-red-500 @enderror"
                             name="current_password" placeholder="Masukkan password saat ini" required />
-
-
                         <button type="button"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             onclick="togglePasswordVisibility('current_password', this)">

@@ -99,8 +99,8 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <!-- No Telpon -->
+
                 <div>
                     <label for="no_telpon" class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-phone text-blue-600 mr-2"></i>Nomor Telepon
