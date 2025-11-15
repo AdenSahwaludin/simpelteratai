@@ -24,8 +24,8 @@ Route::get('/admin/dashboard', function () {
     ->middleware('check.admin.role')
     ->name('admin.dashboard');
 
-// Guru CRUD routes (Admin only)
-Route::middleware(['check.admin.role'])->group(function () {
+// Admin - Guru CRUD routes (Admin only)
+Route::middleware(['check.admin.role'])->prefix('admin')->group(function () {
     Route::resource('guru', GuruController::class);
 });
 
