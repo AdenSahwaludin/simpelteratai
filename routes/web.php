@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\GuruController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +25,7 @@ Route::get('/admin/dashboard', function () {
     ->name('admin.dashboard');
 
 // Admin - Guru CRUD routes (Admin only)
-Route::middleware(['check.admin.role'])->prefix('admin')->group(function () {
+Route::middleware(['check.admin.role'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('guru', GuruController::class);
 });
 

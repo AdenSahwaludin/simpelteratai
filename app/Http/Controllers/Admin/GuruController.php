@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ class GuruController extends Controller
     {
         $gurus = Guru::orderBy('id_guru', 'asc')->paginate(10);
 
-        return view('guru.index', compact('gurus'));
+        return view('admin.guru.index', compact('gurus'));
     }
 
     /**
@@ -23,7 +24,7 @@ class GuruController extends Controller
      */
     public function create()
     {
-        return view('guru.create');
+        return view('admin.guru.create');
     }
 
     /**
@@ -43,7 +44,7 @@ class GuruController extends Controller
 
         Guru::create($validated);
 
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil ditambahkan.');
+        return redirect()->route('admin.guru.index')->with('success', 'Data guru berhasil ditambahkan.');
     }
 
     /**
@@ -53,7 +54,7 @@ class GuruController extends Controller
     {
         $guru = Guru::findOrFail($id);
 
-        return view('guru.show', compact('guru'));
+        return view('admin.guru.show', compact('guru'));
     }
 
     /**
@@ -63,7 +64,7 @@ class GuruController extends Controller
     {
         $guru = Guru::findOrFail($id);
 
-        return view('guru.edit', compact('guru'));
+        return view('admin.guru.edit', compact('guru'));
     }
 
     /**
@@ -90,7 +91,7 @@ class GuruController extends Controller
 
         $guru->save();
 
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil diperbarui.');
+        return redirect()->route('admin.guru.index')->with('success', 'Data guru berhasil diperbarui.');
     }
 
     /**
@@ -101,6 +102,6 @@ class GuruController extends Controller
         $guru = Guru::findOrFail($id);
         $guru->delete();
 
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil dihapus.');
+        return redirect()->route('admin.guru.index')->with('success', 'Data guru berhasil dihapus.');
     }
 }

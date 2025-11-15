@@ -15,7 +15,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Daftar Guru</h2>
-            <a href="{{ route('guru.create') }}"
+            <a href="{{ route('admin.guru.create') }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition font-medium">
                 <i class="fas fa-plus mr-2"></i>Tambah Guru
             </a>
@@ -50,15 +50,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $guru->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $guru->no_telpon }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('guru.show', $guru->id_guru) }}"
+                                <a href="{{ route('admin.guru.show', $guru->id_guru) }}"
                                     class="text-blue-600 hover:text-blue-900 mr-3">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('guru.edit', $guru->id_guru) }}"
+                                <a href="{{ route('admin.guru.edit', $guru->id_guru) }}"
                                     class="text-yellow-600 hover:text-yellow-900 mr-3">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('guru.destroy', $guru->id_guru) }}" method="POST"
+                                <form action="{{ route('admin.guru.destroy', $guru->id_guru) }}" method="POST"
                                     class="inline-block"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus guru ini?');">
                                     @csrf

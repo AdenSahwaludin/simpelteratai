@@ -40,7 +40,7 @@
                 <p class="text-sm text-gray-600">Kelola data guru dan jadwal mengajar</p>
             </div>
         </div>
-        <a href="{{ route('guru.index') }}"
+        <a href="{{ route('admin.guru.index') }}"
             class="block w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition font-medium text-center">
             Kelola Guru
         </a>

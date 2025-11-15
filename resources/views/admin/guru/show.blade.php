@@ -48,15 +48,15 @@
         </div>
 
         <div class="flex gap-3">
-            <a href="{{ route('guru.edit', $guru->id_guru) }}"
+            <a href="{{ route('admin.guru.edit', $guru->id_guru) }}"
                 class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded transition font-medium">
                 <i class="fas fa-edit mr-2"></i>Edit
             </a>
-            <a href="{{ route('guru.index') }}"
+            <a href="{{ route('admin.guru.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition font-medium">
                 <i class="fas fa-arrow-left mr-2"></i>Kembali
             </a>
-            <form action="{{ route('guru.destroy', $guru->id_guru) }}" method="POST" class="inline-block"
+            <form action="{{ route('admin.guru.destroy', $guru->id_guru) }}" method="POST" class="inline-block"
                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus guru ini?');">
                 @csrf
                 @method('DELETE')
