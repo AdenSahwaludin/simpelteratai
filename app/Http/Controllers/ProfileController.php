@@ -23,6 +23,7 @@ class ProfileController extends Controller
     public function edit(): \Illuminate\View\View
     {
         $guard = $this->getGuard();
+        /** @var \App\Models\Admin|\App\Models\Guru|\App\Models\OrangTua $user */
         $user = auth($guard)->user();
 
         return view('profile.edit', compact('user', 'guard'));
@@ -31,15 +32,19 @@ class ProfileController extends Controller
     public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $guard = $this->getGuard();
+        /** @var \App\Models\Admin|\App\Models\Guru|\App\Models\OrangTua $user */
         $user = auth($guard)->user();
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'no_telpon' => 'nullable|string|max:20',
         ]);
 
-        $user->update($validated);
+        $user->nama = $validated['nama'];
+        $user->email = $validated['email'];
+        $user->no_telpon = $validated['no_telpon'] ?? null;
+        $user->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui.');
     }
@@ -54,6 +59,7 @@ class ProfileController extends Controller
     public function updatePassword(Request $request): \Illuminate\Http\RedirectResponse
     {
         $guard = $this->getGuard();
+        /** @var \App\Models\Admin|\App\Models\Guru|\App\Models\OrangTua $user */
         $user = auth($guard)->user();
 
         $validated = $request->validate([
@@ -61,11 +67,12 @@ class ProfileController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if (! Hash::check($validated['current_password'], $user->password)) {
+        if (!Hash::check($validated['current_password'], $user->password)) {
             return back()->withErrors(['current_password' => 'Password saat ini tidak sesuai.']);
         }
 
-        $user->update(['password' => Hash::make($validated['password'])]);
+        $user->password = Hash::make($validated['password']);
+        $user->save();
 
         return redirect()->route('profile.password')->with('success', 'Password berhasil diubah.');
     }

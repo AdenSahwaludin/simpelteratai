@@ -13,10 +13,10 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="w-64 bg-white shadow-lg transition-all duration-300 flex flex-col overflow-hidden fixed lg:relative left-0 top-0 h-screen z-40 lg:flex"
+            class="w-64 bg-white shadow-lg transition-all duration-300 flex flex-col overflow-hidden fixed lg:relative left-0 top-0 h-screen z-40 lg:flex whitespace-nowrap"
             style="display: none;" data-collapsed="false">
             <!-- Sidebar Header -->
-            <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20">
+            <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20 ">
                 <div id="sidebar-header-content" class="transition-opacity duration-300">
                     <h2 class="text-lg font-bold">@yield('school-name', 'TK Teratai')</h2>
                     <p class="text-xs text-gray-200">Kota Cirebon</p>
@@ -144,7 +144,8 @@
 
             <!-- Footer -->
             <footer class="@yield('nav-color', 'bg-blue-600') text-white text-center py-4 shrink-0">
-                <p class="text-xs sm:text-sm">&copy; 2025 TK Teratai Kota Cirebon. All rights reserved.</p>
+                <p class="text-xs sm:text-sm">&copy; {{ date('Y') }} TK Teratai Kota Cirebon. All rights reserved.
+                </p>
             </footer>
         </div>
     </div>
