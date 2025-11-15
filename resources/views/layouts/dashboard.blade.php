@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - TK Teratai Kota Cirebon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
 </head>
 
@@ -30,7 +31,7 @@
             </nav>
 
             <!-- Sidebar Footer -->
-            <div class="border-t p-4 shrink-0 transition-opacity duration-300">
+            <div class="shadow-t shadow-gray-300 shadow p-4 shrink-0 transition-opacity duration-300">
                 <div id="sidebar-footer-content" class="text-sm text-gray-600 mb-3">
                     <p class="font-semibold">@yield('user-role')</p>
                     <p class="truncate text-xs">@yield('user-name')</p>
@@ -140,13 +141,13 @@
                         @yield('content')
                     </div>
                 </div>
+                <!-- Footer -->
+                <footer class="@yield('nav-color', 'bg-blue-600') text-white text-center py-4 shrink-0">
+                    <p class="text-xs sm:text-sm">&copy; {{ date('Y') }} TK Teratai Kota Cirebon. All rights
+                        reserved.
+                    </p>
+                </footer>
             </main>
-
-            <!-- Footer -->
-            <footer class="@yield('nav-color', 'bg-blue-600') text-white text-center py-4 shrink-0">
-                <p class="text-xs sm:text-sm">&copy; {{ date('Y') }} TK Teratai Kota Cirebon. All rights reserved.
-                </p>
-            </footer>
         </div>
     </div>
 

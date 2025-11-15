@@ -11,59 +11,7 @@
     dengan orang tua dari sini.')
 
 @section('sidebar-menu')
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition font-medium">
-        <i class="fas fa-chart-bar text-green-600 icon"></i>
-        <span>Dashboard</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Pengajaran</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-layer-group text-blue-500 icon"></i>
-        <span>Kelas Saya</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-pencil text-green-500 icon"></i>
-        <span>Input Nilai</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-users text-purple-500 icon"></i>
-        <span>Data Siswa</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-calendar text-orange-500 icon"></i>
-        <span>Jadwal Mengajar</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Komunikasi</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-envelope text-red-500 icon"></i>
-        <span>Pesan</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Akun</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition">
-        <i class="fas fa-cog text-gray-600 icon"></i>
-        <span>Pengaturan</span>
-    </a>
+    <x-sidebar-menu :guard="'guru'" :currentRoute="request()->route()->getName()" />
 @endsection
 
 @section('content')

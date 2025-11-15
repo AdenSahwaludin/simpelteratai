@@ -9,65 +9,7 @@
 @section('welcome-message', 'Anda berhasil login sebagai Orang Tua. Pantau perkembangan anak Anda dari dashboard ini.')
 
 @section('sidebar-menu')
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition font-medium">
-        <i class="fas fa-chart-bar text-purple-600 icon"></i>
-        <span>Dashboard</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Anak</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-child text-pink-500 icon"></i>
-        <span>Data Anak</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-chart-line text-blue-500 icon"></i>
-        <span>Perkembangan</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-star text-yellow-500 icon"></i>
-        <span>Perilaku</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-calendar-check text-green-500 icon"></i>
-        <span>Kehadiran</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Komunikasi</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-comments text-indigo-500 icon"></i>
-        <span>Chat Guru</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-bell text-red-500 icon"></i>
-        <span>Pengumuman</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Akun</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-purple-100 rounded-lg transition">
-        <i class="fas fa-cog text-gray-600 icon"></i>
-        <span>Pengaturan</span>
-    </a>
+    <x-sidebar-menu :guard="'orangtua'" :currentRoute="request()->route()->getName()" />
 @endsection
 
 @section('content')

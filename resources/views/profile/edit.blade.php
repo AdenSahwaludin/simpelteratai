@@ -9,30 +9,7 @@
 @section('user-role', $role)
 
 @section('sidebar-menu')
-    <a href="@if ($guard === 'admin') {{ route('admin.dashboard') }} @elseif($guard === 'guru') {{ route('guru.dashboard') }} @elseif($guard === 'orangtua') {{ route('orangtua.dashboard') }} @endif"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 rounded-lg transition font-medium"
-        style="background-color: var(--menu-bg); color: var(--menu-color)">
-        <i class="fas fa-chart-bar icon" style="color: var(--menu-icon-color)"></i>
-        <span>Dashboard</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Akun</p>
-    </div>
-
-    <a href="{{ route('profile.edit') }}"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 rounded-lg transition"
-        style="background-color: var(--menu-bg); color: var(--menu-color)">
-        <i class="fas fa-user-edit icon" style="color: var(--menu-icon-color)"></i>
-        <span>Edit Profil</span>
-    </a>
-
-    <a href="{{ route('profile.password') }}"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 rounded-lg transition"
-        style="background-color: var(--menu-bg); color: var(--menu-color)">
-        <i class="fas fa-lock icon" style="color: var(--menu-icon-color)"></i>
-        <span>Ubah Password</span>
-    </a>
+    <x-sidebar-menu :guard="$guard" :currentRoute="request()->route()->getName()" />
 @endsection
 
 @section('content')
@@ -145,16 +122,4 @@
             </a>
         </div>
     </div>
-
-    <style>
-        :root {
-            --profile-color: #2563eb;
-            --menu-bg: #f3f4f6;
-            --menu-color: #374151;
-            --menu-icon-color: #2563eb;
-        }
-    </style>
-    <script>
-        document.documentElement.style.setProperty('--menu-icon-color', '{{ $iconColor }}');
-    </script>
 @endsection

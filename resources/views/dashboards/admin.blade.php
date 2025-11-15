@@ -11,59 +11,7 @@
     dashboard ini.')
 
 @section('sidebar-menu')
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition font-medium">
-        <i class="fas fa-chart-bar text-blue-600 icon"></i>
-        <span>Dashboard</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Data Management</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-users text-blue-500 icon"></i>
-        <span>Data Siswa</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-chalkboard-user text-green-500 icon"></i>
-        <span>Data Guru</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-people-roof text-purple-500 icon"></i>
-        <span>Data Orang Tua</span>
-    </a>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-book text-orange-500 icon"></i>
-        <span>Mata Pelajaran</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Konten</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-bell text-red-500 icon"></i>
-        <span>Pengumuman</span>
-    </a>
-
-    <div class="px-4 py-2">
-        <p class="sidebar-category-label text-xs font-semibold text-gray-500 uppercase tracking-wider">Sistem</p>
-    </div>
-
-    <a href="#"
-        class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-        <i class="fas fa-cog text-gray-600 icon"></i>
-        <span>Pengaturan</span>
-    </a>
+    <x-sidebar-menu :guard="'admin'" :currentRoute="request()->route()->getName()" />
 @endsection
 
 @section('content')
