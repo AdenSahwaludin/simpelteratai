@@ -95,8 +95,11 @@
                         <i class="fas fa-user text-blue-600 mr-2"></i>Nama Lengkap
                     </label>
                     <input type="text" id="nama" name="nama" value="{{ old('nama', $user->nama) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nama') border-red-500 @enderror"
-                        placeholder="Masukkan nama lengkap Anda" required>
+                        class="@class([
+                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
+                            'border-gray-300' => !$errors->has('nama'),
+                            'border-red-500' => $errors->has('nama'),
+                        ])" placeholder="Masukkan nama lengkap Anda" required>
                     @error('nama')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -108,8 +111,11 @@
                         <i class="fas fa-envelope text-blue-600 mr-2"></i>Email
                     </label>
                     <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror"
-                        placeholder="Masukkan email Anda" required>
+                        class="@class([
+                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
+                            'border-gray-300' => !$errors->has('email'),
+                            'border-red-500' => $errors->has('email'),
+                        ])" placeholder="Masukkan email Anda" required>
                     @error('email')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror

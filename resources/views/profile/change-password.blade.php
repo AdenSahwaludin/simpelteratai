@@ -2,20 +2,6 @@
 
 @section('title', 'Ubah Password')
 
-@php
-    $navColor = match ($guard) {
-        'admin' => 'bg-blue-600',
-        'guru' => 'bg-green-600',
-        'orangtua' => 'bg-purple-600',
-        default => 'bg-gray-600',
-    };
-    $role = match ($guard) {
-        'admin' => 'Admin',
-        'guru' => 'Guru',
-        'orangtua' => 'Orang Tua',
-        default => 'User',
-    };
-@endphp
 
 @section('nav-color', $navColor)
 @section('sidebar-color', $navColor)
@@ -99,9 +85,14 @@
                         <i class="fas fa-key text-yellow-600 mr-2"></i>Password Saat Ini
                     </label>
                     <div class="relative">
-                        <input type="password" id="current_password" name="current_password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12 @error('current_password') border-red-500 @enderror"
-                            placeholder="Masukkan password saat ini" required>
+                        <input type="password" id="current_password" name="current_password" <input type="password"
+                            class="@class([
+                                'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12',
+                                'border-gray-300' => !$errors->has('current_password'),
+                                'border-red-500' => $errors->has('current_password'),
+                            ])" />
+
+                        placeholder="Masukkan password saat ini" required>
                         <button type="button"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             onclick="togglePasswordVisibility('current_password', this)">
@@ -119,8 +110,11 @@
                         <i class="fas fa-lock-open text-yellow-600 mr-2"></i>Password Baru
                     </label>
                     <div class="relative">
-                        <input type="password" id="password" name="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12 @error('password') border-red-500 @enderror"
+                        <input type="password" id="password" name="password" class="@class([
+                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12',
+                            'border-gray-300' => !$errors->has('password'),
+                            'border-red-500' => $errors->has('password'),
+                        ])"
                             placeholder="Masukkan password baru" required>
                         <button type="button"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"

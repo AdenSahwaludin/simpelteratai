@@ -5,7 +5,7 @@ model: Auto (copilot)
 
 ## Task Definition
 
-Push perubahan kode ke GitHub dengan **commit message yang relevan**, jelas, dan mengikuti best practice. Agent harus mengidentifikasi perubahan, menyusun commit message yang tepat, lalu menghasilkan perintah Git lengkap untuk melakukan `add`, `commit`, dan `push`.
+Push perubahan kode ke GitHub dengan **commit message yang relevan**, jelas, dan mengikuti best practice. Agent harus mengidentifikasi perubahan, menyusun commit message yang tepat, lalu menghasilkan perintah Git lengkap untuk melakukan `add .`, `commit`, dan `push`.
 
 ## Specific Requirements
 
