@@ -2,7 +2,6 @@
 
 @section('title', 'Ubah Password')
 
-
 @section('nav-color', $navColor)
 @section('sidebar-color', $navColor)
 @section('dashboard-title', 'Ubah Password')
@@ -10,7 +9,7 @@
 @section('user-role', $role)
 
 @section('sidebar-menu')
-    <a href="@if ($guard === 'admin') {{ route('admin.dashboard') }} @elseif($guard === 'guru') {{ route('guru.dashboard') }} @elseif($guard === 'orangtua') {{ route('orangtua.dashboard') }} @endif"
+    <a href="{{ route($dashboardRoute) }}"
         class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 rounded-lg transition font-medium"
         style="background-color: var(--menu-bg); color: var(--menu-color)">
         <i class="fas fa-chart-bar icon" style="color: var(--menu-icon-color)"></i>
@@ -85,14 +84,11 @@
                         <i class="fas fa-key text-yellow-600 mr-2"></i>Password Saat Ini
                     </label>
                     <div class="relative">
-                        <input type="password" id="current_password" name="current_password" <input type="password"
-                            class="@class([
-                                'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12',
-                                'border-gray-300' => !$errors->has('current_password'),
-                                'border-red-500' => $errors->has('current_password'),
-                            ])" />
+                        <input type="password" id="current_password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12 @error('current_password') error border-red-500 @enderror"
+                            name="current_password" placeholder="Masukkan password saat ini" required />
 
-                        placeholder="Masukkan password saat ini" required>
+
                         <button type="button"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             onclick="togglePasswordVisibility('current_password', this)">
@@ -110,11 +106,8 @@
                         <i class="fas fa-lock-open text-yellow-600 mr-2"></i>Password Baru
                     </label>
                     <div class="relative">
-                        <input type="password" id="password" name="password" class="@class([
-                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12',
-                            'border-gray-300' => !$errors->has('password'),
-                            'border-red-500' => $errors->has('password'),
-                        ])"
+                        <input type="password" id="password" name="password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-12 @error('password') border-red-500 @enderror"
                             placeholder="Masukkan password baru" required>
                         <button type="button"
                             class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -163,16 +156,6 @@
     </div>
 
     <script>
-        @php
-            $iconColor = match ($guard) {
-                'admin' => '#2563eb',
-                'guru' => '#16a34a',
-                'orangtua' => '#a855f7',
-                default => '#6b7280',
-            };
-        @endphp
-        document.documentElement.style.setProperty('--menu-icon-color', '{{ $iconColor }}');
-
         function togglePasswordVisibility(fieldId, button) {
             const field = document.getElementById(fieldId);
             const isPassword = field.type === 'password';
@@ -186,4 +169,13 @@
             }
         }
     </script>
+
+    <style>
+        :root {
+            --profile-color: #2563eb;
+            --menu-bg: #f3f4f6;
+            --menu-color: #374151;
+            --menu-icon-color: {{ $iconColor }};
+        }
+    </style>
 @endsection

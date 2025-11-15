@@ -2,21 +2,6 @@
 
 @section('title', 'Edit Profil')
 
-@php
-    $navColor = match ($guard) {
-        'admin' => 'bg-blue-600',
-        'guru' => 'bg-green-600',
-        'orangtua' => 'bg-purple-600',
-        default => 'bg-gray-600',
-    };
-    $role = match ($guard) {
-        'admin' => 'Admin',
-        'guru' => 'Guru',
-        'orangtua' => 'Orang Tua',
-        default => 'User',
-    };
-@endphp
-
 @section('nav-color', $navColor)
 @section('sidebar-color', $navColor)
 @section('dashboard-title', 'Edit Profil')
@@ -95,11 +80,8 @@
                         <i class="fas fa-user text-blue-600 mr-2"></i>Nama Lengkap
                     </label>
                     <input type="text" id="nama" name="nama" value="{{ old('nama', $user->nama) }}"
-                        class="@class([
-                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
-                            'border-gray-300' => !$errors->has('nama'),
-                            'border-red-500' => $errors->has('nama'),
-                        ])" placeholder="Masukkan nama lengkap Anda" required>
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nama') border-red-500 @enderror"
+                        placeholder="Masukkan nama lengkap Anda" required>
                     @error('nama')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -111,11 +93,8 @@
                         <i class="fas fa-envelope text-blue-600 mr-2"></i>Email
                     </label>
                     <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}"
-                        class="@class([
-                            'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
-                            'border-gray-300' => !$errors->has('email'),
-                            'border-red-500' => $errors->has('email'),
-                        ])" placeholder="Masukkan email Anda" required>
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror"
+                        placeholder="Masukkan email Anda" required>
                     @error('email')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -174,16 +153,6 @@
             --menu-color: #374151;
             --menu-icon-color: #2563eb;
         }
-
-        @php $iconColor =match ($guard) {
-            'admin'=>'#2563eb',
-            'guru'=>'#16a34a',
-            'orangtua'=>'#a855f7',
-            default=>'#6b7280',
-        }
-
-        ;
-        @endphp
     </style>
     <script>
         document.documentElement.style.setProperty('--menu-icon-color', '{{ $iconColor }}');

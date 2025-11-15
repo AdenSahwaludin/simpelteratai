@@ -20,13 +20,47 @@ class ProfileController extends Controller
         return 'web';
     }
 
+    private function getProfileData(string $guard, $user): array
+    {
+        return [
+            'user' => $user,
+            'guard' => $guard,
+            'navColor' => match ($guard) {
+                'admin' => 'bg-blue-600',
+                'guru' => 'bg-green-600',
+                'orangtua' => 'bg-purple-600',
+                default => 'bg-gray-600',
+            },
+            'role' => match ($guard) {
+                'admin' => 'Admin',
+                'guru' => 'Guru',
+                'orangtua' => 'Orang Tua',
+                default => 'User',
+            },
+            'iconColor' => match ($guard) {
+                'admin' => '#2563eb',
+                'guru' => '#16a34a',
+                'orangtua' => '#a855f7',
+                default => '#6b7280',
+            },
+            'dashboardRoute' => match ($guard) {
+                'admin' => 'admin.dashboard',
+                'guru' => 'guru.dashboard',
+                'orangtua' => 'orangtua.dashboard',
+                default => 'dashboard',
+            },
+        ];
+    }
+
     public function edit(): \Illuminate\View\View
     {
         $guard = $this->getGuard();
         /** @var \App\Models\Admin|\App\Models\Guru|\App\Models\OrangTua $user */
         $user = auth($guard)->user();
 
-        return view('profile.edit', compact('user', 'guard'));
+        $data = $this->getProfileData($guard, $user);
+
+        return view('profile.edit', $data);
     }
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse
@@ -37,7 +71,7 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             'no_telpon' => 'nullable|string|max:20',
         ]);
 
@@ -52,8 +86,12 @@ class ProfileController extends Controller
     public function passwordForm(): \Illuminate\View\View
     {
         $guard = $this->getGuard();
+        /** @var \App\Models\Admin|\App\Models\Guru|\App\Models\OrangTua $user */
+        $user = auth($guard)->user();
 
-        return view('profile.change-password', compact('guard'));
+        $data = $this->getProfileData($guard, $user);
+
+        return view('profile.change-password', $data);
     }
 
     public function updatePassword(Request $request): \Illuminate\Http\RedirectResponse
@@ -67,7 +105,7 @@ class ProfileController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if (!Hash::check($validated['current_password'], $user->password)) {
+        if (! Hash::check($validated['current_password'], $user->password)) {
             return back()->withErrors(['current_password' => 'Password saat ini tidak sesuai.']);
         }
 
