@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +23,11 @@ Route::get('/admin/dashboard', function () {
 })
     ->middleware('check.admin.role')
     ->name('admin.dashboard');
+
+// Admin - Guru CRUD routes (Admin only)
+Route::middleware(['check.admin.role'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('guru', GuruController::class);
+});
 
 // Guru routes
 Route::get('/guru/dashboard', function () {
