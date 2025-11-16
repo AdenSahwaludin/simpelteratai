@@ -16,6 +16,14 @@ class OrangTuaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'nama');
+        $direction = $request->input('direction', 'asc');
+
+        // Validasi sort column
+        $allowedSort = ['id_orang_tua', 'nama', 'email', 'no_telpon'];
+        if (! in_array($sort, $allowedSort)) {
+            $sort = 'nama';
+        }
 
         $orangTua = OrangTua::query()
             ->withCount('siswa')
@@ -24,10 +32,11 @@ class OrangTuaController extends Controller
                     ->orWhere('id_orang_tua', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
-            ->orderBy('nama')
-            ->paginate(20);
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->appends($request->query());
 
-        return view('admin.orangtua.index', compact('orangTua', 'search'));
+        return view('admin.orangtua.index', compact('orangTua', 'search', 'sort', 'direction'));
     }
 
     /**
@@ -60,7 +69,7 @@ class OrangTuaController extends Controller
         ]);
 
         $orangTua = new OrangTua;
-        $orangTua->id_orang_tua = 'O' . str_pad((string)(OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
+        $orangTua->id_orang_tua = 'O'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
         $orangTua->nama = $validated['nama'];
         $orangTua->email = $validated['email'];
         $orangTua->password = $validated['password'];
@@ -102,7 +111,7 @@ class OrangTuaController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:orang_tua,email,' . $id . ',id_orang_tua',
+            'email' => 'required|email|max:255|unique:orang_tua,email,'.$id.',id_orang_tua',
             'password' => 'nullable|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
@@ -117,7 +126,7 @@ class OrangTuaController extends Controller
 
         $orangTua->nama = $validated['nama'];
         $orangTua->email = $validated['email'];
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $orangTua->password = $validated['password'];
         }
         $orangTua->no_telpon = $validated['no_telpon'];

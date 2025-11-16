@@ -38,7 +38,7 @@
                             'label' => 'Mata Pelajaran',
                             'icon' => 'fa-book',
                             'color' => 'text-orange-500',
-                            'route' => '#',
+                            'route' => 'admin.mata-pelajaran.index',
                         ],
                     ],
                 ],

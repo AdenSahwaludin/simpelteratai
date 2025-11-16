@@ -18,6 +18,14 @@ class SiswaController extends Controller
     {
         $search = $request->input('search');
         $kelas = $request->input('kelas');
+        $sort = $request->input('sort', 'nama');
+        $direction = $request->input('direction', 'asc');
+
+        // Validasi sort column untuk mencegah SQL injection
+        $allowedSort = ['id_siswa', 'nama', 'kelas', 'email'];
+        if (! in_array($sort, $allowedSort)) {
+            $sort = 'nama';
+        }
 
         $siswa = Siswa::query()
             ->with('orangTua')
@@ -29,13 +37,13 @@ class SiswaController extends Controller
             ->when($kelas, function ($query, $kelas) {
                 return $query->where('kelas', $kelas);
             })
-            ->orderBy('kelas')
-            ->orderBy('nama')
-            ->paginate(20);
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->appends($request->query());
 
         $kelasList = Siswa::query()->distinct()->pluck('kelas')->sort();
 
-        return view('admin.siswa.index', compact('siswa', 'kelasList', 'search', 'kelas'));
+        return view('admin.siswa.index', compact('siswa', 'kelasList', 'search', 'kelas', 'sort', 'direction'));
     }
 
     /**
@@ -71,7 +79,7 @@ class SiswaController extends Controller
         ]);
 
         $siswa = new Siswa;
-        $siswa->id_siswa = 'S' . str_pad((string)(Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
+        $siswa->id_siswa = 'S'.str_pad((string) (Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
         $siswa->nama = $validated['nama'];
         $siswa->kelas = $validated['kelas'];
         $siswa->alamat = $validated['alamat'];
@@ -118,7 +126,7 @@ class SiswaController extends Controller
             'nama' => 'required|string|max:255',
             'kelas' => 'required|string|max:255',
             'alamat' => 'required|string|max:500',
-            'email' => 'nullable|email|max:255|unique:siswa,email,' . $id . ',id_siswa',
+            'email' => 'nullable|email|max:255|unique:siswa,email,'.$id.',id_siswa',
             'no_telpon' => 'nullable|string|max:20',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [

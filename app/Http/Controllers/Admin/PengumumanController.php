@@ -17,6 +17,14 @@ class PengumumanController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'tanggal');
+        $direction = $request->input('direction', 'desc');
+
+        // Validasi sort column
+        $allowedSort = ['id_pengumuman', 'judul', 'tanggal'];
+        if (! in_array($sort, $allowedSort)) {
+            $sort = 'tanggal';
+        }
 
         $pengumuman = Pengumuman::query()
             ->with('admin')
@@ -24,10 +32,11 @@ class PengumumanController extends Controller
                 return $query->where('judul', 'like', "%{$search}%")
                     ->orWhere('isi', 'like', "%{$search}%");
             })
-            ->orderBy('tanggal', 'desc')
-            ->paginate(15);
+            ->orderBy($sort, $direction)
+            ->paginate(15)
+            ->appends($request->query());
 
-        return view('admin.pengumuman.index', compact('pengumuman', 'search'));
+        return view('admin.pengumuman.index', compact('pengumuman', 'search', 'sort', 'direction'));
     }
 
     /**
@@ -57,7 +66,7 @@ class PengumumanController extends Controller
         $admin = Auth::guard('admin')->user();
 
         $pengumuman = new Pengumuman;
-        $pengumuman->id_pengumuman = 'P' . str_pad((string)(Pengumuman::count() + 1), 2, '0', STR_PAD_LEFT);
+        $pengumuman->id_pengumuman = 'P'.str_pad((string) (Pengumuman::count() + 1), 2, '0', STR_PAD_LEFT);
         $pengumuman->judul = $validated['judul'];
         $pengumuman->isi = $validated['isi'];
         $pengumuman->tanggal = $validated['tanggal'];

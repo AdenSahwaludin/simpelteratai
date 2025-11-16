@@ -19,6 +19,14 @@ class JadwalController extends Controller
     {
         $search = $request->input('search');
         $guru = $request->input('guru');
+        $sort = $request->input('sort', 'waktu');
+        $direction = $request->input('direction', 'asc');
+
+        // Validasi sort column
+        $allowedSort = ['id_jadwal', 'waktu', 'ruang'];
+        if (! in_array($sort, $allowedSort)) {
+            $sort = 'waktu';
+        }
 
         $jadwal = Jadwal::query()
             ->with(['guru', 'mataPelajaran'])
@@ -34,12 +42,13 @@ class JadwalController extends Controller
             ->when($guru, function ($query, $guru) {
                 return $query->where('id_guru', $guru);
             })
-            ->orderBy('waktu')
-            ->paginate(20);
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->appends($request->query());
 
         $guruList = Guru::query()->orderBy('nama')->get();
 
-        return view('admin.jadwal.index', compact('jadwal', 'guruList', 'search', 'guru'));
+        return view('admin.jadwal.index', compact('jadwal', 'guruList', 'search', 'guru', 'sort', 'direction'));
     }
 
     /**
@@ -74,7 +83,7 @@ class JadwalController extends Controller
         ]);
 
         $jadwal = new Jadwal;
-        $jadwal->id_jadwal = 'J' . str_pad((string)(Jadwal::count() + 1), 2, '0', STR_PAD_LEFT);
+        $jadwal->id_jadwal = 'J'.str_pad((string) (Jadwal::count() + 1), 2, '0', STR_PAD_LEFT);
         $jadwal->id_guru = $validated['id_guru'];
         $jadwal->id_mata_pelajaran = $validated['id_mata_pelajaran'];
         $jadwal->ruang = $validated['ruang'];

@@ -34,6 +34,9 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     // Kelola Jadwal
     Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
 
+    // Mata Pelajaran
+    Route::resource('mata-pelajaran', \App\Http\Controllers\Admin\MataPelajaranController::class);
+
     // Kelola Pengumuman
     Route::resource('pengumuman', \App\Http\Controllers\Admin\PengumumanController::class);
 });

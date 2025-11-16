@@ -8,12 +8,12 @@
 @section('user-role', 'Admin')
 
 @section('content')
-    <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Kelola Pengumuman</h1>
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Daftar Pengumuman</h2>
             <a href="{{ route('admin.pengumuman.create') }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                Tambah Pengumuman
+                class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                <i class="fas fa-plus mr-2"></i>Tambah Pengumuman
             </a>
         </div>
 
@@ -29,76 +29,137 @@
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <form action="{{ route('admin.pengumuman.index') }}" method="GET" class="mb-6">
-                <div class="flex gap-4">
-                    <div class="flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari judul atau isi pengumuman..."
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
-                        Cari
-                    </button>
-                    @if (request('search'))
-                        <a href="{{ route('admin.pengumuman.index') }}"
-                            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg">
-                            Reset
-                        </a>
-                    @endif
+        <div class="bg-white rounded-lg shadow p-4 mb-4">
+            <form action="{{ route('admin.pengumuman.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+                <div class="flex-1">
+                    <input type="text" name="search" value="{{ $search }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Cari judul atau isi pengumuman...">
                 </div>
+                <button type="submit"
+                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium">
+                    <i class="fas fa-search mr-2"></i>Cari
+                </button>
+                @if ($search)
+                    <a href="{{ route('admin.pengumuman.index') }}"
+                        class="w-full md:w-auto bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                        <i class="fas fa-times mr-2"></i>Reset
+                    </a>
+                @endif
             </form>
+        </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tanggal</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Isi
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
-                            </th>
+        <!-- Desktop Table View -->
+        <div class="hidden md:block bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="id_pengumuman" label="ID" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="judul" label="Judul" />
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Isi</th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="tanggal" label="Tanggal" />
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pembuat
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($pengumuman as $item)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->id_pengumuman }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->judul }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                <div class="max-w-xs truncate">{{ $item->isi }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->admin->nama }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
+                                    class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('admin.pengumuman.destroy', $item->id_pengumuman) }}" method="POST"
+                                    class="inline-block"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($pengumuman as $item)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $item->tanggal->format('d M Y') }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->judul }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
-                                    {{ Str::limit($item->isi, 100) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex gap-2">
-                                        <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
-                                            class="text-blue-600 hover:text-blue-900">Edit</a>
-                                        <form action="{{ route('admin.pengumuman.destroy', $item->id_pengumuman) }}"
-                                            method="POST" class="inline"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data pengumuman
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                <i class="fas fa-inbox text-4xl mb-2"></i>
+                                <p>Tidak ada data pengumuman{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-            <div class="mt-4">
-                {{ $pengumuman->links() }}
-            </div>
+        <!-- Mobile Card View -->
+        <div class="md:hidden space-y-4">
+            @forelse ($pengumuman as $item)
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900">{{ $item->judul }}</h3>
+                            <p class="text-sm text-gray-500">{{ $item->id_pengumuman }}</p>
+                        </div>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium ml-2">
+                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d M') }}
+                        </span>
+                    </div>
+                    <div class="mb-3 text-sm text-gray-600">
+                        <p class="line-clamp-2">{{ $item->isi }}</p>
+                    </div>
+                    <div class="mb-3 text-xs text-gray-500">
+                        <i class="fas fa-user"></i> {{ $item->admin->nama }}
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center text-sm transition">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('admin.pengumuman.destroy', $item->id_pengumuman) }}" method="POST"
+                            class="flex-1" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <div class="bg-white rounded-lg shadow p-12 text-center text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-2"></i>
+                    <p>Tidak ada data pengumuman{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $pengumuman->links() }}
         </div>
     </div>
 @endsection

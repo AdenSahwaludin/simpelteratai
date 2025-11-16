@@ -8,11 +8,12 @@
 @section('user-role', 'Admin')
 
 @section('content')
-    <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Data Guru</h1>
-            <a href="{{ route('admin.guru.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                Tambah Guru
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Daftar Guru</h2>
+            <a href="{{ route('admin.guru.create') }}"
+                class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                <i class="fas fa-plus mr-2"></i>Tambah Guru
             </a>
         </div>
 
@@ -28,79 +29,138 @@
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <form action="{{ route('admin.guru.index') }}" method="GET" class="mb-6">
-                <div class="flex gap-4">
-                    <div class="flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari nama, email, atau ID..."
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
-                        Cari
-                    </button>
-                    @if (request('search'))
-                        <a href="{{ route('admin.guru.index') }}"
-                            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg">
-                            Reset
-                        </a>
-                    @endif
+        <div class="bg-white rounded-lg shadow p-4 mb-4">
+            <form action="{{ route('admin.guru.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+                <div class="flex-1">
+                    <input type="text" name="search" value="{{ $search }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Cari nama, ID, email, atau no telepon...">
                 </div>
+                <button type="submit"
+                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium">
+                    <i class="fas fa-search mr-2"></i>Cari
+                </button>
+                @if ($search)
+                    <a href="{{ route('admin.guru.index') }}"
+                        class="w-full md:w-auto bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                        <i class="fas fa-times mr-2"></i>Reset
+                    </a>
+                @endif
             </form>
+        </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.
-                                Telepon</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Jumlah Jadwal</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
-                            </th>
+        <!-- Desktop Table View -->
+        <div class="hidden md:block bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="id_guru" label="ID" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="nama" label="Nama" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="email" label="Email" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="no_telpon" label="No Telepon" />
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jadwal
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($guru as $item)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->id_guru }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->nama }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->no_telpon }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                                    {{ $item->jadwal_count }} Jadwal
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
+                                    class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('admin.guru.destroy', $item->id_guru) }}" method="POST"
+                                    class="inline-block"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus guru ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($guru as $item)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->id_guru }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->nama }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->email }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->no_telpon }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->jadwal_count }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex gap-2">
-                                        <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
-                                            class="text-blue-600 hover:text-blue-900">Edit</a>
-                                        <form action="{{ route('admin.guru.destroy', $item->id_guru) }}" method="POST"
-                                            class="inline"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data guru</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                <i class="fas fa-inbox text-4xl mb-2"></i>
+                                <p>Tidak ada data guru{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-            <div class="mt-4">
-                {{ $guru->links() }}
-            </div>
+        <!-- Mobile Card View -->
+        <div class="md:hidden space-y-4">
+            @forelse ($guru as $item)
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ $item->nama }}</h3>
+                            <p class="text-sm text-gray-500">{{ $item->id_guru }}</p>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                            {{ $item->jadwal_count }} Jadwal
+                        </span>
+                    </div>
+                    <div class="space-y-2 mb-3 text-sm text-gray-600">
+                        <p><i class="fas fa-envelope w-5"></i> {{ $item->email }}</p>
+                        <p><i class="fas fa-phone w-5"></i> {{ $item->no_telpon }}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center text-sm transition">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('admin.guru.destroy', $item->id_guru) }}" method="POST" class="flex-1"
+                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus guru ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <div class="bg-white rounded-lg shadow p-12 text-center text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-2"></i>
+                    <p>Tidak ada data guru{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $guru->links() }}
         </div>
     </div>
 @endsection

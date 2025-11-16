@@ -16,6 +16,14 @@ class GuruController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'nama');
+        $direction = $request->input('direction', 'asc');
+
+        // Validasi sort column
+        $allowedSort = ['id_guru', 'nama', 'email', 'no_telpon'];
+        if (! in_array($sort, $allowedSort)) {
+            $sort = 'nama';
+        }
 
         $guru = Guru::query()
             ->withCount('jadwal')
@@ -24,10 +32,11 @@ class GuruController extends Controller
                     ->orWhere('id_guru', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
-            ->orderBy('nama')
-            ->paginate(20);
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->appends($request->query());
 
-        return view('admin.guru.index', compact('guru', 'search'));
+        return view('admin.guru.index', compact('guru', 'search', 'sort', 'direction'));
     }
 
     /**
@@ -60,7 +69,7 @@ class GuruController extends Controller
         ]);
 
         $guru = new Guru;
-        $guru->id_guru = 'G' . str_pad((string)(Guru::count() + 1), 2, '0', STR_PAD_LEFT);
+        $guru->id_guru = 'G'.str_pad((string) (Guru::count() + 1), 2, '0', STR_PAD_LEFT);
         $guru->nama = $validated['nama'];
         $guru->email = $validated['email'];
         $guru->password = $validated['password'];
@@ -102,7 +111,7 @@ class GuruController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:guru,email,' . $id . ',id_guru',
+            'email' => 'required|email|max:255|unique:guru,email,'.$id.',id_guru',
             'password' => 'nullable|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
@@ -117,7 +126,7 @@ class GuruController extends Controller
 
         $guru->nama = $validated['nama'];
         $guru->email = $validated['email'];
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $guru->password = $validated['password'];
         }
         $guru->no_telpon = $validated['no_telpon'];
