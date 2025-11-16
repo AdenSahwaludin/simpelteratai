@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
@@ -18,9 +19,7 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 // Admin routes
 Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.admin');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Data Siswa
     Route::resource('siswa', \App\Http\Controllers\Admin\SiswaController::class);
