@@ -60,6 +60,8 @@
             </form>
         </div>
     </div>
+@endsection
 
+@section('sidebar-menu')
     <x-sidebar-menu :guard="'admin'" :currentRoute="request()->route()->getName()" />
 @endsection

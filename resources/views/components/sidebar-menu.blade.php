@@ -149,7 +149,7 @@
 
 <!-- Dashboard Link -->
 <a href="{{ route($roleConfig['dashboardRoute']) }}"
-    class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 {{ $roleConfig['hoverBg'] }} rounded-lg transition font-medium">
+    class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 {{ $roleConfig['hoverBg'] }} rounded-lg transition font-medium {{ $currentRoute === $roleConfig['dashboardRoute'] ? 'bg-gray-100' : '' }}">
     <i class="fas fa-chart-bar {{ $roleConfig['iconColor'] }} icon"></i>
     <span>Dashboard</span>
 </a>
@@ -164,7 +164,7 @@
 
     @foreach ($section['items'] as $item)
         <a href="{{ $item['route'] === '#' ? '#' : route($item['route']) }}"
-            class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 {{ $roleConfig['hoverBg'] }} rounded-lg transition">
+            class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 {{ $roleConfig['hoverBg'] }} rounded-lg transition {{ $currentRoute === $item['route'] ? 'bg-gray-100 font-medium' : '' }}">
             <i class="fas {{ $item['icon'] }} {{ $item['color'] }} icon"></i>
             <span>{{ $item['label'] }}</span>
         </a>
