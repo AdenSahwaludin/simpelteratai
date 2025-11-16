@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Tambah Pengumuman')
 @section('nav-color', 'bg-blue-600')
 @section('sidebar-color', 'bg-blue-600')
+@section('dashboard-title', 'Tambah Pengumuman')
 @section('user-name', auth('admin')->user()->nama)
 @section('user-role', 'Admin')
 

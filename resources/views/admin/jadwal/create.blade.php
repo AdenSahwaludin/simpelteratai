@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Tambah Jadwal')
 @section('nav-color', 'bg-blue-600')
 @section('sidebar-color', 'bg-blue-600')
+@section('dashboard-title', 'Tambah Jadwal')
 @section('user-name', auth('admin')->user()->nama)
 @section('user-role', 'Admin')
 
