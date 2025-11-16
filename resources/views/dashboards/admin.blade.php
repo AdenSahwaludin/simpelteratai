@@ -6,8 +6,8 @@
 @section('dashboard-title', 'Admin Dashboard')
 @section('user-name', auth('admin')->user()->nama)
 @section('user-role', 'Admin')
-@section('welcome-message',
-    'Selamat datang kembali! Berikut adalah ringkasan data dan aktivitas TK Teratai untuk hari ini.')
+@section('welcome-message', 'Selamat datang kembali! Berikut adalah ringkasan data dan aktivitas TK Teratai untuk hari
+    ini.')
 
 @section('sidebar-menu')
     <x-sidebar-menu :guard="'admin'" :currentRoute="request()->route()->getName()" />
@@ -18,7 +18,8 @@
         <!-- Statistics Cards Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Siswa Card -->
-            <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+            <div
+                class="bg-linear-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-blue-100 text-sm font-medium">Total Siswa</p>
@@ -36,7 +37,8 @@
             </div>
 
             <!-- Total Guru Card -->
-            <div class="bg-linear-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+            <div
+                class="bg-linear-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-green-100 text-sm font-medium">Total Guru</p>
@@ -54,7 +56,8 @@
             </div>
 
             <!-- Total Orang Tua Card -->
-            <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+            <div
+                class="bg-linear-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-purple-100 text-sm font-medium">Total Orang Tua</p>
@@ -72,7 +75,8 @@
             </div>
 
             <!-- Total Mata Pelajaran Card -->
-            <div class="bg-linear-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+            <div
+                class="bg-linear-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-orange-100 text-sm font-medium">Mata Pelajaran</p>
@@ -207,7 +211,8 @@
                                             style="width: {{ round(($kelas->count / $totalSiswa) * 100, 1) }}%">
                                         </div>
                                     </div>
-                                    <span class="text-sm font-bold text-gray-800 w-8 text-right">{{ $kelas->count }}</span>
+                                    <span
+                                        class="text-sm font-bold text-gray-800 w-8 text-right">{{ $kelas->count }}</span>
                                 </div>
                             </div>
                         @endforeach
@@ -254,7 +259,8 @@
                         @foreach ($topStudents as $index => $siswa)
                             <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
                                 <div class="shrink-0">
-                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white font-bold text-sm">
+                                    <span
+                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white font-bold text-sm">
                                         @if ($index == 0)
                                             🥇
                                         @elseif ($index == 1)
@@ -289,7 +295,8 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-lg font-bold text-gray-800">Pengumuman Terbaru</h3>
-                    <a href="{{ route('admin.pengumuman.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <a href="{{ route('admin.pengumuman.index') }}"
+                        class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                         Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
@@ -324,7 +331,8 @@
             <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-lg font-bold text-gray-800">5 Siswa Terbaru Terdaftar</h3>
-                    <a href="{{ route('admin.siswa.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <a href="{{ route('admin.siswa.index') }}"
+                        class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                         Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
@@ -368,4 +376,3 @@
         </div>
     </div>
 @endsection
-

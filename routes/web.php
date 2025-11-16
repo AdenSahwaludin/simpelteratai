@@ -48,11 +48,34 @@ Route::get('/guru/dashboard', function () {
     ->name('guru.dashboard');
 
 // OrangTua routes
-Route::get('/orangtua/dashboard', function () {
-    return view('dashboards.orangtua');
-})
-    ->middleware('check.orangtua.role')
-    ->name('orangtua.dashboard');
+Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboards.orangtua');
+    })->name('dashboard');
+
+    // Data Anak
+    Route::get('/anak', [\App\Http\Controllers\OrangTua\AnakController::class, 'index'])->name('anak.index');
+    Route::get('/anak/{id}', [\App\Http\Controllers\OrangTua\AnakController::class, 'show'])->name('anak.show');
+
+    // Perkembangan
+    Route::get('/perkembangan', [\App\Http\Controllers\OrangTua\PerkembanganController::class, 'index'])->name('perkembangan.index');
+    Route::get('/perkembangan/{id}', [\App\Http\Controllers\OrangTua\PerkembanganController::class, 'show'])->name('perkembangan.show');
+
+    // Perilaku
+    Route::get('/perilaku', [\App\Http\Controllers\OrangTua\PerilakuController::class, 'index'])->name('perilaku.index');
+    Route::get('/perilaku/{id}', [\App\Http\Controllers\OrangTua\PerilakuController::class, 'show'])->name('perilaku.show');
+
+    // Kehadiran
+    Route::get('/kehadiran', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'index'])->name('kehadiran.index');
+    Route::get('/kehadiran/{id}', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'show'])->name('kehadiran.show');
+
+    // Pengumuman
+    Route::get('/pengumuman', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/{id}', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'show'])->name('pengumuman.show');
+
+    // Komentar
+    Route::resource('komentar', \App\Http\Controllers\OrangTua\KomentarController::class);
+});
 
 // Profile routes (for all authenticated users)
 Route::middleware(['auth.check'])->group(function () {
