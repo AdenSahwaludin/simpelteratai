@@ -10,18 +10,29 @@
                 [
                     'category' => 'Data Management',
                     'items' => [
-                        ['label' => 'Data Siswa', 'icon' => 'fa-users', 'color' => 'text-blue-500', 'route' => '#'],
+                        [
+                            'label' => 'Data Siswa',
+                            'icon' => 'fa-users',
+                            'color' => 'text-blue-500',
+                            'route' => 'admin.siswa.index',
+                        ],
                         [
                             'label' => 'Data Guru',
                             'icon' => 'fa-chalkboard-user',
                             'color' => 'text-green-500',
-                            'route' => '#',
+                            'route' => 'admin.guru.index',
                         ],
                         [
                             'label' => 'Data Orang Tua',
                             'icon' => 'fa-people-roof',
                             'color' => 'text-purple-500',
-                            'route' => '#',
+                            'route' => 'admin.orangtua.index',
+                        ],
+                        [
+                            'label' => 'Kelola Jadwal',
+                            'icon' => 'fa-calendar-alt',
+                            'color' => 'text-teal-500',
+                            'route' => 'admin.jadwal.index',
                         ],
                         [
                             'label' => 'Mata Pelajaran',
@@ -34,7 +45,12 @@
                 [
                     'category' => 'Konten',
                     'items' => [
-                        ['label' => 'Pengumuman', 'icon' => 'fa-bullhorn', 'color' => 'text-red-500', 'route' => '#'],
+                        [
+                            'label' => 'Pengumuman',
+                            'icon' => 'fa-bullhorn',
+                            'color' => 'text-red-500',
+                            'route' => 'admin.pengumuman.index',
+                        ],
                     ],
                 ],
                 [
@@ -147,7 +163,7 @@
     </div>
 
     @foreach ($section['items'] as $item)
-        <a href="{{ $item['route'] }}"
+        <a href="{{ $item['route'] === '#' ? '#' : route($item['route']) }}"
             class="sidebar-menu-item flex items-center gap-3 px-4 py-2 text-gray-700 {{ $roleConfig['hoverBg'] }} rounded-lg transition">
             <i class="fas {{ $item['icon'] }} {{ $item['color'] }} icon"></i>
             <span>{{ $item['label'] }}</span>

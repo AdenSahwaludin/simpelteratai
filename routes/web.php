@@ -17,11 +17,26 @@ Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showRes
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.store');
 
 // Admin routes
-Route::get('/admin/dashboard', function () {
-    return view('dashboards.admin');
-})
-    ->middleware('check.admin.role')
-    ->name('admin.dashboard');
+Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboards.admin');
+    })->name('dashboard');
+
+    // Data Siswa
+    Route::resource('siswa', \App\Http\Controllers\Admin\SiswaController::class);
+
+    // Data Orang Tua
+    Route::resource('orangtua', \App\Http\Controllers\Admin\OrangTuaController::class);
+
+    // Data Guru
+    Route::resource('guru', \App\Http\Controllers\Admin\GuruController::class);
+
+    // Kelola Jadwal
+    Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
+
+    // Kelola Pengumuman
+    Route::resource('pengumuman', \App\Http\Controllers\Admin\PengumumanController::class);
+});
 
 // Guru routes
 Route::get('/guru/dashboard', function () {

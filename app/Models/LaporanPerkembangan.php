@@ -7,45 +7,48 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LaporanPerkembangan extends Model
 {
- protected $table = 'laporan_perkembangan';
- protected $primaryKey = 'id_laporan';
- public $incrementing = false;
- protected $keyType = 'string';
+    protected $table = 'laporan_perkembangan';
 
- protected $fillable = [
-  'id_laporan',
-  'id_siswa',
-  'id_mata_pelajaran',
-  'nilai',
-  'id_absensi',
-  'komentar',
- ];
+    protected $primaryKey = 'id_laporan';
 
- protected $casts = [
-  'nilai' => 'integer',
- ];
+    public $incrementing = false;
 
- /**
-  * Get the siswa that owns the laporan perkembangan.
-  */
- public function siswa(): BelongsTo
- {
-  return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
- }
+    protected $keyType = 'string';
 
- /**
-  * Get the mata pelajaran that owns the laporan perkembangan.
-  */
- public function mataPelajaran(): BelongsTo
- {
-  return $this->belongsTo(MataPelajaran::class, 'id_mata_pelajaran', 'id_mata_pelajaran');
- }
+    protected $fillable = [
+        'id_laporan',
+        'id_siswa',
+        'id_mata_pelajaran',
+        'nilai',
+        'id_absensi',
+        'komentar',
+    ];
 
- /**
-  * Get the absensi that owns the laporan perkembangan.
-  */
- public function absensi(): BelongsTo
- {
-  return $this->belongsTo(Absensi::class, 'id_absensi', 'id_absensi');
- }
+    protected $casts = [
+        'nilai' => 'integer',
+    ];
+
+    /**
+     * Get the siswa that owns the laporan perkembangan.
+     */
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
+    }
+
+    /**
+     * Get the mata pelajaran that owns the laporan perkembangan.
+     */
+    public function mataPelajaran(): BelongsTo
+    {
+        return $this->belongsTo(MataPelajaran::class, 'id_mata_pelajaran', 'id_mata_pelajaran');
+    }
+
+    /**
+     * Get the absensi that owns the laporan perkembangan.
+     */
+    public function absensi(): BelongsTo
+    {
+        return $this->belongsTo(Absensi::class, 'id_absensi', 'id_absensi');
+    }
 }

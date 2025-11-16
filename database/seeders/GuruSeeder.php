@@ -13,18 +13,18 @@ class GuruSeeder extends Seeder
  public function run(): void
  {
   Guru::create([
-   'id_guru' => 'GRU',
-   'nama' => 'Guru Pertama',
-   'email' => 'guru@tkteratai.com',
-   'password' => 'password123',
+   'id_guru' => 'G03',
+   'nama' => 'Pak Damar',
+   'email' => 'damar@tkteratai.com',
+   'password' => 'password',
    'no_telpon' => '082234567892',
   ]);
 
   Guru::create([
-   'id_guru' => 'GR2',
-   'nama' => 'Guru Kedua',
-   'email' => 'guru2@tkteratai.com',
-   'password' => 'password123',
+   'id_guru' => 'G04',
+   'nama' => 'Ibu Siti',
+   'email' => 'siti@tkteratai.com',
+   'password' => 'password',
    'no_telpon' => '082234567893',
   ]);
  }

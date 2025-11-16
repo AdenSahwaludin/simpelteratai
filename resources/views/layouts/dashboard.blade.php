@@ -14,7 +14,7 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="w-64 bg-white shadow-lg transition-all duration-300 flex flex-col overflow-hidden fixed lg:relative left-0 top-0 h-screen z-40 lg:flex whitespace-nowrap"
+            class="w-64 bg-white shadow-lg transition-all duration-300 flex flex-col overflow-hidden fixed lg:relative left-0 top-0 h-full z-40 lg:flex whitespace-nowrap"
             style="display: none;" data-collapsed="false">
             <!-- Sidebar Header -->
             <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20 ">
@@ -110,8 +110,8 @@
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-auto">
-                <div class="p-4 sm:p-8">
+            <main class="flex-1 flex flex-col overflow-auto">
+                <div class="flex-1 p-4 sm:p-6 lg:p-8">
                     @if (session('status'))
                         <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
                             {{ session('status') }}
@@ -126,23 +126,11 @@
                         </div>
                     @endif
 
-                    <!-- Welcome Card -->
-                    <div class="bg-white rounded-lg shadow p-6 mb-6">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-                            Selamat Datang, @yield('user-name')!
-                        </h2>
-                        <p class="text-sm sm:text-base text-gray-600">
-                            @yield('welcome-message')
-                        </p>
-                    </div>
-
                     <!-- Content Section -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
                 <!-- Footer -->
-                <footer class="@yield('nav-color', 'bg-blue-600') text-white text-center py-4 shrink-0">
+                <footer class="@yield('nav-color', 'bg-blue-600') text-white text-center py-4 shrink-0 mt-auto">
                     <p class="text-xs sm:text-sm">&copy; {{ date('Y') }} TK Teratai Kota Cirebon. All rights
                         reserved.
                     </p>
@@ -152,7 +140,8 @@
     </div>
 
     <!-- Sidebar Overlay for Mobile -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden transition-all duration-300">
+    </div>
 
     <script>
         const sidebar = document.getElementById('sidebar');

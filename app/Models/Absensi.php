@@ -8,44 +8,47 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Absensi extends Model
 {
- protected $table = 'absensi';
- protected $primaryKey = 'id_absensi';
- public $incrementing = false;
- protected $keyType = 'string';
+    protected $table = 'absensi';
 
- protected $fillable = [
-  'id_absensi',
-  'id_siswa',
-  'id_jadwal',
-  'tanggal',
-  'status',
- ];
+    protected $primaryKey = 'id_absensi';
 
- protected $casts = [
-  'tanggal' => 'date',
- ];
+    public $incrementing = false;
 
- /**
-  * Get the siswa that owns the absensi.
-  */
- public function siswa(): BelongsTo
- {
-  return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
- }
+    protected $keyType = 'string';
 
- /**
-  * Get the jadwal that owns the absensi.
-  */
- public function jadwal(): BelongsTo
- {
-  return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
- }
+    protected $fillable = [
+        'id_absensi',
+        'id_siswa',
+        'id_jadwal',
+        'tanggal',
+        'status',
+    ];
 
- /**
-  * Get the laporan perkembangan for the absensi.
-  */
- public function laporanPerkembangan(): HasMany
- {
-  return $this->hasMany(LaporanPerkembangan::class, 'id_absensi', 'id_absensi');
- }
+    protected $casts = [
+        'tanggal' => 'date',
+    ];
+
+    /**
+     * Get the siswa that owns the absensi.
+     */
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
+    }
+
+    /**
+     * Get the jadwal that owns the absensi.
+     */
+    public function jadwal(): BelongsTo
+    {
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+    }
+
+    /**
+     * Get the laporan perkembangan for the absensi.
+     */
+    public function laporanPerkembangan(): HasMany
+    {
+        return $this->hasMany(LaporanPerkembangan::class, 'id_absensi', 'id_absensi');
+    }
 }

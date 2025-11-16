@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
   Admin::create([
    'id_admin' => 'A01',
    'nama' => 'Admin Simpel Teratai',
-   'email' => 'admin@simpelteratai.com',
+   'email' => 'admin@tkteratai.com',
    'password' => Hash::make('password'),
    'no_telpon' => '081234567890',
   ]);
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
   OrangTua::create([
    'id_orang_tua' => 'O001',
    'nama' => 'Ibu Ani',
-   'email' => 'ani@example.com',
+   'email' => 'ani@gmail.com',
    'password' => Hash::make('password'),
    'no_telpon' => '081234567893',
   ]);
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
   OrangTua::create([
    'id_orang_tua' => 'O002',
    'nama' => 'Bapak Ahmad',
-   'email' => 'ahmad@example.com',
+   'email' => 'ahmad@gmail.com',
    'password' => Hash::make('password'),
    'no_telpon' => '081234567894',
   ]);

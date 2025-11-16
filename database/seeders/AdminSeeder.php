@@ -13,18 +13,18 @@ class AdminSeeder extends Seeder
  public function run(): void
  {
   Admin::create([
-   'id_admin' => 'ADM',
+   'id_admin' => 'A02',
    'nama' => 'Administrator',
-   'email' => 'admin@tkteratai.com',
-   'password' => 'password123',
+   'email' => 'admin2@tkteratai.com',
+   'password' => 'password',
    'no_telpon' => '082234567890',
   ]);
 
   Admin::create([
-   'id_admin' => 'AD2',
-   'nama' => 'Admin Dua',
-   'email' => 'admin2@tkteratai.com',
-   'password' => 'password123',
+   'id_admin' => 'A03',
+   'nama' => 'Admin Tiga',
+   'email' => 'admin3@tkteratai.com',
+   'password' => 'password',
    'no_telpon' => '082234567891',
   ]);
  }
