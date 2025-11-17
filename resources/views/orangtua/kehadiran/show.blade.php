@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Kehadiran')
 @section('dashboard-title', 'Detail Kehadiran')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -32,15 +36,15 @@
                 <div>
                     @php
                         $statusColors = [
-                            'Hadir' => 'bg-green-100 text-green-800',
-                            'Izin' => 'bg-yellow-100 text-yellow-800',
-                            'Sakit' => 'bg-orange-100 text-orange-800',
-                            'Alpha' => 'bg-red-100 text-red-800',
+                            'hadir' => 'bg-green-100 text-green-800',
+                            'izin' => 'bg-yellow-100 text-yellow-800',
+                            'sakit' => 'bg-orange-100 text-orange-800',
+                            'alpha' => 'bg-red-100 text-red-800',
                         ];
-                        $color = $statusColors[$absensi->status] ?? 'bg-gray-100 text-gray-800';
+                        $color = $statusColors[$absensi->status_kehadiran] ?? 'bg-gray-100 text-gray-800';
                     @endphp
                     <span class="px-4 py-2 rounded-full text-sm font-semibold {{ $color }}">
-                        {{ $absensi->status }}
+                        {{ ucfirst($absensi->status_kehadiran) }}
                     </span>
                 </div>
             </div>
@@ -48,9 +52,9 @@
             <!-- Information Grid -->
             <div class="space-y-6">
                 <!-- Date Section -->
-                <div class="bg-blue-50 p-4 rounded-lg">
+                <div class="bg-purple-50 p-4 rounded-lg">
                     <div class="flex items-center gap-3 mb-2">
-                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                        <i class="fas fa-calendar-alt text-purple-600 text-xl"></i>
                         <h3 class="font-semibold text-gray-800">Tanggal</h3>
                     </div>
                     <p class="text-lg font-medium text-gray-900 ml-9">
@@ -79,7 +83,8 @@
                     <div class="ml-9 space-y-2">
                         <div>
                             <span class="text-sm text-gray-600">Pelajaran:</span>
-                            <p class="text-lg font-medium text-gray-900">{{ $absensi->jadwal->mataPelajaran->nama_mata_pelajaran }}</p>
+                            <p class="text-lg font-medium text-gray-900">
+                                {{ $absensi->jadwal->mataPelajaran->nama_mata_pelajaran }}</p>
                         </div>
                         <div>
                             <span class="text-sm text-gray-600">Guru Pengajar:</span>
@@ -102,7 +107,7 @@
                         <div>
                             <span class="text-sm text-gray-600">Waktu:</span>
                             <p class="text-base font-medium text-gray-900">
-                                {{ date('H:i', strtotime($absensi->jadwal->jam_mulai)) }} - 
+                                {{ date('H:i', strtotime($absensi->jadwal->jam_mulai)) }} -
                                 {{ date('H:i', strtotime($absensi->jadwal->jam_selesai)) }}
                             </p>
                         </div>
@@ -110,7 +115,7 @@
                 </div>
 
                 <!-- Additional Info -->
-                @if($absensi->keterangan)
+                @if ($absensi->keterangan)
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <div class="flex items-start gap-3">
                             <i class="fas fa-info-circle text-gray-600 text-xl mt-1"></i>

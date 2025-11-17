@@ -1,7 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Komentar Saya')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
 @section('dashboard-title', 'Komentar Saya')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -31,12 +35,13 @@
         <!-- Filter -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-6">
             <form action="{{ route('orangtua.komentar.index') }}" method="GET" class="flex gap-4">
-                <input type="text" name="search" value="{{ $search }}"
-                    placeholder="Cari komentar..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Cari komentar..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                 <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
                     <i class="fas fa-search"></i> Cari
                 </button>
-                <a href="{{ route('orangtua.komentar.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
+                <a href="{{ route('orangtua.komentar.index') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                     <i class="fas fa-redo"></i>
                 </a>
             </form>
@@ -57,8 +62,8 @@
                                 class="text-yellow-600 hover:text-yellow-800" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('orangtua.komentar.destroy', $item->id_komentar) }}" method="POST" class="inline"
-                                onsubmit="return confirm('Yakin ingin menghapus?')">
+                            <form action="{{ route('orangtua.komentar.destroy', $item->id_komentar) }}" method="POST"
+                                class="inline" onsubmit="return confirm('Yakin ingin menghapus?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-800" title="Hapus">

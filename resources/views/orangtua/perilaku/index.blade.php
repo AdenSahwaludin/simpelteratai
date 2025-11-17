@@ -2,6 +2,10 @@
 
 @section('title', 'Catatan Perilaku')
 @section('dashboard-title', 'Catatan Perilaku')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -20,7 +24,8 @@
             <form action="{{ route('orangtua.perilaku.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Anak</label>
-                    <select name="anak_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <select name="anak_id"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                         <option value="">Semua Anak</option>
                         @foreach ($anakList as $child)
                             <option value="{{ $child->id_siswa }}" {{ $anakId == $child->id_siswa ? 'selected' : '' }}>
@@ -35,10 +40,12 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
+                    <button type="submit"
+                        class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
                         <i class="fas fa-search"></i> Filter
                     </button>
-                    <a href="{{ route('orangtua.perilaku.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
+                    <a href="{{ route('orangtua.perilaku.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>

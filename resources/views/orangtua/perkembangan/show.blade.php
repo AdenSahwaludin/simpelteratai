@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Perkembangan')
 @section('dashboard-title', 'Detail Perkembangan')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -23,23 +27,23 @@
         <!-- Detail Card -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden max-w-3xl">
             <!-- Header with Gradient -->
-            <div class="bg-linear-to-r from-blue-500 to-blue-600 p-6 text-white">
+            <div class="bg-linear-to-r from-purple-500 to-purple-600 p-6 text-white">
                 <div class="flex items-center gap-4">
                     <div class="bg-white/20 p-4 rounded-full">
                         <i class="fas fa-chart-line text-3xl"></i>
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold">Laporan Perkembangan</h1>
-                        <p class="text-blue-100 text-sm mt-1">{{ $laporan->mataPelajaran->nama_mata_pelajaran }}</p>
+                        <p class="text-purple-100 text-sm mt-1">{{ $laporan->mataPelajaran->nama_mata_pelajaran }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="p-6">
                 <!-- Student Information -->
-                <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                <div class="bg-purple-50 p-4 rounded-lg mb-6">
                     <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <i class="fas fa-user-graduate text-blue-600"></i>
+                        <i class="fas fa-user-graduate text-purple-600"></i>
                         Informasi Siswa
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ml-6">
@@ -67,7 +71,7 @@
                                 $badgeClass = 'bg-green-100 text-green-800 border-green-300';
                                 $icon = 'fa-check-circle';
                             } elseif ($nilai >= 70) {
-                                $badgeClass = 'bg-blue-100 text-blue-800 border-blue-300';
+                                $badgeClass = 'bg-purple-100 text-purple-800 border-purple-300';
                                 $icon = 'fa-thumbs-up';
                             } elseif ($nilai >= 60) {
                                 $badgeClass = 'bg-yellow-100 text-yellow-800 border-yellow-300';
@@ -85,7 +89,7 @@
                             @if ($nilai >= 80)
                                 <span class="font-medium text-green-700">Sangat Baik</span>
                             @elseif ($nilai >= 70)
-                                <span class="font-medium text-blue-700">Baik</span>
+                                <span class="font-medium text-purple-700">Baik</span>
                             @elseif ($nilai >= 60)
                                 <span class="font-medium text-yellow-700">Cukup</span>
                             @else
@@ -103,20 +107,20 @@
                     </h3>
                     <div class="ml-6">
                         <p class="text-lg font-medium text-gray-900">{{ $laporan->mataPelajaran->nama_mata_pelajaran }}</p>
-                        @if($laporan->mataPelajaran->deskripsi)
+                        @if ($laporan->mataPelajaran->deskripsi)
                             <p class="text-sm text-gray-600 mt-1">{{ $laporan->mataPelajaran->deskripsi }}</p>
                         @endif
                     </div>
                 </div>
 
                 <!-- Comments Section -->
-                @if($laporan->komentar)
+                @if ($laporan->komentar)
                     <div class="mb-6">
                         <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                             <i class="fas fa-comment-dots text-gray-600"></i>
                             Komentar Guru
                         </h3>
-                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 ml-6">
+                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-500 ml-6">
                             <p class="text-gray-800 leading-relaxed whitespace-pre-wrap">{{ $laporan->komentar }}</p>
                         </div>
                     </div>
@@ -132,12 +136,14 @@
                         </div>
                         <div>
                             <span class="text-gray-600">Tanggal Dibuat:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $laporan->created_at->format('d/m/Y H:i') }}</span>
+                            <span
+                                class="font-medium text-gray-800 ml-2">{{ $laporan->created_at->format('d/m/Y H:i') }}</span>
                         </div>
-                        @if($laporan->updated_at != $laporan->created_at)
+                        @if ($laporan->updated_at != $laporan->created_at)
                             <div class="md:col-span-2">
                                 <span class="text-gray-600">Terakhir Diubah:</span>
-                                <span class="font-medium text-gray-800 ml-2">{{ $laporan->updated_at->format('d/m/Y H:i') }}</span>
+                                <span
+                                    class="font-medium text-gray-800 ml-2">{{ $laporan->updated_at->format('d/m/Y H:i') }}</span>
                             </div>
                         @endif
                     </div>

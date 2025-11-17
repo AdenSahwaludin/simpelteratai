@@ -2,6 +2,10 @@
 
 @section('title', 'Data Anak')
 @section('dashboard-title', 'Data Anak')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -55,8 +59,8 @@
 
                         <!-- Statistics -->
                         <div class="grid grid-cols-3 gap-2 mb-4">
-                            <div class="bg-blue-50 rounded-lg p-3 text-center">
-                                <p class="text-2xl font-bold text-blue-600">{{ $child->laporanPerkembangan->count() }}</p>
+                            <div class="bg-purple-50 rounded-lg p-3 text-center">
+                                <p class="text-2xl font-bold text-purple-600">{{ $child->laporanPerkembangan->count() }}</p>
                                 <p class="text-xs text-gray-600">Laporan</p>
                             </div>
                             <div class="bg-green-50 rounded-lg p-3 text-center">

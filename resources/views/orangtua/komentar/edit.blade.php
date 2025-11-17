@@ -2,6 +2,10 @@
 
 @section('title', 'Edit Komentar')
 @section('dashboard-title', 'Edit Komentar')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />

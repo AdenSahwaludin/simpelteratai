@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Anak')
 @section('dashboard-title', 'Detail Anak')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -30,7 +34,8 @@
                     <div>
                         <h1 class="text-2xl font-bold text-gray-800">{{ $anak->nama }}</h1>
                         <p class="text-gray-600 text-sm mt-1">ID: {{ $anak->id_siswa }}</p>
-                        <span class="inline-block mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                        <span
+                            class="inline-block mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                             {{ $anak->kelas }}
                         </span>
                     </div>
@@ -88,13 +93,13 @@
 
         <!-- Statistics Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-                <div class="flex justify-between items-start">
+            <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-blue-100 text-sm">Total Laporan Perkembangan</p>
+                        <p class="text-purple-100 text-sm">Total Laporan Perkembangan</p>
                         <h3 class="text-3xl font-bold mt-2">{{ $anak->laporanPerkembangan->count() }}</h3>
                     </div>
-                    <i class="fas fa-chart-line text-3xl text-blue-200"></i>
+                    <i class="fas fa-chart-line text-3xl text-purple-200"></i>
                 </div>
             </div>
 

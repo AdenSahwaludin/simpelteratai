@@ -108,14 +108,24 @@
                 [
                     'category' => 'Anak',
                     'items' => [
-                        ['label' => 'Data Anak', 'icon' => 'fa-child', 'color' => 'text-pink-500', 'route' => 'orangtua.anak.index'],
+                        [
+                            'label' => 'Data Anak',
+                            'icon' => 'fa-child',
+                            'color' => 'text-pink-500',
+                            'route' => 'orangtua.anak.index',
+                        ],
                         [
                             'label' => 'Perkembangan',
                             'icon' => 'fa-chart-line',
                             'color' => 'text-blue-500',
                             'route' => 'orangtua.perkembangan.index',
                         ],
-                        ['label' => 'Perilaku', 'icon' => 'fa-star', 'color' => 'text-yellow-500', 'route' => 'orangtua.perilaku.index'],
+                        [
+                            'label' => 'Perilaku',
+                            'icon' => 'fa-star',
+                            'color' => 'text-yellow-500',
+                            'route' => 'orangtua.perilaku.index',
+                        ],
                         [
                             'label' => 'Kehadiran',
                             'icon' => 'fa-calendar-check',
@@ -127,7 +137,12 @@
                 [
                     'category' => 'Komunikasi',
                     'items' => [
-                        ['label' => 'Pengumuman', 'icon' => 'fa-bullhorn', 'color' => 'text-red-500', 'route' => 'orangtua.pengumuman.index'],
+                        [
+                            'label' => 'Pengumuman',
+                            'icon' => 'fa-bullhorn',
+                            'color' => 'text-red-500',
+                            'route' => 'orangtua.pengumuman.index',
+                        ],
                         [
                             'label' => 'Komentar',
                             'icon' => 'fa-comment-dots',

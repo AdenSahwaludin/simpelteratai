@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Perilaku')
 @section('dashboard-title', 'Detail Perilaku')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -39,9 +43,9 @@
             </div>
 
             <!-- Student Information -->
-            <div class="bg-blue-50 p-4 rounded-lg mb-6">
+            <div class="bg-purple-50 p-4 rounded-lg mb-6">
                 <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                    <i class="fas fa-user-graduate text-blue-600"></i>
+                    <i class="fas fa-user-graduate text-purple-600"></i>
                     Informasi Siswa
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ml-6">
@@ -72,7 +76,7 @@
             </div>
 
             <!-- Reporter Information -->
-            @if($perilaku->guru)
+            @if ($perilaku->guru)
                 <div class="bg-green-50 p-4 rounded-lg mb-6">
                     <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                         <i class="fas fa-chalkboard-teacher text-green-600"></i>
@@ -97,10 +101,11 @@
                         <span class="text-gray-600">Tanggal Dicatat:</span>
                         <span class="font-medium text-gray-800 ml-2">{{ $perilaku->created_at->format('d/m/Y H:i') }}</span>
                     </div>
-                    @if($perilaku->updated_at != $perilaku->created_at)
+                    @if ($perilaku->updated_at != $perilaku->created_at)
                         <div class="md:col-span-2">
                             <span class="text-gray-600">Terakhir Diubah:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $perilaku->updated_at->format('d/m/Y H:i') }}</span>
+                            <span
+                                class="font-medium text-gray-800 ml-2">{{ $perilaku->updated_at->format('d/m/Y H:i') }}</span>
                         </div>
                     @endif
                 </div>

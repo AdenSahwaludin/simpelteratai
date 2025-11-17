@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Pengumuman')
 @section('dashboard-title', 'Detail Pengumuman')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -55,12 +59,13 @@
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <div class="text-gray-600 mb-1">Tanggal Dibuat</div>
-                            <div class="font-semibold text-gray-800">{{ $pengumuman->created_at->format('d/m/Y H:i') }}</div>
+                            <div class="font-semibold text-gray-800">{{ $pengumuman->created_at->format('d/m/Y H:i') }}
+                            </div>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <div class="text-gray-600 mb-1">Admin</div>
                             <div class="font-semibold text-gray-800">
-                                @if($pengumuman->admin)
+                                @if ($pengumuman->admin)
                                     {{ $pengumuman->admin->nama_admin }}
                                 @else
                                     -

@@ -49,9 +49,7 @@ Route::get('/guru/dashboard', function () {
 
 // OrangTua routes
 Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.orangtua');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\OrangTua\DashboardController::class, 'index'])->name('dashboard');
 
     // Data Anak
     Route::get('/anak', [\App\Http\Controllers\OrangTua\AnakController::class, 'index'])->name('anak.index');

@@ -2,6 +2,10 @@
 
 @section('title', 'Pengumuman')
 @section('dashboard-title', 'Pengumuman')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -18,12 +22,13 @@
         <!-- Filter -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-6">
             <form action="{{ route('orangtua.pengumuman.index') }}" method="GET" class="flex gap-4">
-                <input type="text" name="search" value="{{ $search }}"
-                    placeholder="Cari pengumuman..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Cari pengumuman..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                 <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
                     <i class="fas fa-search"></i> Cari
                 </button>
-                <a href="{{ route('orangtua.pengumuman.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
+                <a href="{{ route('orangtua.pengumuman.index') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                     <i class="fas fa-redo"></i>
                 </a>
             </form>

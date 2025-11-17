@@ -21,7 +21,7 @@ class Absensi extends Model
         'id_siswa',
         'id_jadwal',
         'tanggal',
-        'status',
+        'status_kehadiran',
     ];
 
     protected $casts = [

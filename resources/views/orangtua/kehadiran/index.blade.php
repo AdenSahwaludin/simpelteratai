@@ -1,7 +1,11 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Kehadiran Anak')
-@section('dashboard-title', 'Kehadiran Anak')
+@section('title', 'Kehadiran')
+@section('dashboard-title', 'Kehadiran')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -17,10 +21,12 @@
 
         <!-- Filter -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-            <form action="{{ route('orangtua.kehadiran.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <form action="{{ route('orangtua.kehadiran.index') }}" method="GET"
+                class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Anak</label>
-                    <select name="anak_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <select name="anak_id"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                         <option value="">Semua Anak</option>
                         @foreach ($anakList as $child)
                             <option value="{{ $child->id_siswa }}" {{ $anakId == $child->id_siswa ? 'selected' : '' }}>
@@ -31,12 +37,13 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                         <option value="">Semua Status</option>
-                        <option value="Hadir" {{ $status == 'Hadir' ? 'selected' : '' }}>Hadir</option>
-                        <option value="Izin" {{ $status == 'Izin' ? 'selected' : '' }}>Izin</option>
-                        <option value="Sakit" {{ $status == 'Sakit' ? 'selected' : '' }}>Sakit</option>
-                        <option value="Alpha" {{ $status == 'Alpha' ? 'selected' : '' }}>Alpha</option>
+                        <option value="hadir" {{ $status == 'hadir' ? 'selected' : '' }}>Hadir</option>
+                        <option value="izin" {{ $status == 'izin' ? 'selected' : '' }}>Izin</option>
+                        <option value="sakit" {{ $status == 'sakit' ? 'selected' : '' }}>Sakit</option>
+                        <option value="alpha" {{ $status == 'alpha' ? 'selected' : '' }}>Alpha</option>
                     </select>
                 </div>
                 <div>
@@ -45,10 +52,12 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div class="flex items-end gap-2">
-                    <button type="submit" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
+                    <button type="submit"
+                        class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition">
                         <i class="fas fa-search"></i> Filter
                     </button>
-                    <a href="{{ route('orangtua.kehadiran.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
+                    <a href="{{ route('orangtua.kehadiran.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>
@@ -75,17 +84,24 @@
                                 <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                                 <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $item->jadwal->mataPelajaran->nama_mapel ?? '-' }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">
+                                {{ $item->jadwal->mataPelajaran->nama_mapel ?? '-' }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {{ $item->status_kehadiran == 'Hadir' ? 'bg-green-100 text-green-800' : 
-                                       ($item->status_kehadiran == 'Izin' ? 'bg-yellow-100 text-yellow-800' : 
-                                       ($item->status_kehadiran == 'Sakit' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800')) }}">
-                                    {{ $item->status_kehadiran }}
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {{ $item->status_kehadiran == 'hadir'
+                                        ? 'bg-green-100 text-green-800'
+                                        : ($item->status_kehadiran == 'izin'
+                                            ? 'bg-yellow-100 text-yellow-800'
+                                            : ($item->status_kehadiran == 'sakit'
+                                                ? 'bg-orange-100 text-orange-800'
+                                                : 'bg-red-100 text-red-800')) }}">
+                                    {{ ucfirst($item->status_kehadiran) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <a href="{{ route('orangtua.kehadiran.show', $item->id_absensi) }}" class="text-blue-600 hover:text-blue-900">
+                                <a href="{{ route('orangtua.kehadiran.show', $item->id_absensi) }}"
+                                    class="text-purple-600 hover:text-purple-900">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>
@@ -111,11 +127,16 @@
                             <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                             <div class="text-xs text-gray-500">{{ $item->tanggal->format('d M Y') }}</div>
                         </div>
-                        <span class="px-2 py-1 text-xs font-semibold rounded-full 
-                            {{ $item->status_kehadiran == 'Hadir' ? 'bg-green-100 text-green-800' : 
-                               ($item->status_kehadiran == 'Izin' ? 'bg-yellow-100 text-yellow-800' : 
-                               ($item->status_kehadiran == 'Sakit' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800')) }}">
-                            {{ $item->status_kehadiran }}
+                        <span
+                            class="px-2 py-1 text-xs font-semibold rounded-full 
+                            {{ $item->status_kehadiran == 'hadir'
+                                ? 'bg-green-100 text-green-800'
+                                : ($item->status_kehadiran == 'izin'
+                                    ? 'bg-yellow-100 text-yellow-800'
+                                    : ($item->status_kehadiran == 'sakit'
+                                        ? 'bg-orange-100 text-orange-800'
+                                        : 'bg-red-100 text-red-800')) }}">
+                            {{ ucfirst($item->status_kehadiran) }}
                         </span>
                     </div>
                     <a href="{{ route('orangtua.kehadiran.show', $item->id_absensi) }}"

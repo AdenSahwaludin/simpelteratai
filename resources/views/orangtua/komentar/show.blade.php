@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Komentar')
 @section('dashboard-title', 'Detail Komentar')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -33,7 +37,7 @@
                 </div>
                 <div class="flex gap-2">
                     <a href="{{ route('orangtua.komentar.edit', $komentar->id_komentar) }}"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
+                        class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
                         <i class="fas fa-edit"></i>
                         <span>Edit</span>
                     </a>
@@ -59,7 +63,7 @@
             </div>
 
             <!-- Information -->
-            <div class="bg-blue-50 p-4 rounded-lg mb-6">
+            <div class="bg-purple-50 p-4 rounded-lg mb-6">
                 <h3 class="font-semibold text-gray-800 mb-2">Informasi:</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                     <div>
@@ -73,7 +77,8 @@
                     @if ($komentar->updated_at != $komentar->created_at)
                         <div class="md:col-span-2">
                             <span class="text-gray-600">Terakhir Diubah:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $komentar->updated_at->format('d/m/Y H:i') }}</span>
+                            <span
+                                class="font-medium text-gray-800 ml-2">{{ $komentar->updated_at->format('d/m/Y H:i') }}</span>
                         </div>
                     @endif
                 </div>

@@ -2,6 +2,10 @@
 
 @section('title', 'Laporan Perkembangan')
 @section('dashboard-title', 'Laporan Perkembangan')
+@section('nav-color', 'bg-purple-600')
+@section('sidebar-color', 'bg-purple-600')
+@section('user-name', auth('orangtua')->user()->nama)
+@section('user-role', 'Orang Tua')
 
 @section('sidebar-menu')
     <x-sidebar-menu guard="orangtua" :currentRoute="request()->route()->getName()" />
@@ -19,7 +23,8 @@
 
         <!-- Filter Section -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-            <form action="{{ route('orangtua.perkembangan.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <form action="{{ route('orangtua.perkembangan.index') }}" method="GET"
+                class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Anak</label>
                     <select name="anak_id"
@@ -34,8 +39,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Cari Mata Pelajaran</label>
-                    <input type="text" name="search" value="{{ $search }}"
-                        placeholder="Cari mata pelajaran..."
+                    <input type="text" name="search" value="{{ $search }}" placeholder="Cari mata pelajaran..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
                 <div class="flex items-end gap-2">
@@ -97,7 +101,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <a href="{{ route('orangtua.perkembangan.show', $item->id_laporan) }}"
-                                        class="text-blue-600 hover:text-blue-900 transition">
+                                        class="text-purple-600 hover:text-purple-900 transition">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
