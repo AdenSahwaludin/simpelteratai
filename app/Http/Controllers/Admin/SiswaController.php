@@ -22,8 +22,8 @@ class SiswaController extends Controller
         $direction = $request->input('direction', 'asc');
 
         // Validasi sort column untuk mencegah SQL injection
-        $allowedSort = ['id_siswa', 'nama', 'kelas', 'email'];
-        if (! in_array($sort, $allowedSort)) {
+        $allowedSort = ['id_siswa', 'nama', 'kelas'];
+        if (!in_array($sort, $allowedSort)) {
             $sort = 'nama';
         }
 
@@ -31,8 +31,7 @@ class SiswaController extends Controller
             ->with('orangTua')
             ->when($search, function ($query, $search) {
                 return $query->where('nama', 'like', "%{$search}%")
-                    ->orWhere('id_siswa', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('id_siswa', 'like', "%{$search}%");
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->where('kelas', $kelas);
@@ -63,28 +62,30 @@ class SiswaController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'tempat_lahir' => 'nullable|string|max:50',
+            'tanggal_lahir' => 'nullable|date',
             'kelas' => 'required|string|max:255',
             'alamat' => 'required|string|max:500',
-            'email' => 'nullable|email|max:255|unique:siswa,email',
-            'no_telpon' => 'nullable|string|max:20',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
             'nama.required' => 'Nama siswa wajib diisi',
+            'jenis_kelamin.in' => 'Jenis kelamin harus L atau P',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
             'kelas.required' => 'Kelas wajib diisi',
             'alamat.required' => 'Alamat wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah digunakan',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
         ]);
 
         $siswa = new Siswa;
-        $siswa->id_siswa = 'S'.str_pad((string) (Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
+        $siswa->id_siswa = 'S' . str_pad((string)(Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
         $siswa->nama = $validated['nama'];
+        $siswa->jenis_kelamin = $validated['jenis_kelamin'];
+        $siswa->tempat_lahir = $validated['tempat_lahir'];
+        $siswa->tanggal_lahir = $validated['tanggal_lahir'];
         $siswa->kelas = $validated['kelas'];
         $siswa->alamat = $validated['alamat'];
-        $siswa->email = $validated['email'];
-        $siswa->no_telpon = $validated['no_telpon'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
 
@@ -124,26 +125,28 @@ class SiswaController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'tempat_lahir' => 'nullable|string|max:50',
+            'tanggal_lahir' => 'nullable|date',
             'kelas' => 'required|string|max:255',
             'alamat' => 'required|string|max:500',
-            'email' => 'nullable|email|max:255|unique:siswa,email,'.$id.',id_siswa',
-            'no_telpon' => 'nullable|string|max:20',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
             'nama.required' => 'Nama siswa wajib diisi',
+            'jenis_kelamin.in' => 'Jenis kelamin harus L atau P',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
             'kelas.required' => 'Kelas wajib diisi',
             'alamat.required' => 'Alamat wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah digunakan',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
         ]);
 
         $siswa->nama = $validated['nama'];
+        $siswa->jenis_kelamin = $validated['jenis_kelamin'];
+        $siswa->tempat_lahir = $validated['tempat_lahir'];
+        $siswa->tanggal_lahir = $validated['tanggal_lahir'];
         $siswa->kelas = $validated['kelas'];
         $siswa->alamat = $validated['alamat'];
-        $siswa->email = $validated['email'];
-        $siswa->no_telpon = $validated['no_telpon'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
 

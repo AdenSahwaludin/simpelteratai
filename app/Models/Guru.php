@@ -41,4 +41,12 @@ class Guru extends Authenticatable
     {
         return $this->hasMany(Jadwal::class, 'id_guru', 'id_guru');
     }
+
+    /**
+     * Get the perilaku for the guru.
+     */
+    public function perilaku(): HasMany
+    {
+        return $this->hasMany(Perilaku::class, 'id_guru', 'id_guru');
+    }
 }

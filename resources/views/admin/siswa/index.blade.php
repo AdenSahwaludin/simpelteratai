@@ -65,7 +65,7 @@
                         <tr>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                <x-sort-header column="id_siswa" label="ID" />
+                                <x-sort-header column="id_siswa" label="NIS" />
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
@@ -107,6 +107,12 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex gap-2">
+                                        <a href="{{ route('admin.siswa.show', $item->id_siswa) }}"
+                                            class="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 rounded-lg transition"
+                                            title="Lihat Detail">
+                                            <i class="fas fa-eye mr-1"></i>
+                                            <span class="text-xs">Lihat</span>
+                                        </a>
                                         <a href="{{ route('admin.siswa.edit', $item->id_siswa) }}"
                                             class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition"
                                             title="Edit">
@@ -179,6 +185,11 @@
                     </div>
 
                     <div class="flex gap-2 pt-3 border-t border-gray-200">
+                        <a href="{{ route('admin.siswa.show', $item->id_siswa) }}"
+                            class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-lg transition font-medium">
+                            <i class="fas fa-eye mr-2"></i>
+                            Lihat
+                        </a>
                         <a href="{{ route('admin.siswa.edit', $item->id_siswa) }}"
                             class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition font-medium">
                             <i class="fas fa-edit mr-2"></i>

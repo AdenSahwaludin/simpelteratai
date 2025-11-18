@@ -57,6 +57,57 @@
                     </div>
 
                     <div>
+                        <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-2">
+                            Jenis Kelamin <span class="text-gray-400 text-xs">(Opsional)</span>
+                        </label>
+                        <select name="jenis_kelamin" id="jenis_kelamin"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('jenis_kelamin') border-red-500 @enderror">
+                            <option value="">-- Pilih --</option>
+                            <option value="L"
+                                {{ old('jenis_kelamin', $siswa->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki
+                            </option>
+                            <option value="P"
+                                {{ old('jenis_kelamin', $siswa->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan
+                            </option>
+                        </select>
+                        @error('jenis_kelamin')
+                            <p class="text-red-500 text-xs mt-1 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
+                        <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 mb-2">
+                            Tempat Lahir <span class="text-gray-400 text-xs">(Opsional)</span>
+                        </label>
+                        <input type="text" name="tempat_lahir" id="tempat_lahir"
+                            value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('tempat_lahir') border-red-500 @enderror">
+                        @error('tempat_lahir')
+                            <p class="text-red-500 text-xs mt-1 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-2">
+                            Tanggal Lahir <span class="text-gray-400 text-xs">(Opsional)</span>
+                        </label>
+                        <input type="date" name="tanggal_lahir" id="tanggal_lahir"
+                            value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('tanggal_lahir') border-red-500 @enderror">
+                        @error('tanggal_lahir')
+                            <p class="text-red-500 text-xs mt-1 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div>
                         <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">
                             Kelas <span class="text-red-500">*</span>
                         </label>
@@ -105,47 +156,6 @@
                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
                         </p>
                     @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email <span class="text-gray-400 text-xs">(Opsional)</span>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400"></i>
-                            </div>
-                            <input type="email" name="email" id="email" value="{{ old('email', $siswa->email) }}"
-                                class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-red-500 @enderror"
-                                placeholder="email@contoh.com">
-                        </div>
-                        @error('email')
-                            <p class="text-red-500 text-xs mt-1 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="no_telpon" class="block text-sm font-medium text-gray-700 mb-2">
-                            No. Telepon <span class="text-gray-400 text-xs">(Opsional)</span>
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-phone text-gray-400"></i>
-                            </div>
-                            <input type="text" name="no_telpon" id="no_telpon"
-                                value="{{ old('no_telpon', $siswa->no_telpon) }}"
-                                class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('no_telpon') border-red-500 @enderror"
-                                placeholder="08xx-xxxx-xxxx">
-                        </div>
-                        @error('no_telpon')
-                            <p class="text-red-500 text-xs mt-1 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
-                            </p>
-                        @enderror
-                    </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">

@@ -41,11 +41,37 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
 });
 
 // Guru routes
-Route::get('/guru/dashboard', function () {
-    return view('dashboards.guru');
-})
-    ->middleware('check.guru.role')
-    ->name('guru.dashboard');
+Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\Guru\DashboardController::class, 'index'])->name('dashboard');
+
+    // Kelas Saya
+    Route::get('/kelas-saya', [\App\Http\Controllers\Guru\KelasSayaController::class, 'index'])->name('kelas-saya.index');
+    Route::get('/kelas-saya/{ruang}', [\App\Http\Controllers\Guru\KelasSayaController::class, 'show'])->name('kelas-saya.show');
+
+    // Data Siswa
+    Route::get('/siswa', [\App\Http\Controllers\Guru\SiswaController::class, 'index'])->name('siswa.index');
+    Route::get('/siswa/{id}', [\App\Http\Controllers\Guru\SiswaController::class, 'show'])->name('siswa.show');
+
+    // Jadwal Mengajar
+    Route::get('/jadwal', [\App\Http\Controllers\Guru\JadwalController::class, 'index'])->name('jadwal.index');
+
+    // Input Nilai
+    Route::resource('input-nilai', \App\Http\Controllers\Guru\InputNilaiController::class);
+
+    // Catatan Perilaku
+    Route::resource('catatan-perilaku', \App\Http\Controllers\Guru\CatatanPerilakuController::class);
+
+    // Kelola Absensi
+    Route::resource('kelola-absensi', \App\Http\Controllers\Guru\KelolaAbsensiController::class);
+
+    // Laporan ke Orang Tua
+    Route::get('/laporan-orangtua', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'index'])->name('laporan-orangtua.index');
+    Route::get('/laporan-orangtua/{id}', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'show'])->name('laporan-orangtua.show');
+
+    // Pengumuman
+    Route::get('/pengumuman', [\App\Http\Controllers\Guru\PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::get('/pengumuman/{id}', [\App\Http\Controllers\Guru\PengumumanController::class, 'show'])->name('pengumuman.show');
+});
 
 // OrangTua routes
 Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')->group(function () {

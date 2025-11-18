@@ -18,6 +18,7 @@ class Perilaku extends Model
     protected $fillable = [
         'id_perilaku',
         'id_siswa',
+        'id_guru',
         'catatan_perilaku',
     ];
 
@@ -27,5 +28,13 @@ class Perilaku extends Model
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
+    }
+
+    /**
+     * Get the guru that owns the perilaku.
+     */
+    public function guru(): BelongsTo
+    {
+        return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
     }
 }

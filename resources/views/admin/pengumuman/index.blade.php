@@ -87,6 +87,10 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->admin->nama }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <a href="{{ route('admin.pengumuman.show', $item->id_pengumuman) }}"
+                                    class="text-green-600 hover:text-green-900 mr-3">
+                                    <i class="fas fa-eye"></i> Lihat
+                                </a>
                                 <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
                                     class="text-blue-600 hover:text-blue-900 mr-3">
                                     <i class="fas fa-edit"></i> Edit
@@ -134,6 +138,10 @@
                         <i class="fas fa-user"></i> {{ $item->admin->nama }}
                     </div>
                     <div class="flex gap-2">
+                        <a href="{{ route('admin.pengumuman.show', $item->id_pengumuman) }}"
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-center text-sm transition">
+                            <i class="fas fa-eye"></i> Lihat
+                        </a>
                         <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center text-sm transition">
                             <i class="fas fa-edit"></i> Edit

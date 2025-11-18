@@ -79,22 +79,65 @@
                             'label' => 'Kelas Saya',
                             'icon' => 'fa-layer-group',
                             'color' => 'text-blue-500',
-                            'route' => '#',
+                            'route' => 'guru.kelas-saya.index',
                         ],
-                        ['label' => 'Input Nilai', 'icon' => 'fa-pencil', 'color' => 'text-green-500', 'route' => '#'],
-                        ['label' => 'Data Siswa', 'icon' => 'fa-users', 'color' => 'text-purple-500', 'route' => '#'],
+                        [
+                            'label' => 'Data Siswa',
+                            'icon' => 'fa-users',
+                            'color' => 'text-purple-500',
+                            'route' => 'guru.siswa.index',
+                        ],
                         [
                             'label' => 'Jadwal Mengajar',
                             'icon' => 'fa-calendar',
                             'color' => 'text-orange-500',
-                            'route' => '#',
+                            'route' => 'guru.jadwal.index',
+                        ],
+                    ],
+                ],
+                [
+                    'category' => 'Input Data Perkembangan',
+                    'items' => [
+                        [
+                            'label' => 'Input Nilai',
+                            'icon' => 'fa-pencil-alt',
+                            'color' => 'text-green-500',
+                            'route' => 'guru.input-nilai.index',
+                        ],
+                        [
+                            'label' => 'Catatan Perilaku',
+                            'icon' => 'fa-star',
+                            'color' => 'text-yellow-500',
+                            'route' => 'guru.catatan-perilaku.index',
+                        ],
+                        [
+                            'label' => 'Kelola Absensi',
+                            'icon' => 'fa-calendar-check',
+                            'color' => 'text-teal-500',
+                            'route' => 'guru.kelola-absensi.index',
+                        ],
+                    ],
+                ],
+                [
+                    'category' => 'Laporan Ke Orang Tua',
+                    'items' => [
+                        [
+                            'label' => 'Pilih Data Perkembangan',
+                            'icon' => 'fa-file-alt',
+                            'color' => 'text-indigo-500',
+                            'route' => 'guru.laporan-orangtua.index',
                         ],
                     ],
                 ],
                 [
                     'category' => 'Komunikasi',
                     'items' => [
-                        ['label' => 'Pengumuman', 'icon' => 'fa-bullhorn', 'color' => 'text-red-500', 'route' => '#'],
+                        [
+                            'label' => 'Pengumuman',
+                            'icon' => 'fa-bullhorn',
+                            'color' => 'text-red-500',
+                            'route' => 'guru.pengumuman.index',
+                        ],
                         ['label' => 'Pesan', 'icon' => 'fa-comments', 'color' => 'text-blue-500', 'route' => '#'],
                     ],
                 ],

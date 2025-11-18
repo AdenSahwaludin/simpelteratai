@@ -90,6 +90,10 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <a href="{{ route('admin.guru.show', $item->id_guru) }}"
+                                    class="text-green-600 hover:text-green-900 mr-3">
+                                    <i class="fas fa-eye"></i> Lihat
+                                </a>
                                 <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
                                     class="text-blue-600 hover:text-blue-900 mr-3">
                                     <i class="fas fa-edit"></i> Edit
@@ -135,6 +139,10 @@
                         <p><i class="fas fa-phone w-5"></i> {{ $item->no_telpon }}</p>
                     </div>
                     <div class="flex gap-2">
+                        <a href="{{ route('admin.guru.show', $item->id_guru) }}"
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-center text-sm transition">
+                            <i class="fas fa-eye"></i> Lihat
+                        </a>
                         <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center text-sm transition">
                             <i class="fas fa-edit"></i> Edit
