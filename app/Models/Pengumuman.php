@@ -21,10 +21,12 @@ class Pengumuman extends Model
         'isi',
         'tanggal',
         'id_admin',
+        'publikasi',
     ];
 
     protected $casts = [
         'tanggal' => 'date',
+        'publikasi' => 'boolean',
     ];
 
     /**

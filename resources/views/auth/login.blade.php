@@ -26,7 +26,7 @@
             <!-- Login Form -->
             <div class="bg-white rounded-lg shadow-lg p-5 sm:p-8 border-4 border-gray-800">
                 <h3 class="text-center text-base sm:text-lg font-bold text-gray-800 mb-5 sm:mb-6">
-                    Masukkan Email dan Password
+                    Masukkan Email/NIP dan Password
                 </h3>
 
                 @if ($errors->any())
@@ -40,7 +40,7 @@
                 <form action="{{ route('login.store') }}" method="POST" class="space-y-4 sm:space-y-6">
                     @csrf
 
-                    <!-- Email Input -->
+                    <!-- Login Input (Email or NIP) -->
                     <div class="flex items-center gap-3 sm:gap-4">
                         <div class="shrink-0">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" fill="none" stroke="currentColor"
@@ -49,7 +49,7 @@
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
-                        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
+                        <input type="text" name="login" placeholder="Email atau NIP" value="{{ old('login') }}"
                             class="flex-1 border-2 border-gray-800 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required>
                     </div>

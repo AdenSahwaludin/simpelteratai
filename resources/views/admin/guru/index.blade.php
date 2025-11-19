@@ -34,7 +34,7 @@
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ $search }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Cari nama, ID, email, atau no telepon...">
+                        placeholder="Cari nama, NIP, ID, email, atau no telepon...">
                 </div>
                 <button type="submit"
                     class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium">
@@ -64,6 +64,10 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="nip" label="NIP" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                             <x-sort-header column="email" label="Email" />
                         </th>
                         <th
@@ -82,6 +86,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->id_guru }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->nama }}
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->nip }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->no_telpon }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -111,7 +116,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
                                 <i class="fas fa-inbox text-4xl mb-2"></i>
                                 <p>Tidak ada data guru{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
                             </td>

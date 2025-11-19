@@ -38,7 +38,7 @@ class MataPelajaranFactory extends Factory
         ];
 
         return [
-            'id_mata_pelajaran' => 'MP' . str_pad((string)$counter, 1, '0', STR_PAD_LEFT),
+            'id_mata_pelajaran' => 'MP'.str_pad((string) $counter, 1, '0', STR_PAD_LEFT),
             'nama_mapel' => $mataPelajaran[$counter - 1] ?? fake()->words(2, true),
         ];
     }

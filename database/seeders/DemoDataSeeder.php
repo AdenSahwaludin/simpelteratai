@@ -38,11 +38,11 @@ class DemoDataSeeder extends Seeder
 
         // Guru (5 data)
         $gurus = [
-            ['id_guru' => 'G01', 'nama' => 'Budi Santoso', 'email' => 'budi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567801'],
-            ['id_guru' => 'G02', 'nama' => 'Siti Aminah', 'email' => 'siti@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567802'],
-            ['id_guru' => 'G03', 'nama' => 'Ahmad Dahlan', 'email' => 'ahmad@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567803'],
-            ['id_guru' => 'G04', 'nama' => 'Dewi Sartika', 'email' => 'dewi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567804'],
-            ['id_guru' => 'G05', 'nama' => 'Kartini Wijaya', 'email' => 'kartini@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567805'],
+            ['id_guru' => 'G01', 'nip' => '198905151020051001', 'nama' => 'Budi Santoso', 'email' => 'budi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567801'],
+            ['id_guru' => 'G02', 'nip' => '199003201020052002', 'nama' => 'Siti Aminah', 'email' => 'siti@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567802'],
+            ['id_guru' => 'G03', 'nip' => '198702101020053003', 'nama' => 'Ahmad Dahlan', 'email' => 'ahmad@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567803'],
+            ['id_guru' => 'G04', 'nip' => '199105151020054004', 'nama' => 'Dewi Sartika', 'email' => 'dewi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567804'],
+            ['id_guru' => 'G05', 'nip' => '198808201020055005', 'nama' => 'Kartini Wijaya', 'email' => 'kartini@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567805'],
         ];
 
         foreach ($gurus as $guru) {
@@ -77,11 +77,11 @@ class DemoDataSeeder extends Seeder
 
         // Mata Pelajaran (5 data)
         $mataPelajarans = [
-            ['id_mata_pelajaran' => 'MP1', 'nama_mapel' => 'Matematika'],
-            ['id_mata_pelajaran' => 'MP2', 'nama_mapel' => 'Bahasa Indonesia'],
-            ['id_mata_pelajaran' => 'MP3', 'nama_mapel' => 'IPA'],
-            ['id_mata_pelajaran' => 'MP4', 'nama_mapel' => 'IPS'],
-            ['id_mata_pelajaran' => 'MP5', 'nama_mapel' => 'Bahasa Inggris'],
+            ['id_mata_pelajaran' => 'MP1', 'nama_mapel' => 'Bahasa dan Komunikasi'],
+            ['id_mata_pelajaran' => 'MP2', 'nama_mapel' => 'Perkembangan Kognitif'],
+            ['id_mata_pelajaran' => 'MP3', 'nama_mapel' => 'Seni dan Kreativitas'],
+            ['id_mata_pelajaran' => 'MP4', 'nama_mapel' => 'Sosial dan Emosional'],
+            ['id_mata_pelajaran' => 'MP5', 'nama_mapel' => 'Pengenalan Lingkungan'],
         ];
 
         foreach ($mataPelajarans as $mapel) {
@@ -129,11 +129,11 @@ class DemoDataSeeder extends Seeder
 
         // Perilaku (5 data)
         $perilakus = [
-            ['id_perilaku' => 'PR1', 'id_siswa' => 'SW01', 'catatan_perilaku' => 'Siswa aktif bertanya di kelas'],
-            ['id_perilaku' => 'PR2', 'id_siswa' => 'SW02', 'catatan_perilaku' => 'Rajin mengerjakan tugas'],
-            ['id_perilaku' => 'PR3', 'id_siswa' => 'SW03', 'catatan_perilaku' => 'Sopan dan santun'],
-            ['id_perilaku' => 'PR4', 'id_siswa' => 'SW04', 'catatan_perilaku' => 'Membantu teman yang kesulitan'],
-            ['id_perilaku' => 'PR5', 'id_siswa' => 'SW05', 'catatan_perilaku' => 'Disiplin dan tepat waktu'],
+            ['id_perilaku' => 'PR1', 'id_siswa' => 'SW01', 'catatan_perilaku' => 'Ananda hari ini menunjukkan sikap kerjasama yang baik dan membantu teman yang kesulitan'],
+            ['id_perilaku' => 'PR2', 'id_siswa' => 'SW02', 'catatan_perilaku' => 'Ananda masih perlu dibimbing untuk fokus saat kegiatan belajar karena mudah teralihkan'],
+            ['id_perilaku' => 'PR3', 'id_siswa' => 'SW03', 'catatan_perilaku' => 'Ananda mampu mengikuti instruksi guru dengan baik dan menunjukkan disiplin selama kegiatan berlangsung'],
+            ['id_perilaku' => 'PR4', 'id_siswa' => 'SW04', 'catatan_perilaku' => 'Ananda tampak kurang percaya diri saat diminta maju ke depan kelas, perlu diberikan motivasi lebih'],
+            ['id_perilaku' => 'PR5', 'id_siswa' => 'SW05', 'catatan_perilaku' => 'Ananda sangat antusias mengikuti kegiatan seni dan menunjukkan kreativitas yang tinggi'],
         ];
 
         foreach ($perilakus as $perilaku) {
@@ -142,11 +142,11 @@ class DemoDataSeeder extends Seeder
 
         // Pengumuman (5 data)
         $pengumumans = [
-            ['id_pengumuman' => 'PG1', 'judul' => 'Libur Semester Ganjil', 'isi' => 'Libur semester ganjil akan dimulai tanggal 20 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A01'],
-            ['id_pengumuman' => 'PG2', 'judul' => 'Rapat Orang Tua', 'isi' => 'Rapat orang tua akan diadakan pada tanggal 25 November 2025 pukul 09.00 WIB', 'tanggal' => '2025-11-18', 'id_admin' => 'A02'],
-            ['id_pengumuman' => 'PG3', 'judul' => 'Ujian Akhir Semester', 'isi' => 'Ujian akhir semester akan dilaksanakan tanggal 1-10 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A03'],
-            ['id_pengumuman' => 'PG4', 'judul' => 'Penerimaan Siswa Baru', 'isi' => 'Pendaftaran siswa baru tahun ajaran 2026/2027 dibuka mulai 1 Januari 2026', 'tanggal' => '2025-11-18', 'id_admin' => 'A04'],
-            ['id_pengumuman' => 'PG5', 'judul' => 'Kegiatan Ekstrakurikuler', 'isi' => 'Pendaftaran ekstrakurikuler dibuka untuk semester genap', 'tanggal' => '2025-11-18', 'id_admin' => 'A05'],
+            ['id_pengumuman' => 'PG1', 'judul' => 'Libur Semester Ganjil', 'isi' => 'Libur semester ganjil akan dimulai tanggal 20 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A01', 'publikasi' => true],
+            ['id_pengumuman' => 'PG2', 'judul' => 'Rapat Orang Tua', 'isi' => 'Rapat orang tua akan diadakan pada tanggal 25 November 2025 pukul 09.00 WIB', 'tanggal' => '2025-11-18', 'id_admin' => 'A02', 'publikasi' => true],
+            ['id_pengumuman' => 'PG3', 'judul' => 'Ujian Akhir Semester', 'isi' => 'Ujian akhir semester akan dilaksanakan tanggal 1-10 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A03', 'publikasi' => true],
+            ['id_pengumuman' => 'PG4', 'judul' => 'Penerimaan Siswa Baru', 'isi' => 'Pendaftaran siswa baru tahun ajaran 2026/2027 dibuka mulai 1 Januari 2026', 'tanggal' => '2025-11-18', 'id_admin' => 'A04', 'publikasi' => false],
+            ['id_pengumuman' => 'PG5', 'judul' => 'Kegiatan Ekstrakurikuler', 'isi' => 'Pendaftaran ekstrakurikuler dibuka untuk semester genap', 'tanggal' => '2025-11-18', 'id_admin' => 'A05', 'publikasi' => true],
         ];
 
         foreach ($pengumumans as $pengumuman) {
@@ -168,16 +168,16 @@ class DemoDataSeeder extends Seeder
 
         $this->command->info('✅ Demo data seeded successfully!');
         $this->command->info('📊 Summary:');
-        $this->command->info('   - Admins: ' . Admin::count());
-        $this->command->info('   - Guru: ' . Guru::count());
-        $this->command->info('   - Orang Tua: ' . OrangTua::count());
-        $this->command->info('   - Siswa: ' . Siswa::count());
-        $this->command->info('   - Mata Pelajaran: ' . MataPelajaran::count());
-        $this->command->info('   - Jadwal: ' . Jadwal::count());
-        $this->command->info('   - Absensi: ' . Absensi::count());
-        $this->command->info('   - Laporan: ' . LaporanPerkembangan::count());
-        $this->command->info('   - Perilaku: ' . Perilaku::count());
-        $this->command->info('   - Pengumuman: ' . Pengumuman::count());
-        $this->command->info('   - Komentar: ' . Komentar::count());
+        $this->command->info('   - Admins: '.Admin::count());
+        $this->command->info('   - Guru: '.Guru::count());
+        $this->command->info('   - Orang Tua: '.OrangTua::count());
+        $this->command->info('   - Siswa: '.Siswa::count());
+        $this->command->info('   - Mata Pelajaran: '.MataPelajaran::count());
+        $this->command->info('   - Jadwal: '.Jadwal::count());
+        $this->command->info('   - Absensi: '.Absensi::count());
+        $this->command->info('   - Laporan: '.LaporanPerkembangan::count());
+        $this->command->info('   - Perilaku: '.Perilaku::count());
+        $this->command->info('   - Pengumuman: '.Pengumuman::count());
+        $this->command->info('   - Komentar: '.Komentar::count());
     }
 }

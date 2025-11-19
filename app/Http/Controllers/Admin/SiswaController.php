@@ -23,7 +23,7 @@ class SiswaController extends Controller
 
         // Validasi sort column untuk mencegah SQL injection
         $allowedSort = ['id_siswa', 'nama', 'kelas'];
-        if (!in_array($sort, $allowedSort)) {
+        if (! in_array($sort, $allowedSort)) {
             $sort = 'nama';
         }
 
@@ -79,7 +79,7 @@ class SiswaController extends Controller
         ]);
 
         $siswa = new Siswa;
-        $siswa->id_siswa = 'S' . str_pad((string)(Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
+        $siswa->id_siswa = 'S'.str_pad((string) (Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
         $siswa->nama = $validated['nama'];
         $siswa->jenis_kelamin = $validated['jenis_kelamin'];
         $siswa->tempat_lahir = $validated['tempat_lahir'];

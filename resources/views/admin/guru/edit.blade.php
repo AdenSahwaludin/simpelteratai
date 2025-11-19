@@ -24,6 +24,17 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="nip" class="block text-sm font-medium text-gray-700 mb-2">NIP <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" id="nip" name="nip" value="{{ old('nip', $guru->nip) }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nip') border-red-500 @enderror"
+                        required>
+                    @error('nip')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Nama <span
                             class="text-red-500">*</span></label>
                     <input type="text" id="nama" name="nama" value="{{ old('nama', $guru->nama) }}"

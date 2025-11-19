@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -13,11 +14,11 @@ return new class extends Migration {
         Schema::create('siswa', function (Blueprint $table) {
             $table->string('id_siswa', 4)->primary();
             $table->string('nama', 255);
-            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->enum('jenis_kelamin', ['L', 'P'])->after('nama');
             $table->string('kelas', 20);
             $table->string('alamat', 100);
-            $table->string('tempat_lahir', 50);
-            $table->date('tanggal_lahir');
+            $table->string('tempat_lahir', 50)->nullable()->after('jenis_kelamin');
+            $table->date('tanggal_lahir')->after('tempat_lahir');
             $table->string('id_orang_tua', 4);
             $table->timestamps();
 

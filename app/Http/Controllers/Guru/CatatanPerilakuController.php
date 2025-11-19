@@ -58,7 +58,7 @@ class CatatanPerilakuController extends Controller
         ]);
 
         $perilaku = new Perilaku;
-        $perilaku->id_perilaku = 'PR' . str_pad((string)(Perilaku::count() + 1), 3, '0', STR_PAD_LEFT);
+        $perilaku->id_perilaku = 'PR'.str_pad((string) (Perilaku::count() + 1), 3, '0', STR_PAD_LEFT);
         $perilaku->id_siswa = $validated['id_siswa'];
         $perilaku->id_guru = $guru->id_guru;
         $perilaku->catatan_perilaku = $validated['catatan_perilaku'];

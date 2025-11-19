@@ -39,26 +39,29 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'login' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Try to login as Admin
-        if (Auth::guard('admin')->attempt($credentials)) {
+        // Try to login as Admin with email
+        if (Auth::guard('admin')->attempt(['email' => $credentials['login'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
             return redirect('/admin/dashboard');
         }
 
-        // Try to login as Guru
-        if (Auth::guard('guru')->attempt($credentials)) {
+        // Try to login as Guru with email or NIP
+        if (
+            Auth::guard('guru')->attempt(['email' => $credentials['login'], 'password' => $credentials['password']]) ||
+            Auth::guard('guru')->attempt(['nip' => $credentials['login'], 'password' => $credentials['password']])
+        ) {
             $request->session()->regenerate();
 
             return redirect('/guru/dashboard');
         }
 
-        // Try to login as OrangTua
-        if (Auth::guard('orangtua')->attempt($credentials)) {
+        // Try to login as OrangTua with email
+        if (Auth::guard('orangtua')->attempt(['email' => $credentials['login'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
             return redirect('/orangtua/dashboard');
@@ -66,9 +69,9 @@ class LoginController extends Controller
 
         // If all failed, redirect back with error
         return back()
-            ->withInput($request->only('email'))
+            ->withInput($request->only('login'))
             ->withErrors([
-                'email' => 'Email atau password salah.',
+                'login' => 'Email/NIP atau password salah.',
             ]);
     }
 

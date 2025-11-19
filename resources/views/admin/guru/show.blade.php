@@ -66,6 +66,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="border border-gray-200 rounded-lg p-4">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
+                                <i class="fas fa-id-card mr-2 text-blue-600"></i>NIP
+                            </label>
+                            <p class="text-lg text-gray-800 font-medium mt-2">
+                                {{ $guru->nip }}
+                            </p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center">
                                 <i class="fas fa-envelope mr-2 text-blue-600"></i>Email
                             </label>
                             <p class="text-lg text-gray-800 font-medium mt-2">

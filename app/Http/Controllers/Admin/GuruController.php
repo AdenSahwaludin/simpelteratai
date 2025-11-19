@@ -20,7 +20,7 @@ class GuruController extends Controller
         $direction = $request->input('direction', 'asc');
 
         // Validasi sort column
-        $allowedSort = ['id_guru', 'nama', 'email', 'no_telpon'];
+        $allowedSort = ['id_guru', 'nama', 'nip', 'email', 'no_telpon'];
         if (! in_array($sort, $allowedSort)) {
             $sort = 'nama';
         }
@@ -30,6 +30,7 @@ class GuruController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('nama', 'like', "%{$search}%")
                     ->orWhere('id_guru', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
             ->orderBy($sort, $direction)
@@ -53,11 +54,14 @@ class GuruController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'nip' => 'required|string|max:255|unique:guru,nip',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:guru,email',
             'password' => 'required|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
+            'nip.required' => 'NIP wajib diisi',
+            'nip.unique' => 'NIP sudah digunakan',
             'nama.required' => 'Nama guru wajib diisi',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
@@ -70,6 +74,7 @@ class GuruController extends Controller
 
         $guru = new Guru;
         $guru->id_guru = 'G'.str_pad((string) (Guru::count() + 1), 2, '0', STR_PAD_LEFT);
+        $guru->nip = $validated['nip'];
         $guru->nama = $validated['nama'];
         $guru->email = $validated['email'];
         $guru->password = $validated['password'];
@@ -110,11 +115,14 @@ class GuruController extends Controller
         $guru = Guru::findOrFail($id);
 
         $validated = $request->validate([
+            'nip' => 'required|string|max:255|unique:guru,nip,'.$id.',id_guru',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:guru,email,'.$id.',id_guru',
             'password' => 'nullable|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
+            'nip.required' => 'NIP wajib diisi',
+            'nip.unique' => 'NIP sudah digunakan',
             'nama.required' => 'Nama guru wajib diisi',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
@@ -124,6 +132,7 @@ class GuruController extends Controller
             'no_telpon.required' => 'No. telepon wajib diisi',
         ]);
 
+        $guru->nip = $validated['nip'];
         $guru->nama = $validated['nama'];
         $guru->email = $validated['email'];
         if (! empty($validated['password'])) {

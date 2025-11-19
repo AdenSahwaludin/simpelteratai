@@ -56,6 +56,7 @@ class PengumumanController extends Controller
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'tanggal' => 'required|date',
+            'publikasi' => 'nullable|boolean',
         ], [
             'judul.required' => 'Judul pengumuman wajib diisi',
             'isi.required' => 'Isi pengumuman wajib diisi',
@@ -70,6 +71,7 @@ class PengumumanController extends Controller
         $pengumuman->judul = $validated['judul'];
         $pengumuman->isi = $validated['isi'];
         $pengumuman->tanggal = $validated['tanggal'];
+        $pengumuman->publikasi = $request->has('publikasi');
         $pengumuman->id_admin = $admin->id_admin;
         $pengumuman->save();
 
@@ -110,6 +112,7 @@ class PengumumanController extends Controller
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'tanggal' => 'required|date',
+            'publikasi' => 'nullable|boolean',
         ], [
             'judul.required' => 'Judul pengumuman wajib diisi',
             'isi.required' => 'Isi pengumuman wajib diisi',
@@ -120,6 +123,7 @@ class PengumumanController extends Controller
         $pengumuman->judul = $validated['judul'];
         $pengumuman->isi = $validated['isi'];
         $pengumuman->tanggal = $validated['tanggal'];
+        $pengumuman->publikasi = $request->has('publikasi');
         $pengumuman->save();
 
         return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil diperbarui.');

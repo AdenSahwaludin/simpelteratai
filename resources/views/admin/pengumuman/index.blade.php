@@ -69,6 +69,9 @@
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pembuat
                         </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Publikasi
+                        </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
                         </th>
                     </tr>
@@ -86,6 +89,16 @@
                                 {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->admin->nama }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                                @if ($item->publikasi)
+                                    <span
+                                        class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Publikasi</span>
+                                @else
+                                    <span
+                                        class="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">Hanya
+                                        Admin</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                 <a href="{{ route('admin.pengumuman.show', $item->id_pengumuman) }}"
                                     class="text-green-600 hover:text-green-900 mr-3">
@@ -108,7 +121,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
                                 <i class="fas fa-inbox text-4xl mb-2"></i>
                                 <p>Tidak ada data pengumuman{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
                             </td>
@@ -127,9 +140,21 @@
                             <h3 class="font-semibold text-gray-900">{{ $item->judul }}</h3>
                             <p class="text-sm text-gray-500">{{ $item->id_pengumuman }}</p>
                         </div>
-                        <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium ml-2">
-                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d M') }}
-                        </span>
+                        <div class="text-right">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium ml-2">
+                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d M') }}
+                            </span>
+                            <div class="mt-2">
+                                @if ($item->publikasi)
+                                    <span
+                                        class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Publikasi</span>
+                                @else
+                                    <span
+                                        class="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">Hanya
+                                        Admin</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3 text-sm text-gray-600">
                         <p class="line-clamp-2">{{ $item->isi }}</p>

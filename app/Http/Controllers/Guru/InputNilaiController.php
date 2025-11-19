@@ -74,7 +74,7 @@ class InputNilaiController extends Controller
         ]);
 
         $laporan = new LaporanPerkembangan;
-        $laporan->id_laporan = 'LP' . str_pad((string)(LaporanPerkembangan::count() + 1), 1, '0', STR_PAD_LEFT);
+        $laporan->id_laporan = 'LP'.str_pad((string) (LaporanPerkembangan::count() + 1), 1, '0', STR_PAD_LEFT);
         $laporan->id_siswa = $validated['id_siswa'];
         $laporan->id_mata_pelajaran = $validated['id_mata_pelajaran'];
         $laporan->nilai = $validated['nilai'];

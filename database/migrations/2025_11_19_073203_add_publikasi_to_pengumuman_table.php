@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('laporan_perkembangan', function (Blueprint $table) {
-            $table->string('id_absensi', 4)->nullable()->change();
+        Schema::table('pengumuman', function (Blueprint $table) {
+            $table->boolean('publikasi')->default(true)->after('tanggal');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('laporan_perkembangan', function (Blueprint $table) {
-            $table->string('id_absensi', 4)->nullable()->change();
+        Schema::table('pengumuman', function (Blueprint $table) {
+            $table->dropColumn('publikasi');
         });
     }
 };

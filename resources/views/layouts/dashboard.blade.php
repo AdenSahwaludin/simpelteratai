@@ -84,6 +84,10 @@
                             <div class="px-4 py-3 border-b">
                                 <p class="text-sm font-semibold">@yield('user-name')</p>
                                 <p class="text-xs text-gray-500">@yield('user-role')</p>
+                                @if (Auth::guard('guru')->check())
+                                    <p class="text-xs text-gray-600 mt-1">NIP:
+                                        {{ Auth::guard('guru')->user()->nip ?? '-' }}</p>
+                                @endif
                             </div>
                             <a href="{{ route('profile.edit') }}"
                                 class="block px-4 py-2 text-sm hover:bg-gray-100 transition">

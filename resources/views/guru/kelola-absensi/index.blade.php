@@ -40,20 +40,20 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                 </div>
                 <div class="w-full md:w-48">
+                    <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                    <select name="kelas" id="kelas"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="">Semua Kelas</option>
+                        @foreach ($kelasList as $k)
+                            <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>
+                                {{ $k }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="w-full md:w-48">
                     <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
                     <input type="date" name="tanggal" id="tanggal" value="{{ request('tanggal') }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                </div>
-                <div class="w-full md:w-48">
-                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                    <select name="status" id="status"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                        <option value="">Semua Status</option>
-                        <option value="hadir" {{ request('status') == 'hadir' ? 'selected' : '' }}>Hadir</option>
-                        <option value="izin" {{ request('status') == 'izin' ? 'selected' : '' }}>Izin</option>
-                        <option value="sakit" {{ request('status') == 'sakit' ? 'selected' : '' }}>Sakit</option>
-                        <option value="alpha" {{ request('status') == 'alpha' ? 'selected' : '' }}>Alpha</option>
-                    </select>
                 </div>
                 <div class="flex gap-2 items-end">
                     <button type="submit"

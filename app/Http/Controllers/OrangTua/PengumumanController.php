@@ -17,6 +17,7 @@ class PengumumanController extends Controller
         $search = $request->input('search');
 
         $pengumuman = Pengumuman::query()
+            ->where('publikasi', true)
             ->when($search, function ($query, $search) {
                 return $query->where('judul', 'like', "%{$search}%")
                     ->orWhere('isi', 'like', "%{$search}%");
@@ -33,7 +34,7 @@ class PengumumanController extends Controller
      */
     public function show(string $id): View
     {
-        $pengumuman = Pengumuman::findOrFail($id);
+        $pengumuman = Pengumuman::where('publikasi', true)->findOrFail($id);
 
         return view('orangtua.pengumuman.show', compact('pengumuman'));
     }

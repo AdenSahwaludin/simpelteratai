@@ -63,6 +63,7 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
 
     // Kelola Absensi
     Route::resource('kelola-absensi', \App\Http\Controllers\Guru\KelolaAbsensiController::class);
+    Route::get('/kelola-absensi-load-siswa', [\App\Http\Controllers\Guru\KelolaAbsensiController::class, 'loadSiswaByKelas'])->name('kelola-absensi.load-siswa');
 
     // Laporan ke Orang Tua
     Route::get('/laporan-orangtua', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'index'])->name('laporan-orangtua.index');
