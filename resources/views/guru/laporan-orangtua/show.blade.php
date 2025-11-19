@@ -97,7 +97,7 @@
                 <!-- Action Buttons -->
                 <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="flex shrink-0">
                             <i class="fas fa-info-circle text-blue-400"></i>
                         </div>
                         <div class="ml-3">

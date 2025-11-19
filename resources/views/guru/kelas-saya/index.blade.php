@@ -22,7 +22,7 @@
         @if ($kelasData->isEmpty())
             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
                 <div class="flex">
-                    <div class="flex-shrink-0">
+                    <div class="flex shrink-0">
                         <i class="fas fa-exclamation-triangle text-yellow-400"></i>
                     </div>
                     <div class="ml-3">

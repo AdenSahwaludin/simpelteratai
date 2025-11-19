@@ -14,7 +14,7 @@
 @section('content')
     <div class="container mx-auto px-4 py-6">
         <!-- Welcome Message -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-md p-6 mb-6 text-white">
+        <div class="bg-linear-to-r from-green-500 to-green-600 rounded-lg shadow-md p-6 mb-6 text-white">
             <h2 class="text-2xl font-bold mb-2">Selamat Datang, {{ auth('guru')->user()->nama }}!</h2>
             <p class="text-green-100">Kelola jadwal mengajar, nilai siswa, dan komunikasi dengan orang tua dari dashboard
                 ini.</p>
@@ -24,7 +24,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             <!-- Total Kelas -->
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white">
+                <div class="bg-linear-to-br from-blue-500 to-blue-600 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-blue-100 text-sm font-medium">Total Kelas</p>
@@ -46,7 +46,7 @@
 
             <!-- Total Siswa -->
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white">
+                <div class="bg-linear-to-br from-purple-500 to-purple-600 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-purple-100 text-sm font-medium">Total Siswa</p>
@@ -68,7 +68,7 @@
 
             <!-- Total Jadwal -->
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-6 text-white">
+                <div class="bg-linear-to-br from-orange-500 to-orange-600 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-orange-100 text-sm font-medium">Jadwal Mengajar</p>
@@ -90,7 +90,7 @@
 
             <!-- Total Laporan -->
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 text-white">
+                <div class="bg-linear-to-br from-green-500 to-green-600 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-green-100 text-sm font-medium">Total Laporan</p>

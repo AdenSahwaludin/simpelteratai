@@ -23,7 +23,7 @@
 
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <!-- Header dengan Info Dasar -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 text-white">
+            <div class="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-8 text-white">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">

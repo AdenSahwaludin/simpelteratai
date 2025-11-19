@@ -28,7 +28,7 @@
         @if (session('success'))
             <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg mb-6">
                 <div class="flex">
-                    <div class="flex-shrink-0">
+                    <div class="flex shrink-0">
                         <i class="fas fa-check-circle text-green-400"></i>
                     </div>
                     <div class="ml-3">
