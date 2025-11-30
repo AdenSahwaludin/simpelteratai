@@ -41,16 +41,6 @@
                                 <span class="font-medium text-gray-800">{{ $child->kelas }}</span>
                             </div>
                             <div class="flex items-center gap-2 text-sm">
-                                <i class="fas fa-envelope text-green-600 w-5"></i>
-                                <span class="text-gray-600">Email:</span>
-                                <span class="font-medium text-gray-800 text-xs">{{ $child->email ?: '-' }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm">
-                                <i class="fas fa-phone text-purple-600 w-5"></i>
-                                <span class="text-gray-600">Telepon:</span>
-                                <span class="font-medium text-gray-800">{{ $child->no_telpon ?: '-' }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm">
                                 <i class="fas fa-map-marker-alt text-red-600 w-5"></i>
                                 <span class="text-gray-600">Alamat:</span>
                                 <span class="font-medium text-gray-800 text-xs">{{ $child->alamat }}</span>

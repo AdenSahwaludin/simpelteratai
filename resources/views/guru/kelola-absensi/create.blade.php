@@ -15,8 +15,8 @@
     <div class="container mx-auto px-4 py-6">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Tambah Absensi Per Kelas</h2>
-                <p class="text-gray-600 mt-2">Input absensi untuk seluruh siswa dalam satu kelas sekaligus</p>
+                <h2 class="text-2xl font-bold text-gray-800">Tambah Absensi Per Jadwal</h2>
+                <p class="text-gray-600 mt-2">Input absensi untuk siswa yang terdaftar pada jadwal ini</p>
             </div>
             <a href="{{ route('guru.kelola-absensi.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
@@ -29,23 +29,7 @@
                 @csrf
 
                 <!-- Form Header -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div>
-                        <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">
-                            Pilih Kelas <span class="text-red-500">*</span>
-                        </label>
-                        <select name="kelas" id="kelas" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('kelas') border-red-500 @enderror">
-                            <option value="">-- Pilih Kelas --</option>
-                            <option value="5A" {{ old('kelas') == '5A' ? 'selected' : '' }}>5A</option>
-                            <option value="5B" {{ old('kelas') == '5B' ? 'selected' : '' }}>5B</option>
-                            <option value="6A" {{ old('kelas') == '6A' ? 'selected' : '' }}>6A</option>
-                        </select>
-                        @error('kelas')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     <div>
                         <label for="id_jadwal" class="block text-sm font-medium text-gray-700 mb-2">
                             Pilih Jadwal <span class="text-red-500">*</span>
@@ -102,18 +86,24 @@
     </div>
 
     <script>
-        const kelasSelect = document.getElementById('kelas');
+        const jadwalSelect = document.getElementById('id_jadwal');
+        const tanggalInput = document.getElementById('tanggal');
         const siswaContainer = document.getElementById('siswaContainer');
         const submitBtn = document.getElementById('submitBtn');
 
-        kelasSelect.addEventListener('change', async function() {
-            const kelas = this.value;
+        // Load students when jadwal changes OR when tanggal changes
+        jadwalSelect.addEventListener('change', loadStudents);
+        tanggalInput.addEventListener('change', loadStudents);
 
-            if (!kelas) {
+        function loadStudents() {
+            const id_jadwal = jadwalSelect.value;
+            const tanggal = tanggalInput.value;
+
+            if (!id_jadwal) {
                 siswaContainer.innerHTML = `
                     <div class="text-center py-8 text-gray-500">
                         <i class="fas fa-info-circle text-2xl mb-2"></i>
-                        <p>Pilih kelas untuk menampilkan daftar siswa</p>
+                        <p>Pilih jadwal untuk menampilkan daftar siswa yang terdaftar</p>
                     </div>
                 `;
                 submitBtn.disabled = true;
@@ -121,70 +111,98 @@
             }
 
             try {
-                const response = await fetch(
-                    `{{ route('guru.kelola-absensi.load-siswa') }}?kelas=${encodeURIComponent(kelas)}`);
-                const data = await response.json();
-
-                if (data.siswa.length === 0) {
-                    siswaContainer.innerHTML = `
-                        <div class="text-center py-8 text-gray-500">
-                            <i class="fas fa-inbox text-2xl mb-2"></i>
-                            <p>Tidak ada siswa dalam kelas ini</p>
-                        </div>
-                    `;
-                    submitBtn.disabled = true;
-                    return;
+                // Build URL with both jadwal and tanggal parameters
+                const url = new URL(`{{ route('guru.kelola-absensi.load-siswa') }}`, window.location.origin);
+                url.searchParams.append('id_jadwal', id_jadwal);
+                if (tanggal) {
+                    url.searchParams.append('tanggal', tanggal);
                 }
 
-                let html = `
-                    <div class="mb-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-4">
-                            <i class="fas fa-users mr-2 text-green-600"></i>
-                            Daftar Siswa Kelas ${kelas} (${data.siswa.length} siswa)
-                        </h3>
-                        <div class="mb-4 flex gap-2">
-                            <button type="button" onclick="setAllStatus('hadir')" class="bg-green-100 text-green-700 hover:bg-green-200 px-3 py-2 rounded text-sm font-medium transition">
-                                <i class="fas fa-check mr-1"></i>Hadir Semua
-                            </button>
-                            <button type="button" onclick="setAllStatus('izin')" class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-2 rounded text-sm font-medium transition">
-                                <i class="fas fa-file mr-1"></i>Izin Semua
-                            </button>
-                            <button type="button" onclick="setAllStatus('sakit')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-2 rounded text-sm font-medium transition">
-                                <i class="fas fa-heartbeat mr-1"></i>Sakit Semua
-                            </button>
-                            <button type="button" onclick="setAllStatus('alpha')" class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded text-sm font-medium transition">
-                                <i class="fas fa-times mr-1"></i>Alpha Semua
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                `;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.siswa.length === 0) {
+                            siswaContainer.innerHTML = `
+                                <div class="text-center py-8 text-gray-500">
+                                    <i class="fas fa-inbox text-2xl mb-2"></i>
+                                    <p>Tidak ada siswa yang terdaftar pada jadwal ini</p>
+                                </div>
+                            `;
+                            submitBtn.disabled = true;
+                            return;
+                        }
 
-                data.siswa.forEach(siswa => {
-                    html += `
-                        <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
-                            <div>
-                                <p class="font-medium text-gray-900">${siswa.nama}</p>
-                                <p class="text-sm text-gray-600">${siswa.kelas}</p>
+                        let html = `
+                            <div class="mb-4">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                    <i class="fas fa-users mr-2 text-green-600"></i>
+                                    Daftar Siswa (${data.siswa.length} siswa terdaftar)
+                                </h3>
+                                <div class="mb-4 flex gap-2 flex-wrap">
+                                    <button type="button" onclick="setAllStatus('hadir')" class="bg-green-100 text-green-700 hover:bg-green-200 px-3 py-2 rounded text-sm font-medium transition">
+                                        <i class="fas fa-check mr-1"></i>Hadir Semua
+                                    </button>
+                                    <button type="button" onclick="setAllStatus('izin')" class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-2 rounded text-sm font-medium transition">
+                                        <i class="fas fa-file mr-1"></i>Izin Semua
+                                    </button>
+                                    <button type="button" onclick="setAllStatus('sakit')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-2 rounded text-sm font-medium transition">
+                                        <i class="fas fa-heartbeat mr-1"></i>Sakit Semua
+                                    </button>
+                                    <button type="button" onclick="setAllStatus('alpha')" class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded text-sm font-medium transition">
+                                        <i class="fas fa-times mr-1"></i>Alpha Semua
+                                    </button>
+                                </div>
                             </div>
-                            <select name="absensi[${siswa.id_siswa}]" 
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                onchange="updateSelectColor(this)">
-                                <option value="">-- Pilih Status --</option>
-                                <option value="hadir">Hadir</option>
-                                <option value="izin">Izin</option>
-                                <option value="sakit">Sakit</option>
-                                <option value="alpha">Alpha</option>
-                            </select>
-                        </div>
-                    `;
-                });
+                            <div class="space-y-3">
+                        `;
 
-                html += '</div>';
-                siswaContainer.innerHTML = html;
-                submitBtn.disabled = false;
+                        data.siswa.forEach(siswa => {
+                            // Get saved status if exists
+                            const savedStatus = data.existingAbsensi[siswa.id_siswa] || '';
+
+                            html += `
+                                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
+                                    <div>
+                                        <p class="font-medium text-gray-900">${siswa.nama}</p>
+                                        <p class="text-sm text-gray-600">${siswa.kelas}</p>
+                                    </div>
+                                    <select name="absensi[${siswa.id_siswa}]" 
+                                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        onchange="updateSelectColor(this)">
+                                        <option value="">-- Pilih Status --</option>
+                                        <option value="hadir" ${savedStatus === 'hadir' ? 'selected' : ''}>Hadir</option>
+                                        <option value="izin" ${savedStatus === 'izin' ? 'selected' : ''}>Izin</option>
+                                        <option value="sakit" ${savedStatus === 'sakit' ? 'selected' : ''}>Sakit</option>
+                                        <option value="alpha" ${savedStatus === 'alpha' ? 'selected' : ''}>Alpha</option>
+                                    </select>
+                                </div>
+                            `;
+                        });
+
+                        html += '</div>';
+                        siswaContainer.innerHTML = html;
+
+                        // Update colors for pre-filled options
+                        document.querySelectorAll('select[name^="absensi["]').forEach(select => {
+                            if (select.value) {
+                                updateSelectColor(select);
+                            }
+                        });
+
+                        submitBtn.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error loading students:', error);
+                        siswaContainer.innerHTML = `
+                            <div class="text-center py-8 text-red-500">
+                                <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
+                                <p>Gagal memuat daftar siswa</p>
+                            </div>
+                        `;
+                        submitBtn.disabled = true;
+                    });
             } catch (error) {
-                console.error('Error loading students:', error);
+                console.error('Error:', error);
                 siswaContainer.innerHTML = `
                     <div class="text-center py-8 text-red-500">
                         <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
@@ -193,7 +211,7 @@
                 `;
                 submitBtn.disabled = true;
             }
-        });
+        }
 
         function setAllStatus(status) {
             const selects = document.querySelectorAll('select[name^="absensi["]');

@@ -84,7 +84,7 @@
                     </h3>
                     <div class="ml-6 text-sm">
                         <span class="text-gray-600">Guru:</span>
-                        <span class="font-medium text-gray-800 ml-2">{{ $perilaku->guru->nama_guru }}</span>
+                        <span class="font-medium text-gray-800 ml-2">{{ $perilaku->guru->nama ?? '-' }}</span>
                     </div>
                 </div>
             @endif

@@ -8,6 +8,7 @@ use App\Models\Siswa;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CatatanPerilakuController extends Controller
 {
@@ -51,17 +52,40 @@ class CatatanPerilakuController extends Controller
 
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswa,id_siswa',
+            'tanggal' => 'required|date',
+            'sosial' => 'required|in:Baik,Perlu dibina',
+            'emosional' => 'required|in:Baik,Perlu dibina',
+            'disiplin' => 'required|in:Baik,Perlu dibina',
             'catatan_perilaku' => 'required|string',
+            'file_lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ], [
             'id_siswa.required' => 'Siswa wajib dipilih',
+            'tanggal.required' => 'Tanggal wajib diisi',
+            'sosial.required' => 'Penilaian sosial wajib dipilih',
+            'emosional.required' => 'Penilaian emosional wajib dipilih',
+            'disiplin.required' => 'Penilaian disiplin wajib dipilih',
             'catatan_perilaku.required' => 'Catatan perilaku wajib diisi',
+            'file_lampiran.mimes' => 'File harus berformat jpg, jpeg, png, atau pdf',
+            'file_lampiran.max' => 'Ukuran file maksimal 2MB',
         ]);
 
         $perilaku = new Perilaku;
         $perilaku->id_perilaku = 'PR'.str_pad((string) (Perilaku::count() + 1), 3, '0', STR_PAD_LEFT);
         $perilaku->id_siswa = $validated['id_siswa'];
         $perilaku->id_guru = $guru->id_guru;
+        $perilaku->tanggal = $validated['tanggal'];
+        $perilaku->sosial = $validated['sosial'];
+        $perilaku->emosional = $validated['emosional'];
+        $perilaku->disiplin = $validated['disiplin'];
         $perilaku->catatan_perilaku = $validated['catatan_perilaku'];
+
+        if ($request->hasFile('file_lampiran')) {
+            $file = $request->file('file_lampiran');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->storeAs('perilaku', $filename, 'public');
+            $perilaku->file_lampiran = $filename;
+        }
+
         $perilaku->save();
 
         return redirect()->route('guru.catatan-perilaku.index')->with('success', 'Catatan perilaku berhasil ditambahkan.');
@@ -81,13 +105,43 @@ class CatatanPerilakuController extends Controller
 
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswa,id_siswa',
+            'tanggal' => 'required|date',
+            'sosial' => 'required|in:Baik,Perlu dibina',
+            'emosional' => 'required|in:Baik,Perlu dibina',
+            'disiplin' => 'required|in:Baik,Perlu dibina',
             'catatan_perilaku' => 'required|string',
+            'file_lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ], [
             'id_siswa.required' => 'Siswa wajib dipilih',
+            'tanggal.required' => 'Tanggal wajib diisi',
+            'sosial.required' => 'Penilaian sosial wajib dipilih',
+            'emosional.required' => 'Penilaian emosional wajib dipilih',
+            'disiplin.required' => 'Penilaian disiplin wajib dipilih',
             'catatan_perilaku.required' => 'Catatan perilaku wajib diisi',
+            'file_lampiran.mimes' => 'File harus berformat jpg, jpeg, png, atau pdf',
+            'file_lampiran.max' => 'Ukuran file maksimal 2MB',
         ]);
 
-        $perilaku->update($validated);
+        $perilaku->id_siswa = $validated['id_siswa'];
+        $perilaku->tanggal = $validated['tanggal'];
+        $perilaku->sosial = $validated['sosial'];
+        $perilaku->emosional = $validated['emosional'];
+        $perilaku->disiplin = $validated['disiplin'];
+        $perilaku->catatan_perilaku = $validated['catatan_perilaku'];
+
+        if ($request->hasFile('file_lampiran')) {
+            // Delete old file if exists
+            if ($perilaku->file_lampiran && Storage::disk('public')->exists('perilaku/'.$perilaku->file_lampiran)) {
+                Storage::disk('public')->delete('perilaku/'.$perilaku->file_lampiran);
+            }
+
+            $file = $request->file('file_lampiran');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->storeAs('perilaku', $filename, 'public');
+            $perilaku->file_lampiran = $filename;
+        }
+
+        $perilaku->save();
 
         return redirect()->route('guru.catatan-perilaku.index')->with('success', 'Catatan perilaku berhasil diperbarui.');
     }

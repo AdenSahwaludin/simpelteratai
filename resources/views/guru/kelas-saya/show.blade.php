@@ -40,8 +40,6 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Hari</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Waktu</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Mata Pelajaran</th>
@@ -51,10 +49,8 @@
                             @foreach ($jadwal as $item)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm font-medium text-gray-900">{{ $item->hari }}</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm text-gray-600">{{ $item->waktu }}</span>
+                                        <span class="text-sm text-gray-600">
+                                            {{ \Carbon\Carbon::parse($item->waktu)->format('H:i d-m-Y') }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
@@ -73,7 +69,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-users text-green-600 mr-2"></i>
-                Daftar Siswa Kelas {{ $ruang }} ({{ $siswa->total() }} siswa)
+                Daftar Siswa Kelas {{ $ruang }} ({{ $total }} siswa)
             </h3>
 
             @if ($siswa->isEmpty())

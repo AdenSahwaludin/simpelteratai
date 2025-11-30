@@ -226,11 +226,12 @@
                             <div class="bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
-                                        <h4 class="font-semibold text-gray-800">{{ $perilaku->siswa->nama_siswa }}</h4>
+                                        <h4 class="font-semibold text-gray-800">{{ $perilaku->siswa->nama_siswa ?? '-' }}
+                                        </h4>
                                         <p class="text-sm text-gray-600 mt-1 line-clamp-2">
                                             {{ $perilaku->catatan_perilaku }}</p>
                                         <p class="text-xs text-gray-500 mt-2">
-                                            <i class="fas fa-user"></i> {{ $perilaku->guru->nama_guru }}
+                                            <i class="fas fa-user"></i> {{ $perilaku->guru->nama ?? '-' }}
                                         </p>
                                     </div>
                                     <a href="{{ route('orangtua.perilaku.show', $perilaku->id_perilaku) }}"

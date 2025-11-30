@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Jadwal extends Model
 {
+    use HasFactory;
+
     protected $table = 'jadwal';
 
     protected $primaryKey = 'id_jadwal';
@@ -50,5 +54,18 @@ class Jadwal extends Model
     public function absensi(): HasMany
     {
         return $this->hasMany(Absensi::class, 'id_jadwal', 'id_jadwal');
+    }
+
+    /**
+     * Get the siswa for the jadwal.
+     */
+    public function siswa(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Siswa::class,
+            'jadwal_siswa',
+            'id_jadwal',
+            'id_siswa'
+        )->withTimestamps();
     }
 }

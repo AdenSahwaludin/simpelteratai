@@ -34,7 +34,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold">Laporan Perkembangan</h1>
-                        <p class="text-purple-100 text-sm mt-1">{{ $laporan->mataPelajaran->nama_mata_pelajaran }}</p>
+                        <p class="text-purple-100 text-sm mt-1">{{ $perkembangan->mataPelajaran->nama_mapel }}</p>
                     </div>
                 </div>
             </div>
@@ -49,11 +49,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ml-6">
                         <div>
                             <span class="text-gray-600">Nama:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $laporan->siswa->nama_siswa }}</span>
+                            <span class="font-medium text-gray-800 ml-2">{{ $perkembangan->siswa->nama }}</span>
                         </div>
                         <div>
                             <span class="text-gray-600">Kelas:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $laporan->siswa->kelas }}</span>
+                            <span class="font-medium text-gray-800 ml-2">{{ $perkembangan->siswa->kelas }}</span>
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                     </h3>
                     <div class="flex items-center gap-4 ml-6">
                         @php
-                            $nilai = $laporan->nilai;
+                            $nilai = $perkembangan->nilai;
                             if ($nilai >= 80) {
                                 $badgeClass = 'bg-green-100 text-green-800 border-green-300';
                                 $icon = 'fa-check-circle';
@@ -106,22 +106,19 @@
                         Mata Pelajaran
                     </h3>
                     <div class="ml-6">
-                        <p class="text-lg font-medium text-gray-900">{{ $laporan->mataPelajaran->nama_mata_pelajaran }}</p>
-                        @if ($laporan->mataPelajaran->deskripsi)
-                            <p class="text-sm text-gray-600 mt-1">{{ $laporan->mataPelajaran->deskripsi }}</p>
-                        @endif
+                        <p class="text-lg font-medium text-gray-900">{{ $perkembangan->mataPelajaran->nama_mapel }}</p>
                     </div>
                 </div>
 
                 <!-- Comments Section -->
-                @if ($laporan->komentar)
+                @if ($perkembangan->komentar)
                     <div class="mb-6">
                         <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                             <i class="fas fa-comment-dots text-gray-600"></i>
                             Komentar Guru
                         </h3>
                         <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-500 ml-6">
-                            <p class="text-gray-800 leading-relaxed whitespace-pre-wrap">{{ $laporan->komentar }}</p>
+                            <p class="text-gray-800 leading-relaxed whitespace-pre-wrap">{{ $perkembangan->komentar }}</p>
                         </div>
                     </div>
                 @endif
@@ -132,18 +129,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                         <div>
                             <span class="text-gray-600">ID Laporan:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $laporan->id_laporan }}</span>
+                            <span class="font-medium text-gray-800 ml-2">{{ $perkembangan->id_laporan }}</span>
                         </div>
                         <div>
                             <span class="text-gray-600">Tanggal Dibuat:</span>
                             <span
-                                class="font-medium text-gray-800 ml-2">{{ $laporan->created_at->format('d/m/Y H:i') }}</span>
+                                class="font-medium text-gray-800 ml-2">{{ $perkembangan->created_at->format('d/m/Y H:i') }}</span>
                         </div>
-                        @if ($laporan->updated_at != $laporan->created_at)
+                        @if ($perkembangan->updated_at != $perkembangan->created_at)
                             <div class="md:col-span-2">
                                 <span class="text-gray-600">Terakhir Diubah:</span>
                                 <span
-                                    class="font-medium text-gray-800 ml-2">{{ $laporan->updated_at->format('d/m/Y H:i') }}</span>
+                                    class="font-medium text-gray-800 ml-2">{{ $perkembangan->updated_at->format('d/m/Y H:i') }}</span>
                             </div>
                         @endif
                     </div>

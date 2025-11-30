@@ -60,14 +60,6 @@
                             <p class="text-xs text-gray-500">Kelas</p>
                             <p class="font-medium text-gray-800">{{ $anak->kelas }}</p>
                         </div>
-                        <div>
-                            <p class="text-xs text-gray-500">Email</p>
-                            <p class="font-medium text-gray-800">{{ $anak->email ?: '-' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500">No. Telepon</p>
-                            <p class="font-medium text-gray-800">{{ $anak->no_telpon ?: '-' }}</p>
-                        </div>
                     </div>
                 </div>
 

@@ -75,13 +75,19 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Tanggal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Siswa</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Sosial</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Emosional</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Disiplin</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Catatan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    File</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Aksi</th>
                             </tr>
@@ -89,21 +95,59 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($perilaku as $item)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ $item->id_perilaku }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</td>
+                                        {{ $item->tanggal ? $item->tanggal->format('d M Y') : '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                                         <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($item->sosial)
+                                            <span
+                                                class="px-2 py-1 text-xs rounded-full {{ $item->sosial == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                {{ $item->sosial }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-400 text-sm">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($item->emosional)
+                                            <span
+                                                class="px-2 py-1 text-xs rounded-full {{ $item->emosional == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                {{ $item->emosional }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-400 text-sm">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($item->disiplin)
+                                            <span
+                                                class="px-2 py-1 text-xs rounded-full {{ $item->disiplin == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                {{ $item->disiplin }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-400 text-sm">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 max-w-xs">
                                         {{ Str::limit($item->catatan_perilaku, 50) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        @if ($item->file_lampiran)
+                                            <a href="{{ asset('storage/perilaku/' . $item->file_lampiran) }}"
+                                                target="_blank" class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-file"></i>
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <div class="flex gap-2">
                                             <a href="{{ route('guru.catatan-perilaku.edit', $item->id_perilaku) }}"
                                                 class="text-blue-600 hover:text-blue-900">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <form action="{{ route('guru.catatan-perilaku.destroy', $item->id_perilaku) }}"
                                                 method="POST" class="inline"
@@ -111,7 +155,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900">
-                                                    <i class="fas fa-trash"></i> Hapus
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -129,10 +173,57 @@
                                 <div>
                                     <p class="font-semibold text-gray-800">{{ $item->siswa->nama }}</p>
                                     <p class="text-sm text-gray-600">{{ $item->siswa->kelas }} •
-                                        {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</p>
+                                        {{ $item->tanggal ? $item->tanggal->format('d M Y') : '-' }}</p>
                                 </div>
                             </div>
-                            <p class="text-sm text-gray-700 mb-3">{{ $item->catatan_perilaku }}</p>
+
+                            <div class="mb-3 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-700">Sosial:</span>
+                                    @if ($item->sosial)
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full {{ $item->sosial == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $item->sosial }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400 text-sm">-</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-700">Emosional:</span>
+                                    @if ($item->emosional)
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full {{ $item->emosional == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $item->emosional }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400 text-sm">-</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-700">Disiplin:</span>
+                                    @if ($item->disiplin)
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full {{ $item->disiplin == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $item->disiplin }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400 text-sm">-</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-gray-700 mb-3">{{ Str::limit($item->catatan_perilaku, 100) }}</p>
+
+                            @if ($item->file_lampiran)
+                                <div class="mb-3">
+                                    <a href="{{ asset('storage/perilaku/' . $item->file_lampiran) }}" target="_blank"
+                                        class="text-sm text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-file mr-1"></i>Lihat Lampiran
+                                    </a>
+                                </div>
+                            @endif
+
                             <div class="flex gap-2">
                                 <a href="{{ route('guru.catatan-perilaku.edit', $item->id_perilaku) }}"
                                     class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 text-center">

@@ -24,7 +24,7 @@ class PerilakuController extends Controller
             ->get();
 
         $perilaku = Perilaku::query()
-            ->with('siswa')
+            ->with(['siswa', 'guru'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })
@@ -53,7 +53,7 @@ class PerilakuController extends Controller
 
         $perilaku = Perilaku::query()
             ->where('id_perilaku', $id)
-            ->with('siswa')
+            ->with(['siswa', 'guru'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })

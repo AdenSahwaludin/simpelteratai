@@ -103,7 +103,7 @@
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <a href="{{ route('guru.input-nilai.create', ['id_siswa' => $siswa->id_siswa]) }}"
+                        <a href="{{ route('guru.input-nilai.bulk') }}"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-center transition-colors duration-300">
                             <i class="fas fa-plus-circle mr-2"></i>Input Nilai
                         </a>

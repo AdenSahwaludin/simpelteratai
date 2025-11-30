@@ -38,7 +38,7 @@ class DemoDataSeeder extends Seeder
 
         // Guru (5 data)
         $gurus = [
-            ['id_guru' => 'G01', 'nip' => '198905151020051001', 'nama' => 'Budi Santoso', 'email' => 'budi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567801'],
+            ['id_guru' => 'G01', 'nip' => '198905151020051001', 'nama' => 'Budi Santoso', 'email' => 'budi@simpel.com', 'password' => Hash::make('  '), 'no_telpon' => '082134567801'],
             ['id_guru' => 'G02', 'nip' => '199003201020052002', 'nama' => 'Siti Aminah', 'email' => 'siti@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567802'],
             ['id_guru' => 'G03', 'nip' => '198702101020053003', 'nama' => 'Ahmad Dahlan', 'email' => 'ahmad@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567803'],
             ['id_guru' => 'G04', 'nip' => '199105151020054004', 'nama' => 'Dewi Sartika', 'email' => 'dewi@simpel.com', 'password' => Hash::make('password'), 'no_telpon' => '082134567804'],

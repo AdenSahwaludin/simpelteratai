@@ -100,7 +100,7 @@ class JadwalController extends Controller
     {
         $jadwal = Jadwal::query()
             ->where('id_jadwal', $id)
-            ->with(['guru', 'mataPelajaran', 'absensi'])
+            ->with(['guru', 'mataPelajaran', 'siswa', 'absensi'])
             ->firstOrFail();
 
         return view('admin.jadwal.show', compact('jadwal'));

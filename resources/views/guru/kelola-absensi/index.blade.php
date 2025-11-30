@@ -32,12 +32,25 @@
 
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <form method="GET" action="{{ route('guru.kelola-absensi.index') }}"
-                class="space-y-4 md:space-y-0 md:flex md:gap-4">
-                <div class="flex-1">
+                class="space-y-4 md:space-y-0 md:flex md:gap-4 md:flex-wrap md:items-end">
+                <div class="flex-1 md:flex-none md:w-48">
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Siswa</label>
                     <input type="text" name="search" id="search" value="{{ request('search') }}"
                         placeholder="Cari berdasarkan nama siswa..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                </div>
+                <div class="w-full md:w-48">
+                    <label for="id_jadwal" class="block text-sm font-medium text-gray-700 mb-2">Jadwal</label>
+                    <select name="id_jadwal" id="id_jadwal"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="">Semua Jadwal</option>
+                        @foreach ($jadwalList as $j)
+                            <option value="{{ $j->id_jadwal }}"
+                                {{ request('id_jadwal') == $j->id_jadwal ? 'selected' : '' }}>
+                                {{ $j->mataPelajaran->nama_mapel }} ({{ $j->ruang }})
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="w-full md:w-48">
                     <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
@@ -55,13 +68,13 @@
                     <input type="date" name="tanggal" id="tanggal" value="{{ request('tanggal') }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                 </div>
-                <div class="flex gap-2 items-end">
+                <div class="flex gap-2 w-full md:w-auto">
                     <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors duration-300">
+                        class="flex-1 md:flex-none bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors duration-300">
                         <i class="fas fa-search mr-2"></i>Cari
                     </button>
                     <a href="{{ route('guru.kelola-absensi.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors duration-300">
+                        class="flex-1 md:flex-none bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors duration-300 text-center">
                         <i class="fas fa-redo mr-2"></i>Reset
                     </a>
                 </div>
@@ -69,12 +82,19 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            @if ($absensi->isEmpty())
-                <div class="p-6 text-center text-gray-500">
-                    <i class="fas fa-calendar-check text-4xl mb-4 text-gray-400"></i>
-                    <p>Tidak ada data absensi yang ditemukan.</p>
+            @if (!$hasFilter)
+                <div class="p-12 text-center text-gray-500">
+                    <i class="fas fa-search text-6xl mb-4 text-gray-300"></i>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Belum Ada Filter</h3>
+                    <p>Silakan gunakan filter di atas untuk mencari data absensi siswa</p>
                 </div>
-            @else
+            @elseif ($absensi && $absensi->isEmpty())
+                <div class="p-12 text-center text-gray-500">
+                    <i class="fas fa-calendar-check text-6xl mb-4 text-gray-300"></i>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Tidak Ada Data</h3>
+                    <p>Tidak ada data absensi yang ditemukan untuk filter yang Anda pilih</p>
+                </div>
+            @elseif ($absensi && $absensi->count() > 0)
                 <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -167,8 +187,8 @@
                                     class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 text-center">
                                     <i class="fas fa-edit mr-1"></i>Edit
                                 </a>
-                                <form action="{{ route('guru.kelola-absensi.destroy', $item->id_absensi) }}" method="POST"
-                                    class="flex-1"
+                                <form action="{{ route('guru.kelola-absensi.destroy', $item->id_absensi) }}"
+                                    method="POST" class="flex-1"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus absensi ini?')">
                                     @csrf
                                     @method('DELETE')

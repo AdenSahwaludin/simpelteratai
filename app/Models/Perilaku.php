@@ -19,7 +19,16 @@ class Perilaku extends Model
         'id_perilaku',
         'id_siswa',
         'id_guru',
+        'tanggal',
+        'sosial',
+        'emosional',
+        'disiplin',
         'catatan_perilaku',
+        'file_lampiran',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 
     /**

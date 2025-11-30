@@ -35,6 +35,18 @@
                             'route' => 'admin.jadwal.index',
                         ],
                         [
+                            'label' => 'Kelola Jadwal Siswa',
+                            'icon' => 'fa-user-clock',
+                            'color' => 'text-cyan-500',
+                            'route' => 'admin.jadwal-siswa.index',
+                        ],
+                        [
+                            'label' => 'Jadwal Harian',
+                            'icon' => 'fa-calendar-day',
+                            'color' => 'text-indigo-500',
+                            'route' => 'admin.jadwal-harian.index',
+                        ],
+                        [
                             'label' => 'Mata Pelajaran',
                             'icon' => 'fa-book',
                             'color' => 'text-orange-500',
@@ -174,6 +186,12 @@
                             'icon' => 'fa-calendar-check',
                             'color' => 'text-green-500',
                             'route' => 'orangtua.kehadiran.index',
+                        ],
+                        [
+                            'label' => 'Jadwal Harian',
+                            'icon' => 'fa-calendar-day',
+                            'color' => 'text-indigo-500',
+                            'route' => 'orangtua.jadwal-harian.index',
                         ],
                     ],
                 ],

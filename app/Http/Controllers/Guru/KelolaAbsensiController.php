@@ -17,33 +17,46 @@ class KelolaAbsensiController extends Controller
         $search = $request->input('search');
         $tanggal = $request->input('tanggal');
         $kelas = $request->input('kelas');
+        $id_jadwal = $request->input('id_jadwal');
 
-        $absensi = Absensi::query()
-            ->with(['siswa', 'jadwal.mataPelajaran'])
-            ->whereHas('jadwal', function ($query) use ($guru) {
-                $query->where('id_guru', $guru->id_guru);
-            })
-            ->when($search, function ($query, $search) {
-                return $query->whereHas('siswa', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
-                });
-            })
-            ->when($tanggal, function ($query, $tanggal) {
-                return $query->whereDate('tanggal', $tanggal);
-            })
-            ->when($kelas, function ($query, $kelas) {
-                return $query->whereHas('siswa', function ($q) use ($kelas) {
-                    $q->where('kelas', $kelas);
-                });
-            })
-            ->latest('tanggal')
-            ->paginate(20)
-            ->appends($request->query());
+        // Only query if at least one filter is provided
+        $hasFilter = $search || $tanggal || $kelas || $id_jadwal;
+        $absensi = null;
+
+        if ($hasFilter) {
+            $absensi = Absensi::query()
+                ->with(['siswa', 'jadwal.mataPelajaran'])
+                ->whereHas('jadwal', function ($query) use ($guru) {
+                    $query->where('id_guru', $guru->id_guru);
+                })
+                ->when($search, function ($query, $search) {
+                    return $query->whereHas('siswa', function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%");
+                    });
+                })
+                ->when($tanggal, function ($query, $tanggal) {
+                    return $query->whereDate('tanggal', $tanggal);
+                })
+                ->when($kelas, function ($query, $kelas) {
+                    return $query->whereHas('siswa', function ($q) use ($kelas) {
+                        $q->where('kelas', $kelas);
+                    });
+                })
+                ->when($id_jadwal, function ($query, $id_jadwal) {
+                    return $query->where('id_jadwal', $id_jadwal);
+                })
+                ->latest('tanggal')
+                ->paginate(20)
+                ->appends($request->query());
+        }
 
         // Get unique classes from guru's students
         $kelasList = Siswa::distinct('kelas')->pluck('kelas');
 
-        return view('guru.kelola-absensi.index', compact('absensi', 'search', 'tanggal', 'kelas', 'kelasList'));
+        // Get jadwal list for guru
+        $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
+
+        return view('guru.kelola-absensi.index', compact('absensi', 'search', 'tanggal', 'kelas', 'id_jadwal', 'kelasList', 'jadwalList', 'hasFilter'));
     }
 
     public function create(): View
@@ -55,29 +68,44 @@ class KelolaAbsensiController extends Controller
     }
 
     /**
-     * Load students for a specific class (AJAX endpoint)
+     * Load students for a specific schedule with existing attendance (AJAX endpoint)
      */
     public function loadSiswaByKelas(Request $request): \Illuminate\Http\JsonResponse
     {
-        $kelas = $request->input('kelas');
+        $id_jadwal = $request->input('id_jadwal');
+        $tanggal = $request->input('tanggal');
 
-        $siswa = Siswa::where('kelas', $kelas)
+        // Get students registered for this schedule from jadwal_siswa pivot table
+        $siswa = Siswa::query()
+            ->whereHas('jadwal', function ($query) use ($id_jadwal) {
+                $query->where('jadwal.id_jadwal', $id_jadwal);
+            })
             ->orderBy('nama')
             ->get(['id_siswa', 'nama', 'kelas']);
 
-        return response()->json(['siswa' => $siswa]);
+        // Get existing attendance records for this schedule and date
+        $existingAbsensi = [];
+        if ($tanggal) {
+            $existingAbsensi = Absensi::where('id_jadwal', $id_jadwal)
+                ->where('tanggal', $tanggal)
+                ->pluck('status_kehadiran', 'id_siswa')
+                ->toArray();
+        }
+
+        return response()->json([
+            'siswa' => $siswa,
+            'existingAbsensi' => $existingAbsensi,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'kelas' => 'required|string',
             'id_jadwal' => 'required|exists:jadwal,id_jadwal',
             'tanggal' => 'required|date',
             'absensi' => 'required|array',
             'absensi.*' => 'required|in:hadir,izin,sakit,alpha',
         ], [
-            'kelas.required' => 'Kelas wajib dipilih',
             'id_jadwal.required' => 'Jadwal wajib dipilih',
             'tanggal.required' => 'Tanggal wajib diisi',
             'absensi.required' => 'Data absensi wajib diisi',
@@ -87,14 +115,14 @@ class KelolaAbsensiController extends Controller
 
         // Verify that the jadwal belongs to the logged-in guru
         $jadwal = $guru->jadwal()->find($validated['id_jadwal']);
-        if (!$jadwal) {
+        if (! $jadwal) {
             return back()->with('error', 'Jadwal tidak ditemukan atau tidak milik Anda.');
         }
 
-        // Get all students in the class
-        $siswaList = Siswa::where('kelas', $validated['kelas'])->get();
+        // Get students registered for this schedule from pivot table
+        $siswaList = $jadwal->siswa()->get();
 
-        // Create/update absensi records for all students
+        // Create/update absensi records for registered students only
         foreach ($siswaList as $siswa) {
             $status = $validated['absensi'][$siswa->id_siswa] ?? null;
 
@@ -105,12 +133,12 @@ class KelolaAbsensiController extends Controller
                     ->where('tanggal', $validated['tanggal'])
                     ->first();
 
-                if (!$absensi) {
+                if (! $absensi) {
                     // Generate new ID
                     $lastId = Absensi::orderByRaw('CAST(SUBSTRING(id_absensi, 2) AS UNSIGNED) DESC')->limit(1)->pluck('id_absensi')->first();
-                    $nextNumber = $lastId ? (int)substr($lastId, 1) + 1 : 1;
+                    $nextNumber = $lastId ? (int) substr($lastId, 1) + 1 : 1;
                     $absensi = new Absensi([
-                        'id_absensi' => 'A' . str_pad((string)$nextNumber, 3, '0', STR_PAD_LEFT),
+                        'id_absensi' => 'A'.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT),
                         'id_siswa' => $siswa->id_siswa,
                         'id_jadwal' => $validated['id_jadwal'],
                         'tanggal' => $validated['tanggal'],
@@ -122,7 +150,7 @@ class KelolaAbsensiController extends Controller
             }
         }
 
-        return redirect()->route('guru.kelola-absensi.index')->with('success', 'Absensi kelas berhasil disimpan.');
+        return redirect()->route('guru.kelola-absensi.index')->with('success', 'Absensi jadwal berhasil disimpan.');
     }
 
     public function edit(string $id): View

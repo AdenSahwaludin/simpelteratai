@@ -74,8 +74,6 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID Jadwal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Hari</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Waktu</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Mata Pelajaran</th>
@@ -88,9 +86,6 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm font-medium text-gray-900">{{ $item->id_jadwal }}</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm text-gray-900">{{ $item->hari }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-600">{{ $item->waktu }}</span>
@@ -122,10 +117,6 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-sm">
-                                <div>
-                                    <p class="text-gray-500">Hari</p>
-                                    <p class="font-medium text-gray-800">{{ $item->hari }}</p>
-                                </div>
                                 <div>
                                     <p class="text-gray-500">Waktu</p>
                                     <p class="font-medium text-gray-800">{{ $item->waktu }}</p>

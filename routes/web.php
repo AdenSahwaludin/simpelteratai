@@ -32,6 +32,12 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
 
     // Kelola Jadwal
     Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
+    Route::get('/jadwal-siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'index'])->name('jadwal-siswa.index');
+    Route::get('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'edit'])->name('jadwal-siswa.edit');
+    Route::put('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'update'])->name('jadwal-siswa.update');
+
+    // Jadwal Harian
+    Route::resource('jadwal-harian', \App\Http\Controllers\Admin\JadwalHarianController::class);
 
     // Mata Pelajaran
     Route::resource('mata-pelajaran', \App\Http\Controllers\Admin\MataPelajaranController::class);
@@ -56,7 +62,13 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
     Route::get('/jadwal', [\App\Http\Controllers\Guru\JadwalController::class, 'index'])->name('jadwal.index');
 
     // Input Nilai
-    Route::resource('input-nilai', \App\Http\Controllers\Guru\InputNilaiController::class);
+    Route::get('/input-nilai', [\App\Http\Controllers\Guru\InputNilaiController::class, 'index'])->name('input-nilai.index');
+    Route::get('/input-nilai/{id}/edit', [\App\Http\Controllers\Guru\InputNilaiController::class, 'edit'])->name('input-nilai.edit');
+    Route::put('/input-nilai/{id}', [\App\Http\Controllers\Guru\InputNilaiController::class, 'update'])->name('input-nilai.update');
+    Route::delete('/input-nilai/{id}', [\App\Http\Controllers\Guru\InputNilaiController::class, 'destroy'])->name('input-nilai.destroy');
+    Route::get('/input-nilai-bulk', [\App\Http\Controllers\Guru\InputNilaiController::class, 'bulkIndex'])->name('input-nilai.bulk');
+    Route::get('/kelola-nilai-load-siswa', [\App\Http\Controllers\Guru\InputNilaiController::class, 'loadSiswaByJadwal'])->name('input-nilai.load-siswa');
+    Route::post('/input-nilai-bulk', [\App\Http\Controllers\Guru\InputNilaiController::class, 'bulkStore'])->name('input-nilai.bulk-store');
 
     // Catatan Perilaku
     Route::resource('catatan-perilaku', \App\Http\Controllers\Guru\CatatanPerilakuController::class);
@@ -93,6 +105,9 @@ Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')-
     // Kehadiran
     Route::get('/kehadiran', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'index'])->name('kehadiran.index');
     Route::get('/kehadiran/{id}', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'show'])->name('kehadiran.show');
+
+    // Jadwal Harian
+    Route::get('/jadwal-harian', [\App\Http\Controllers\OrangTua\JadwalHarianController::class, 'index'])->name('jadwal-harian.index');
 
     // Pengumuman
     Route::get('/pengumuman', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'index'])->name('pengumuman.index');

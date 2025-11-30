@@ -224,7 +224,7 @@
         <div class="mt-6">
             <h3 class="text-lg font-bold text-gray-800 mb-4">Aksi Cepat</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="{{ route('guru.input-nilai.create') }}"
+                <a href="{{ route('guru.input-nilai.bulk') }}"
                     class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
                     <div class="flex items-center gap-4">
                         <div class="bg-green-100 p-4 rounded-full">

@@ -19,9 +19,9 @@
                 <h2 class="text-2xl font-bold text-gray-800">Input Nilai Siswa</h2>
                 <p class="text-gray-600 mt-2">Kelola nilai siswa untuk mata pelajaran yang Anda ajar</p>
             </div>
-            <a href="{{ route('guru.input-nilai.create') }}"
-                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors duration-300">
-                <i class="fas fa-plus-circle mr-2"></i>Tambah Nilai
+            <a href="{{ route('guru.input-nilai.bulk') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-300">
+                <i class="fas fa-layer-group mr-2"></i>Input Nilai Massal
             </a>
         </div>
 

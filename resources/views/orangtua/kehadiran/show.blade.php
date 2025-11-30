@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <span class="text-sm text-gray-600">Guru Pengajar:</span>
-                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->guru->nama_guru }}</p>
+                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->guru->nama ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -101,15 +101,12 @@
                     </div>
                     <div class="ml-9 grid grid-cols-2 gap-4">
                         <div>
-                            <span class="text-sm text-gray-600">Hari:</span>
-                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->hari }}</p>
+                            <span class="text-sm text-gray-600">Waktu:</span>
+                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->waktu }}</p>
                         </div>
                         <div>
-                            <span class="text-sm text-gray-600">Waktu:</span>
-                            <p class="text-base font-medium text-gray-900">
-                                {{ date('H:i', strtotime($absensi->jadwal->jam_mulai)) }} -
-                                {{ date('H:i', strtotime($absensi->jadwal->jam_selesai)) }}
-                            </p>
+                            <span class="text-sm text-gray-600">Ruang:</span>
+                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->ruang }}</p>
                         </div>
                     </div>
                 </div>

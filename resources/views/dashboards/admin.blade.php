@@ -6,7 +6,8 @@
 @section('dashboard-title', 'Admin Dashboard')
 @section('user-name', auth('admin')->user()->nama)
 @section('user-role', 'Admin')
-@section('welcome-message', 'Selamat datang kembali! Berikut adalah ringkasan data dan aktivitas TK Teratai untuk hari
+@section('welcome-message',
+    'Selamat datang kembali! Berikut adalah ringkasan data dan aktivitas TK Teratai untuk hari
     ini.')
 
 @section('sidebar-menu')
@@ -344,7 +345,6 @@
                                 <tr>
                                     <th class="px-4 py-2 text-left font-semibold text-gray-700">Nama Siswa</th>
                                     <th class="px-4 py-2 text-left font-semibold text-gray-700">Kelas</th>
-                                    <th class="px-4 py-2 text-left font-semibold text-gray-700">Email</th>
                                     <th class="px-4 py-2 text-left font-semibold text-gray-700">Orang Tua</th>
                                 </tr>
                             </thead>
@@ -353,7 +353,6 @@
                                     <tr class="border-b hover:bg-gray-50 transition">
                                         <td class="px-4 py-3 text-gray-800 font-medium">{{ $siswa->nama }}</td>
                                         <td class="px-4 py-3 text-gray-600">{{ $siswa->kelas }}</td>
-                                        <td class="px-4 py-3 text-gray-600 text-xs">{{ $siswa->email }}</td>
                                         <td class="px-4 py-3 text-gray-600">{{ $siswa->orangTua->nama ?? '-' }}</td>
                                     </tr>
                                 @endforeach

@@ -38,7 +38,7 @@
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ $search }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Cari nama, ID, atau email...">
+                        placeholder="Cari nama atau ID siswa...">
                 </div>
                 <div class="w-full md:w-48">
                     <select name="kelas"
@@ -77,10 +77,6 @@
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orang
                                 Tua</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                <x-sort-header column="email" label="Email" />
-                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
                             </th>
                         </tr>
@@ -101,9 +97,6 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $item->orangTua->nama ?? '-' }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-600">{{ $item->email ?: '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex gap-2">
@@ -136,7 +129,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">
                                     <i class="fas fa-user-slash text-4xl mb-2 text-gray-300"></i>
                                     <p>Tidak ada data siswa</p>
                                 </td>
@@ -168,20 +161,8 @@
                     <div class="space-y-2 mb-4">
                         <div class="flex items-center text-sm text-gray-600">
                             <i class="fas fa-user-friends w-5 text-gray-400"></i>
-                            <span class="ml-2">{{ $item->orangTua->nama ?? '-' }}</span>
+                            <span class="ml-2">Orang Tua: {{ $item->orangTua->nama ?? '-' }}</span>
                         </div>
-                        @if ($item->email)
-                            <div class="flex items-center text-sm text-gray-600">
-                                <i class="fas fa-envelope w-5 text-gray-400"></i>
-                                <span class="ml-2">{{ $item->email }}</span>
-                            </div>
-                        @endif
-                        @if ($item->no_telpon)
-                            <div class="flex items-center text-sm text-gray-600">
-                                <i class="fas fa-phone w-5 text-gray-400"></i>
-                                <span class="ml-2">{{ $item->no_telpon }}</span>
-                            </div>
-                        @endif
                     </div>
 
                     <div class="flex gap-2 pt-3 border-t border-gray-200">
