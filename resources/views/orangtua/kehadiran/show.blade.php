@@ -41,10 +41,10 @@
                             'sakit' => 'bg-orange-100 text-orange-800',
                             'alpha' => 'bg-red-100 text-red-800',
                         ];
-                        $color = $statusColors[$absensi->status_kehadiran] ?? 'bg-gray-100 text-gray-800';
+                        $color = $statusColors[$kehadiran->status_kehadiran] ?? 'bg-gray-100 text-gray-800';
                     @endphp
                     <span class="px-4 py-2 rounded-full text-sm font-semibold {{ $color }}">
-                        {{ ucfirst($absensi->status_kehadiran) }}
+                        {{ ucfirst($kehadiran->status_kehadiran) }}
                     </span>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                         <h3 class="font-semibold text-gray-800">Tanggal</h3>
                     </div>
                     <p class="text-lg font-medium text-gray-900 ml-9">
-                        {{ \Carbon\Carbon::parse($absensi->tanggal)->format('d F Y') }}
+                        {{ $kehadiran->pertemuan->tanggal->format('d F Y') }}
                     </p>
                 </div>
 
@@ -69,8 +69,8 @@
                         <h3 class="font-semibold text-gray-800">Siswa</h3>
                     </div>
                     <div class="ml-9">
-                        <p class="text-lg font-medium text-gray-900">{{ $absensi->siswa->nama_siswa }}</p>
-                        <p class="text-sm text-gray-600">Kelas {{ $absensi->siswa->kelas }}</p>
+                        <p class="text-lg font-medium text-gray-900">{{ $kehadiran->siswa->nama }}</p>
+                        <p class="text-sm text-gray-600">Kelas {{ $kehadiran->siswa->kelas }}</p>
                     </div>
                 </div>
 
@@ -84,11 +84,12 @@
                         <div>
                             <span class="text-sm text-gray-600">Pelajaran:</span>
                             <p class="text-lg font-medium text-gray-900">
-                                {{ $absensi->jadwal->mataPelajaran->nama_mata_pelajaran }}</p>
+                                {{ $kehadiran->pertemuan->jadwal->mataPelajaran->nama_mapel }}</p>
                         </div>
                         <div>
                             <span class="text-sm text-gray-600">Guru Pengajar:</span>
-                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->guru->nama ?? '-' }}</p>
+                            <p class="text-base font-medium text-gray-900">
+                                {{ $kehadiran->pertemuan->jadwal->guru->nama ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -102,23 +103,30 @@
                     <div class="ml-9 grid grid-cols-2 gap-4">
                         <div>
                             <span class="text-sm text-gray-600">Waktu:</span>
-                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->waktu }}</p>
+                            <p class="text-base font-medium text-gray-900">
+                                @if ($kehadiran->pertemuan->jadwal->waktu_mulai && $kehadiran->pertemuan->jadwal->waktu_selesai)
+                                    {{ $kehadiran->pertemuan->jadwal->waktu_mulai->format('H:i') }} -
+                                    {{ $kehadiran->pertemuan->jadwal->waktu_selesai->format('H:i') }}
+                                @else
+                                    -
+                                @endif
+                            </p>
                         </div>
                         <div>
                             <span class="text-sm text-gray-600">Ruang:</span>
-                            <p class="text-base font-medium text-gray-900">{{ $absensi->jadwal->ruang }}</p>
+                            <p class="text-base font-medium text-gray-900">{{ $kehadiran->pertemuan->jadwal->ruang }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Additional Info -->
-                @if ($absensi->keterangan)
+                @if ($kehadiran->keterangan)
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <div class="flex items-start gap-3">
                             <i class="fas fa-info-circle text-gray-600 text-xl mt-1"></i>
                             <div class="flex-1">
                                 <h3 class="font-semibold text-gray-800 mb-2">Keterangan</h3>
-                                <p class="text-gray-700">{{ $absensi->keterangan }}</p>
+                                <p class="text-gray-700">{{ $kehadiran->keterangan }}</p>
                             </div>
                         </div>
                     </div>

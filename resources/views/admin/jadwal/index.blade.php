@@ -96,7 +96,14 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->ruang }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 <span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">
-                                    {{ $item->waktu }}
+                                    @if ($item->waktu_mulai && $item->waktu_selesai)
+                                        {{ $item->waktu_mulai->format('H:i') }} -
+                                        {{ $item->waktu_selesai->format('H:i') }}
+                                    @elseif($item->waktu)
+                                        {{ $item->waktu->format('H:i') }}
+                                    @else
+                                        -
+                                    @endif
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
@@ -141,7 +148,13 @@
                             <p class="text-sm text-gray-500">{{ $item->id_jadwal }}</p>
                         </div>
                         <span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">
-                            {{ $item->waktu }}
+                            @if ($item->waktu_mulai && $item->waktu_selesai)
+                                {{ $item->waktu_mulai->format('H:i') }} - {{ $item->waktu_selesai->format('H:i') }}
+                            @elseif($item->waktu)
+                                {{ $item->waktu->format('H:i') }}
+                            @else
+                                -
+                            @endif
                         </span>
                     </div>
                     <div class="space-y-2 mb-3 text-sm text-gray-600">

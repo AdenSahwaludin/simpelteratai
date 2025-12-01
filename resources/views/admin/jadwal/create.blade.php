@@ -58,7 +58,7 @@
                     <label for="ruang" class="block text-sm font-medium text-gray-700 mb-2">Ruang <span
                             class="text-red-500">*</span></label>
                     <input type="text" id="ruang" name="ruang" value="{{ old('ruang') }}"
-                        placeholder="Contoh: Ruang 101, Lab Komputer, dll"
+                        placeholder="Contoh: Kelas A, Lapangan dll"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('ruang') border-red-500 @enderror"
                         required>
                     @error('ruang')
@@ -66,13 +66,71 @@
                     @enderror
                 </div>
 
-                <div class="mb-6">
-                    <label for="waktu" class="block text-sm font-medium text-gray-700 mb-2">Waktu <span
+                <div class="mb-4">
+                    <label for="hari" class="block text-sm font-medium text-gray-700 mb-2">Hari <span
                             class="text-red-500">*</span></label>
-                    <input type="time" id="waktu" name="waktu" value="{{ old('waktu') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu') border-red-500 @enderror"
+                    <select id="hari" name="hari"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('hari') border-red-500 @enderror"
                         required>
-                    @error('waktu')
+                        <option value="">Pilih Hari</option>
+                        <option value="Senin" {{ old('hari') == 'Senin' ? 'selected' : '' }}>Senin</option>
+                        <option value="Selasa" {{ old('hari') == 'Selasa' ? 'selected' : '' }}>Selasa</option>
+                        <option value="Rabu" {{ old('hari') == 'Rabu' ? 'selected' : '' }}>Rabu</option>
+                        <option value="Kamis" {{ old('hari') == 'Kamis' ? 'selected' : '' }}>Kamis</option>
+                        <option value="Jumat" {{ old('hari') == 'Jumat' ? 'selected' : '' }}>Jumat</option>
+                        <option value="Sabtu" {{ old('hari') == 'Sabtu' ? 'selected' : '' }}>Sabtu</option>
+                    </select>
+                    @error('hari')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="waktu_mulai" class="block text-sm font-medium text-gray-700 mb-2">Waktu Mulai <span
+                                class="text-red-500">*</span></label>
+                        <input type="time" id="waktu_mulai" name="waktu_mulai" value="{{ old('waktu_mulai') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu_mulai') border-red-500 @enderror"
+                            required>
+                        @error('waktu_mulai')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="waktu_selesai" class="block text-sm font-medium text-gray-700 mb-2">Waktu Selesai <span
+                                class="text-red-500">*</span></label>
+                        <input type="time" id="waktu_selesai" name="waktu_selesai" value="{{ old('waktu_selesai') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu_selesai') border-red-500 @enderror"
+                            required>
+                        @error('waktu_selesai')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}"
+                        placeholder="Contoh: Kelompok A1, Kelompok B2, dll"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('kelas') border-red-500 @enderror"
+                        required>
+                    @error('kelas')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai Semester
+                        <span class="text-red-500">*</span></label>
+                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('tanggal_mulai') border-red-500 @enderror"
+                        required>
+                    <p class="text-sm text-gray-500 mt-1">
+                        <i class="fas fa-info-circle"></i> Sistem akan otomatis membuat 14 pertemuan mingguan pada hari yang
+                        dipilih
+                    </p>
+                    @error('tanggal_mulai')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

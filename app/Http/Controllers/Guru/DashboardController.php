@@ -27,10 +27,12 @@ class DashboardController extends Controller
 
         // Attendance statistics for today
         $today = now()->format('Y-m-d');
-        $todayAbsensi = Absensi::whereDate('tanggal', $today)
-            ->whereHas('jadwal', function ($query) use ($guru) {
-                $query->where('id_guru', $guru->id_guru);
-            })
+        $todayAbsensi = Absensi::whereHas('pertemuan', function ($query) use ($today, $guru) {
+            $query->whereDate('tanggal', $today)
+                ->whereHas('jadwal', function ($q) use ($guru) {
+                    $q->where('id_guru', $guru->id_guru);
+                });
+        })
             ->get();
 
         $hadirCount = $todayAbsensi->where('status_kehadiran', 'hadir')->count();

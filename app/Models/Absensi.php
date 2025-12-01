@@ -19,13 +19,8 @@ class Absensi extends Model
     protected $fillable = [
         'id_absensi',
         'id_siswa',
-        'id_jadwal',
-        'tanggal',
+        'id_pertemuan',
         'status_kehadiran',
-    ];
-
-    protected $casts = [
-        'tanggal' => 'date',
     ];
 
     /**
@@ -37,11 +32,19 @@ class Absensi extends Model
     }
 
     /**
-     * Get the jadwal that owns the absensi.
+     * Get the pertemuan that owns the absensi.
+     */
+    public function pertemuan(): BelongsTo
+    {
+        return $this->belongsTo(Pertemuan::class, 'id_pertemuan', 'id_pertemuan');
+    }
+
+    /**
+     * Get the jadwal through pertemuan.
      */
     public function jadwal(): BelongsTo
     {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+        return $this->pertemuan->jadwal();
     }
 
     /**

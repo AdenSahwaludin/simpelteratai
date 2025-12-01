@@ -51,7 +51,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ml-6">
                     <div>
                         <span class="text-gray-600">Nama:</span>
-                        <span class="font-medium text-gray-800 ml-2">{{ $perilaku->siswa->nama_siswa }}</span>
+                        <span class="font-medium text-gray-800 ml-2">{{ $perilaku->siswa->nama }}</span>
                     </div>
                     <div>
                         <span class="text-gray-600">Kelas:</span>

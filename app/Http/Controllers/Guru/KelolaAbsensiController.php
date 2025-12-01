@@ -25,8 +25,8 @@ class KelolaAbsensiController extends Controller
 
         if ($hasFilter) {
             $absensi = Absensi::query()
-                ->with(['siswa', 'jadwal.mataPelajaran'])
-                ->whereHas('jadwal', function ($query) use ($guru) {
+                ->with(['siswa', 'pertemuan.jadwal.mataPelajaran'])
+                ->whereHas('pertemuan.jadwal', function ($query) use ($guru) {
                     $query->where('id_guru', $guru->id_guru);
                 })
                 ->when($search, function ($query, $search) {
@@ -35,7 +35,9 @@ class KelolaAbsensiController extends Controller
                     });
                 })
                 ->when($tanggal, function ($query, $tanggal) {
-                    return $query->whereDate('tanggal', $tanggal);
+                    return $query->whereHas('pertemuan', function ($q) use ($tanggal) {
+                        $q->whereDate('tanggal', $tanggal);
+                    });
                 })
                 ->when($kelas, function ($query, $kelas) {
                     return $query->whereHas('siswa', function ($q) use ($kelas) {
@@ -43,9 +45,10 @@ class KelolaAbsensiController extends Controller
                     });
                 })
                 ->when($id_jadwal, function ($query, $id_jadwal) {
-                    return $query->where('id_jadwal', $id_jadwal);
+                    return $query->whereHas('pertemuan', function ($q) use ($id_jadwal) {
+                        $q->where('id_jadwal', $id_jadwal);
+                    });
                 })
-                ->latest('tanggal')
                 ->paginate(20)
                 ->appends($request->query());
         }
@@ -83,13 +86,19 @@ class KelolaAbsensiController extends Controller
             ->orderBy('nama')
             ->get(['id_siswa', 'nama', 'kelas']);
 
-        // Get existing attendance records for this schedule and date
+        // Get existing attendance records through pertemuan
         $existingAbsensi = [];
         if ($tanggal) {
-            $existingAbsensi = Absensi::where('id_jadwal', $id_jadwal)
-                ->where('tanggal', $tanggal)
-                ->pluck('status_kehadiran', 'id_siswa')
-                ->toArray();
+            // Find pertemuan for this jadwal and tanggal
+            $pertemuan = \App\Models\Pertemuan::where('id_jadwal', $id_jadwal)
+                ->whereDate('tanggal', $tanggal)
+                ->first();
+
+            if ($pertemuan) {
+                $existingAbsensi = Absensi::where('id_pertemuan', $pertemuan->id_pertemuan)
+                    ->pluck('status_kehadiran', 'id_siswa')
+                    ->toArray();
+            }
         }
 
         return response()->json([
@@ -119,6 +128,15 @@ class KelolaAbsensiController extends Controller
             return back()->with('error', 'Jadwal tidak ditemukan atau tidak milik Anda.');
         }
 
+        // Find pertemuan for this jadwal and tanggal
+        $pertemuan = \App\Models\Pertemuan::where('id_jadwal', $validated['id_jadwal'])
+            ->whereDate('tanggal', $validated['tanggal'])
+            ->first();
+
+        if (! $pertemuan) {
+            return back()->with('error', 'Pertemuan tidak ditemukan untuk tanggal tersebut.');
+        }
+
         // Get students registered for this schedule from pivot table
         $siswaList = $jadwal->siswa()->get();
 
@@ -127,10 +145,9 @@ class KelolaAbsensiController extends Controller
             $status = $validated['absensi'][$siswa->id_siswa] ?? null;
 
             if ($status) {
-                // Check if absensi already exists for this student, jadwal, and date
+                // Check if absensi already exists for this student and pertemuan
                 $absensi = Absensi::where('id_siswa', $siswa->id_siswa)
-                    ->where('id_jadwal', $validated['id_jadwal'])
-                    ->where('tanggal', $validated['tanggal'])
+                    ->where('id_pertemuan', $pertemuan->id_pertemuan)
                     ->first();
 
                 if (! $absensi) {
@@ -140,8 +157,7 @@ class KelolaAbsensiController extends Controller
                     $absensi = new Absensi([
                         'id_absensi' => 'A'.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT),
                         'id_siswa' => $siswa->id_siswa,
-                        'id_jadwal' => $validated['id_jadwal'],
-                        'tanggal' => $validated['tanggal'],
+                        'id_pertemuan' => $pertemuan->id_pertemuan,
                     ]);
                 }
 
@@ -156,7 +172,7 @@ class KelolaAbsensiController extends Controller
     public function edit(string $id): View
     {
         $guru = auth('guru')->user();
-        $absensi = Absensi::with(['siswa', 'jadwal'])->findOrFail($id);
+        $absensi = Absensi::with(['siswa', 'pertemuan.jadwal'])->findOrFail($id);
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         return view('guru.kelola-absensi.edit', compact('absensi', 'jadwalList'));
@@ -167,12 +183,8 @@ class KelolaAbsensiController extends Controller
         $absensi = Absensi::findOrFail($id);
 
         $validated = $request->validate([
-            'tanggal' => 'required|date',
-            'id_jadwal' => 'required|exists:jadwal,id_jadwal',
-            'status_kehadiran' => 'required|in:hadir,izin,sakit,alpha',
+            'status_kehadiran' => 'required|in:hadir,izin,sakit,alpha,belum_absen',
         ], [
-            'tanggal.required' => 'Tanggal wajib diisi',
-            'id_jadwal.required' => 'Jadwal wajib dipilih',
             'status_kehadiran.required' => 'Status kehadiran wajib dipilih',
         ]);
 

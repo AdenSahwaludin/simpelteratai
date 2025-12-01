@@ -79,13 +79,14 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($kehadiran as $item)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $item->tanggal->format('d M Y') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $item->pertemuan->tanggal->format('d M Y') }}
+                            </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                                 <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900">
-                                {{ $item->jadwal->mataPelajaran->nama_mapel ?? '-' }}</td>
+                                {{ $item->pertemuan->jadwal->mataPelajaran->nama_mapel ?? '-' }}</td>
                             <td class="px-6 py-4">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -125,7 +126,7 @@
                     <div class="flex justify-between items-start mb-3">
                         <div>
                             <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                            <div class="text-xs text-gray-500">{{ $item->tanggal->format('d M Y') }}</div>
+                            <div class="text-xs text-gray-500">{{ $item->pertemuan->tanggal->format('d M Y') }}</div>
                         </div>
                         <span
                             class="px-2 py-1 text-xs font-semibold rounded-full 

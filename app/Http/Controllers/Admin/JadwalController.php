@@ -71,15 +71,26 @@ class JadwalController extends Controller
             'id_guru' => 'required|exists:guru,id_guru',
             'id_mata_pelajaran' => 'required|exists:mata_pelajaran,id_mata_pelajaran',
             'ruang' => 'required|string|max:255',
-            'waktu' => 'required|date_format:H:i',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i|after:waktu_mulai',
+            'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu',
+            'kelas' => 'required|string|max:20',
+            'tanggal_mulai' => 'required|date',
         ], [
             'id_guru.required' => 'Guru wajib dipilih',
             'id_guru.exists' => 'Data guru tidak ditemukan',
             'id_mata_pelajaran.required' => 'Mata pelajaran wajib dipilih',
             'id_mata_pelajaran.exists' => 'Data mata pelajaran tidak ditemukan',
             'ruang.required' => 'Ruang kelas wajib diisi',
-            'waktu.required' => 'Waktu wajib diisi',
-            'waktu.date_format' => 'Format waktu tidak valid',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi',
+            'waktu_mulai.date_format' => 'Format waktu mulai tidak valid',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi',
+            'waktu_selesai.date_format' => 'Format waktu selesai tidak valid',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai',
+            'hari.required' => 'Hari wajib dipilih',
+            'kelas.required' => 'Kelas wajib dipilih',
+            'tanggal_mulai.required' => 'Tanggal mulai semester wajib diisi',
+            'tanggal_mulai.date' => 'Format tanggal tidak valid',
         ]);
 
         $jadwal = new Jadwal;
@@ -87,10 +98,22 @@ class JadwalController extends Controller
         $jadwal->id_guru = $validated['id_guru'];
         $jadwal->id_mata_pelajaran = $validated['id_mata_pelajaran'];
         $jadwal->ruang = $validated['ruang'];
-        $jadwal->waktu = $validated['waktu'];
+        $jadwal->waktu_mulai = $validated['waktu_mulai'];
+        $jadwal->waktu_selesai = $validated['waktu_selesai'];
+        $jadwal->hari = $validated['hari'];
+        $jadwal->kelas = $validated['kelas'];
+        $jadwal->tanggal_mulai = $validated['tanggal_mulai'];
         $jadwal->save();
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');
+        // Auto-generate 14 pertemuan dan assign semua siswa
+        try {
+            $jadwal->generatePertemuan();
+            $message = 'Jadwal berhasil ditambahkan dengan 14 pertemuan dan semua siswa terdaftar.';
+        } catch (\Exception $e) {
+            $message = 'Jadwal berhasil ditambahkan, tapi gagal generate pertemuan: '.$e->getMessage();
+        }
+
+        return redirect()->route('admin.jadwal.index')->with('success', $message);
     }
 
     /**
@@ -100,7 +123,7 @@ class JadwalController extends Controller
     {
         $jadwal = Jadwal::query()
             ->where('id_jadwal', $id)
-            ->with(['guru', 'mataPelajaran', 'siswa', 'absensi'])
+            ->with(['guru', 'mataPelajaran', 'siswa', 'pertemuan.absensi'])
             ->firstOrFail();
 
         return view('admin.jadwal.show', compact('jadwal'));
@@ -129,21 +152,26 @@ class JadwalController extends Controller
             'id_guru' => 'required|exists:guru,id_guru',
             'id_mata_pelajaran' => 'required|exists:mata_pelajaran,id_mata_pelajaran',
             'ruang' => 'required|string|max:255',
-            'waktu' => 'required|date_format:H:i',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i|after:waktu_mulai',
         ], [
             'id_guru.required' => 'Guru wajib dipilih',
             'id_guru.exists' => 'Data guru tidak ditemukan',
             'id_mata_pelajaran.required' => 'Mata pelajaran wajib dipilih',
             'id_mata_pelajaran.exists' => 'Data mata pelajaran tidak ditemukan',
             'ruang.required' => 'Ruang kelas wajib diisi',
-            'waktu.required' => 'Waktu wajib diisi',
-            'waktu.date_format' => 'Format waktu tidak valid',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi',
+            'waktu_mulai.date_format' => 'Format waktu mulai tidak valid',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi',
+            'waktu_selesai.date_format' => 'Format waktu selesai tidak valid',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai',
         ]);
 
         $jadwal->id_guru = $validated['id_guru'];
         $jadwal->id_mata_pelajaran = $validated['id_mata_pelajaran'];
         $jadwal->ruang = $validated['ruang'];
-        $jadwal->waktu = $validated['waktu'];
+        $jadwal->waktu_mulai = $validated['waktu_mulai'];
+        $jadwal->waktu_selesai = $validated['waktu_selesai'];
         $jadwal->save();
 
         return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');

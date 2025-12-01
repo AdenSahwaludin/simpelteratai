@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('siswa', function (Blueprint $table) {
             $table->string('id_siswa', 4)->primary();
             $table->string('nama', 255);
-            $table->enum('jenis_kelamin', ['L', 'P'])->after('nama');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('tempat_lahir', 50)->nullable();
+            $table->date('tanggal_lahir');
             $table->string('kelas', 20);
             $table->string('alamat', 100);
-            $table->string('tempat_lahir', 50)->nullable()->after('jenis_kelamin');
-            $table->date('tanggal_lahir')->after('tempat_lahir');
             $table->string('id_orang_tua', 4);
             $table->timestamps();
 

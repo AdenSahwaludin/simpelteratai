@@ -26,10 +26,18 @@ class Jadwal extends Model
         'id_mata_pelajaran',
         'ruang',
         'waktu',
+        'waktu_mulai',
+        'waktu_selesai',
+        'hari',
+        'kelas',
+        'tanggal_mulai',
     ];
 
     protected $casts = [
         'waktu' => 'datetime:H:i',
+        'waktu_mulai' => 'datetime:H:i',
+        'waktu_selesai' => 'datetime:H:i',
+        'tanggal_mulai' => 'date',
     ];
 
     /**
@@ -49,11 +57,11 @@ class Jadwal extends Model
     }
 
     /**
-     * Get the absensi for the jadwal.
+     * Get all pertemuan for this jadwal.
      */
-    public function absensi(): HasMany
+    public function pertemuan(): HasMany
     {
-        return $this->hasMany(Absensi::class, 'id_jadwal', 'id_jadwal');
+        return $this->hasMany(Pertemuan::class, 'id_jadwal', 'id_jadwal');
     }
 
     /**
@@ -67,5 +75,70 @@ class Jadwal extends Model
             'id_jadwal',
             'id_siswa'
         )->withTimestamps();
+    }
+
+    /**
+     * Generate 14 pertemuan otomatis untuk jadwal ini
+     */
+    public function generatePertemuan(): void
+    {
+        if (! $this->tanggal_mulai) {
+            throw new \Exception('Tanggal mulai semester belum diset');
+        }
+
+        $tanggalMulai = $this->tanggal_mulai;
+        $hariMap = [
+            'Senin' => 1,
+            'Selasa' => 2,
+            'Rabu' => 3,
+            'Kamis' => 4,
+            'Jumat' => 5,
+            'Sabtu' => 6,
+        ];
+
+        $hariTarget = $hariMap[$this->hari];
+        $tanggalPertemuan = $tanggalMulai->copy();
+
+        // Cari hari pertama yang sesuai
+        while ($tanggalPertemuan->dayOfWeek !== $hariTarget) {
+            $tanggalPertemuan->addDay();
+        }
+
+        // Generate 14 pertemuan
+        for ($i = 1; $i <= 14; $i++) {
+            Pertemuan::create([
+                'id_pertemuan' => $this->id_jadwal.'-P'.str_pad((string) $i, 2, '0', STR_PAD_LEFT),
+                'id_jadwal' => $this->id_jadwal,
+                'pertemuan_ke' => $i,
+                'tanggal' => $tanggalPertemuan->copy(),
+                'status' => 'terjadwal',
+            ]);
+
+            $tanggalPertemuan->addWeek();
+        }
+
+        // Auto-assign semua siswa di kelas ke semua pertemuan
+        $this->assignSiswaToPertemuan();
+    }
+
+    /**
+     * Assign semua siswa di kelas ke semua pertemuan jadwal ini
+     */
+    public function assignSiswaToPertemuan(): void
+    {
+        $siswaList = Siswa::where('kelas', $this->kelas)->get();
+        $pertemuanList = $this->pertemuan;
+
+        foreach ($pertemuanList as $pertemuan) {
+            foreach ($siswaList as $siswa) {
+                Absensi::firstOrCreate([
+                    'id_absensi' => 'A'.str_pad((string) (Absensi::count() + 1), 3, '0', STR_PAD_LEFT),
+                    'id_siswa' => $siswa->id_siswa,
+                    'id_pertemuan' => $pertemuan->id_pertemuan,
+                ], [
+                    'status_kehadiran' => 'belum_absen',
+                ]);
+            }
+        }
     }
 }

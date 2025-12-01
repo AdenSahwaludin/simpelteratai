@@ -36,9 +36,6 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     Route::get('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'edit'])->name('jadwal-siswa.edit');
     Route::put('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'update'])->name('jadwal-siswa.update');
 
-    // Jadwal Harian
-    Route::resource('jadwal-harian', \App\Http\Controllers\Admin\JadwalHarianController::class);
-
     // Mata Pelajaran
     Route::resource('mata-pelajaran', \App\Http\Controllers\Admin\MataPelajaranController::class);
 
@@ -105,9 +102,6 @@ Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')-
     // Kehadiran
     Route::get('/kehadiran', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'index'])->name('kehadiran.index');
     Route::get('/kehadiran/{id}', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'show'])->name('kehadiran.show');
-
-    // Jadwal Harian
-    Route::get('/jadwal-harian', [\App\Http\Controllers\OrangTua\JadwalHarianController::class, 'index'])->name('jadwal-harian.index');
 
     // Pengumuman
     Route::get('/pengumuman', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'index'])->name('pengumuman.index');

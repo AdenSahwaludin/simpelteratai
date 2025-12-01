@@ -25,7 +25,7 @@ class KehadiranController extends Controller
             ->get();
 
         $kehadiran = Absensi::query()
-            ->with(['siswa', 'jadwal.guru', 'jadwal.mataPelajaran'])
+            ->with(['siswa', 'pertemuan.jadwal.guru', 'pertemuan.jadwal.mataPelajaran'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })
@@ -40,7 +40,9 @@ class KehadiranController extends Controller
                     $q->where('nama', 'like', "%{$search}%");
                 });
             })
-            ->latest('tanggal')
+            ->join('pertemuan', 'absensi.id_pertemuan', '=', 'pertemuan.id_pertemuan')
+            ->orderBy('pertemuan.tanggal', 'desc')
+            ->select('absensi.*')
             ->paginate(20)
             ->appends($request->query());
 
@@ -56,7 +58,7 @@ class KehadiranController extends Controller
 
         $kehadiran = Absensi::query()
             ->where('id_absensi', $id)
-            ->with(['siswa', 'jadwal.guru', 'jadwal.mataPelajaran'])
+            ->with(['siswa', 'pertemuan.jadwal.guru', 'pertemuan.jadwal.mataPelajaran'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })

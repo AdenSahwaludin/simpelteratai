@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OrangTuaSeeder::class,
             DemoDataSeeder::class,
-            JadwalHarianSeeder::class,
         ]);
     }
 }

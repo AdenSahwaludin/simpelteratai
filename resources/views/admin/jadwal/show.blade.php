@@ -53,7 +53,15 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Waktu</p>
-                            <p class="font-semibold text-gray-900">{{ $jadwal->waktu->format('H:i') }}</p>
+                            <p class="font-semibold text-gray-900">
+                                @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
+                                    {{ $jadwal->waktu_mulai->format('H:i') }} - {{ $jadwal->waktu_selesai->format('H:i') }}
+                                @elseif($jadwal->waktu)
+                                    {{ $jadwal->waktu->format('H:i') }}
+                                @else
+                                    -
+                                @endif
+                            </p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Jumlah Siswa</p>
@@ -140,17 +148,14 @@
                             <p class="text-3xl font-bold text-blue-600">{{ $jadwal->siswa->count() }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600">Total Catatan Kehadiran</p>
-                            <p class="text-3xl font-bold text-green-600">{{ $jadwal->absensi->count() }}</p>
+                            <p class="text-sm text-gray-600">Total Pertemuan</p>
+                            <p class="text-3xl font-bold text-green-600">{{ $jadwal->pertemuan->count() }}</p>
                         </div>
-                        @if ($jadwal->siswa->count() > 0)
-                            <div>
-                                <p class="text-sm text-gray-600">Persentase Catatan</p>
-                                <p class="text-lg font-semibold text-gray-800">
-                                    {{ number_format(($jadwal->absensi->count() / $jadwal->siswa->count()) * 100, 1) }}%
-                                </p>
-                            </div>
-                        @endif
+                        <div>
+                            <p class="text-sm text-gray-600">Total Catatan Kehadiran</p>
+                            <p class="text-3xl font-bold text-purple-600">
+                                {{ $jadwal->pertemuan->sum(fn($p) => $p->absensi->count()) }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

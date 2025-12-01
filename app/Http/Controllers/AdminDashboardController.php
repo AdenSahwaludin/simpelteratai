@@ -44,7 +44,9 @@ class AdminDashboardController extends Controller
 
         // Attendance Statistics (Today)
         $todayAttendance = Absensi::with('siswa')
-            ->whereDate('tanggal', today())
+            ->whereHas('pertemuan', function ($query) {
+                $query->whereDate('tanggal', today());
+            })
             ->get();
 
         $hadir = $todayAttendance->where('status_kehadiran', 'Hadir')->count();

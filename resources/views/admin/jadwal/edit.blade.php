@@ -65,7 +65,7 @@
                     <label for="ruang" class="block text-sm font-medium text-gray-700 mb-2">Ruang <span
                             class="text-red-500">*</span></label>
                     <input type="text" id="ruang" name="ruang" value="{{ old('ruang', $jadwal->ruang) }}"
-                        placeholder="Contoh: Ruang 101, Lab Komputer, dll"
+                        placeholder="Contoh: Kelas A, Lapangan dll"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('ruang') border-red-500 @enderror"
                         required>
                     @error('ruang')
@@ -73,16 +73,29 @@
                     @enderror
                 </div>
 
-                <div class="mb-6">
-                    <label for="waktu" class="block text-sm font-medium text-gray-700 mb-2">Waktu <span
-                            class="text-red-500">*</span></label>
-                    <input type="time" id="waktu" name="waktu"
-                        value="{{ old('waktu', \Carbon\Carbon::parse($jadwal->waktu)->format('H:i')) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu') border-red-500 @enderror"
-                        required>
-                    @error('waktu')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="waktu_mulai" class="block text-sm font-medium text-gray-700 mb-2">Waktu Mulai <span
+                                class="text-red-500">*</span></label>
+                        <input type="time" id="waktu_mulai" name="waktu_mulai"
+                            value="{{ old('waktu_mulai', $jadwal->waktu_mulai ? \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('H:i') : '') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu_mulai') border-red-500 @enderror"
+                            required>
+                        @error('waktu_mulai')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="waktu_selesai" class="block text-sm font-medium text-gray-700 mb-2">Waktu Selesai <span
+                                class="text-red-500">*</span></label>
+                        <input type="time" id="waktu_selesai" name="waktu_selesai"
+                            value="{{ old('waktu_selesai', $jadwal->waktu_selesai ? \Carbon\Carbon::parse($jadwal->waktu_selesai)->format('H:i') : '') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('waktu_selesai') border-red-500 @enderror"
+                            required>
+                        @error('waktu_selesai')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="flex gap-4">

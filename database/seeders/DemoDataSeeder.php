@@ -51,11 +51,11 @@ class DemoDataSeeder extends Seeder
 
         // Orang Tua (5 data)
         $orangTuas = [
-            ['id_orang_tua' => 'OT01', 'nama' => 'Suparman', 'email' => 'suparman@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567801'],
-            ['id_orang_tua' => 'OT02', 'nama' => 'Supardi', 'email' => 'supardi@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567802'],
-            ['id_orang_tua' => 'OT03', 'nama' => 'Sumanto', 'email' => 'sumanto@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567803'],
-            ['id_orang_tua' => 'OT04', 'nama' => 'Sukirman', 'email' => 'sukirman@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567804'],
-            ['id_orang_tua' => 'OT05', 'nama' => 'Sutarjo', 'email' => 'sutarjo@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567805'],
+            ['id_orang_tua' => 'O003', 'nama' => 'Suparman', 'email' => 'suparman@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567801'],
+            ['id_orang_tua' => 'O004', 'nama' => 'Supardi', 'email' => 'supardi@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567802'],
+            ['id_orang_tua' => 'O005', 'nama' => 'Sumanto', 'email' => 'sumanto@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567803'],
+            ['id_orang_tua' => 'O006', 'nama' => 'Sukirman', 'email' => 'sukirman@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567804'],
+            ['id_orang_tua' => 'O007', 'nama' => 'Sutarjo', 'email' => 'sutarjo@gmail.com', 'password' => Hash::make('password'), 'no_telpon' => '083234567805'],
         ];
 
         foreach ($orangTuas as $orangTua) {
@@ -64,11 +64,11 @@ class DemoDataSeeder extends Seeder
 
         // Siswa (5 data)
         $siswaData = [
-            ['id_siswa' => 'SW01', 'nama' => 'Andi Pratama', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Bandung', 'tanggal_lahir' => '2013-05-15', 'kelas' => '5A', 'alamat' => 'Jl. Merdeka No. 10', 'id_orang_tua' => 'OT01'],
-            ['id_siswa' => 'SW02', 'nama' => 'Budi Setiawan', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Sumedang', 'tanggal_lahir' => '2013-08-22', 'kelas' => '5A', 'alamat' => 'Jl. Sudirman No. 20', 'id_orang_tua' => 'OT02'],
-            ['id_siswa' => 'SW03', 'nama' => 'Citra Dewi', 'jenis_kelamin' => 'P', 'tempat_lahir' => 'Cirebon', 'tanggal_lahir' => '2013-03-10', 'kelas' => '5B', 'alamat' => 'Jl. Gatot Subroto No. 30', 'id_orang_tua' => 'OT03'],
-            ['id_siswa' => 'SW04', 'nama' => 'Doni Ramadhan', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Bandung', 'tanggal_lahir' => '2013-11-30', 'kelas' => '5B', 'alamat' => 'Jl. Ahmad Yani No. 40', 'id_orang_tua' => 'OT04'],
-            ['id_siswa' => 'SW05', 'nama' => 'Eka Putri', 'jenis_kelamin' => 'P', 'tempat_lahir' => 'Jakarta', 'tanggal_lahir' => '2012-07-18', 'kelas' => '6A', 'alamat' => 'Jl. Diponegoro No. 50', 'id_orang_tua' => 'OT05'],
+            ['id_siswa' => 'S001', 'nama' => 'Andi Pratama', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Bandung', 'tanggal_lahir' => '2013-05-15', 'kelas' => '5A', 'alamat' => 'Jl. Merdeka No. 10', 'id_orang_tua' => 'O003'],
+            ['id_siswa' => 'S002', 'nama' => 'Budi Setiawan', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Sumedang', 'tanggal_lahir' => '2013-08-22', 'kelas' => '5A', 'alamat' => 'Jl. Sudirman No. 20', 'id_orang_tua' => 'O004'],
+            ['id_siswa' => 'S003', 'nama' => 'Citra Dewi', 'jenis_kelamin' => 'P', 'tempat_lahir' => 'Cirebon', 'tanggal_lahir' => '2013-03-10', 'kelas' => '5B', 'alamat' => 'Jl. Gatot Subroto No. 30', 'id_orang_tua' => 'O005'],
+            ['id_siswa' => 'S004', 'nama' => 'Doni Ramadhan', 'jenis_kelamin' => 'L', 'tempat_lahir' => 'Bandung', 'tanggal_lahir' => '2013-11-30', 'kelas' => '5B', 'alamat' => 'Jl. Ahmad Yani No. 40', 'id_orang_tua' => 'O006'],
+            ['id_siswa' => 'S005', 'nama' => 'Eka Putri', 'jenis_kelamin' => 'P', 'tempat_lahir' => 'Jakarta', 'tanggal_lahir' => '2012-07-18', 'kelas' => '6A', 'alamat' => 'Jl. Diponegoro No. 50', 'id_orang_tua' => 'O007'],
         ];
 
         foreach ($siswaData as $siswa) {
@@ -88,52 +88,66 @@ class DemoDataSeeder extends Seeder
             MataPelajaran::firstOrCreate(['id_mata_pelajaran' => $mapel['id_mata_pelajaran']], $mapel);
         }
 
-        // Jadwal (5 data)
+        // Jadwal (DISABLED - gunakan form create jadwal untuk auto-generate 14 pertemuan)
+        // Data jadwal sekarang butuh: hari, kelas, tanggal_mulai
+        // Dan akan auto-generate 14 pertemuan + assign semua siswa
+        /*
         $jadwals = [
-            ['id_jadwal' => 'JD1', 'id_guru' => 'G01', 'id_mata_pelajaran' => 'MP1', 'waktu' => '07:00:00', 'ruang' => '5A'],
-            ['id_jadwal' => 'JD2', 'id_guru' => 'G02', 'id_mata_pelajaran' => 'MP2', 'waktu' => '08:30:00', 'ruang' => '5A'],
-            ['id_jadwal' => 'JD3', 'id_guru' => 'G03', 'id_mata_pelajaran' => 'MP3', 'waktu' => '10:00:00', 'ruang' => '5B'],
-            ['id_jadwal' => 'JD4', 'id_guru' => 'G04', 'id_mata_pelajaran' => 'MP4', 'waktu' => '13:00:00', 'ruang' => '5B'],
-            ['id_jadwal' => 'JD5', 'id_guru' => 'G05', 'id_mata_pelajaran' => 'MP5', 'waktu' => '07:00:00', 'ruang' => '6A'],
+            ['id_jadwal' => 'JD1', 'id_guru' => 'G01', 'id_mata_pelajaran' => 'MP1', 'waktu' => '07:00:00', 'hari' => 'Senin', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-06'],
+            ['id_jadwal' => 'JD2', 'id_guru' => 'G02', 'id_mata_pelajaran' => 'MP2', 'waktu' => '08:30:00', 'hari' => 'Selasa', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-07'],
+            ['id_jadwal' => 'JD3', 'id_guru' => 'G03', 'id_mata_pelajaran' => 'MP3', 'waktu' => '10:00:00', 'hari' => 'Rabu', 'kelas' => '5B', 'ruang' => '5B', 'tanggal_mulai' => '2025-01-08'],
         ];
 
-        foreach ($jadwals as $jadwal) {
-            Jadwal::firstOrCreate(['id_jadwal' => $jadwal['id_jadwal']], $jadwal);
+        foreach ($jadwals as $data) {
+            $jadwal = Jadwal::firstOrCreate(['id_jadwal' => $data['id_jadwal']], $data);
+            // Auto-generate 14 pertemuan + assign siswa
+            if ($jadwal->wasRecentlyCreated) {
+                $jadwal->generatePertemuan();
+            }
         }
+        */
 
-        // Absensi (5 data)
+        // Absensi (DISABLED - sekarang auto-generated saat create jadwal)
+        // Absensi sekarang link ke pertemuan, bukan jadwal
+        /*
         $absensis = [
-            ['id_absensi' => 'A001', 'id_siswa' => 'SW01', 'id_jadwal' => 'JD1', 'tanggal' => '2025-11-18', 'status_kehadiran' => 'hadir'],
-            ['id_absensi' => 'A002', 'id_siswa' => 'SW02', 'id_jadwal' => 'JD2', 'tanggal' => '2025-11-18', 'status_kehadiran' => 'hadir'],
-            ['id_absensi' => 'A003', 'id_siswa' => 'SW03', 'id_jadwal' => 'JD3', 'tanggal' => '2025-11-18', 'status_kehadiran' => 'izin'],
-            ['id_absensi' => 'A004', 'id_siswa' => 'SW04', 'id_jadwal' => 'JD4', 'tanggal' => '2025-11-18', 'status_kehadiran' => 'sakit'],
-            ['id_absensi' => 'A005', 'id_siswa' => 'SW05', 'id_jadwal' => 'JD5', 'tanggal' => '2025-11-18', 'status_kehadiran' => 'alpha'],
+            ['id_absensi' => 'A001', 'id_siswa' => 'S001', 'id_pertemuan' => 'JD1-P01', 'status_kehadiran' => 'hadir'],
+            ['id_absensi' => 'A002', 'id_siswa' => 'S002', 'id_pertemuan' => 'JD2-P01', 'status_kehadiran' => 'hadir'],
         ];
 
         foreach ($absensis as $absensi) {
             Absensi::firstOrCreate(['id_absensi' => $absensi['id_absensi']], $absensi);
         }
+        */
 
+        /*
+        foreach ($absensis as $absensi) {
+            Absensi::firstOrCreate(['id_absensi' => $absensi['id_absensi']], $absensi);
+        }
+        */
+
+        /*
         // Laporan Perkembangan (5 data)
         $laporans = [
-            ['id_laporan' => 'LP1', 'id_siswa' => 'SW01', 'id_mata_pelajaran' => 'MP1', 'nilai' => 85, 'id_absensi' => 'A001', 'komentar' => 'Sangat baik'],
-            ['id_laporan' => 'LP2', 'id_siswa' => 'SW02', 'id_mata_pelajaran' => 'MP2', 'nilai' => 90, 'id_absensi' => 'A002', 'komentar' => 'Excellent'],
-            ['id_laporan' => 'LP3', 'id_siswa' => 'SW03', 'id_mata_pelajaran' => 'MP3', 'nilai' => 78, 'id_absensi' => 'A003', 'komentar' => 'Baik, perlu ditingkatkan'],
-            ['id_laporan' => 'LP4', 'id_siswa' => 'SW04', 'id_mata_pelajaran' => 'MP4', 'nilai' => 88, 'id_absensi' => 'A004', 'komentar' => 'Sangat memuaskan'],
-            ['id_laporan' => 'LP5', 'id_siswa' => 'SW05', 'id_mata_pelajaran' => 'MP5', 'nilai' => 92, 'id_absensi' => 'A005', 'komentar' => 'Luar biasa'],
+            ['id_laporan' => 'LP1', 'id_siswa' => 'S001', 'id_mata_pelajaran' => 'MP1', 'nilai' => 85, 'id_absensi' => 'A001', 'komentar' => 'Sangat baik'],
+            ['id_laporan' => 'LP2', 'id_siswa' => 'S002', 'id_mata_pelajaran' => 'MP2', 'nilai' => 90, 'id_absensi' => 'A002', 'komentar' => 'Excellent'],
+            ['id_laporan' => 'LP3', 'id_siswa' => 'S003', 'id_mata_pelajaran' => 'MP3', 'nilai' => 78, 'id_absensi' => 'A003', 'komentar' => 'Baik, perlu ditingkatkan'],
+            ['id_laporan' => 'LP4', 'id_siswa' => 'S004', 'id_mata_pelajaran' => 'MP4', 'nilai' => 88, 'id_absensi' => 'A004', 'komentar' => 'Sangat memuaskan'],
+            ['id_laporan' => 'LP5', 'id_siswa' => 'S005', 'id_mata_pelajaran' => 'MP5', 'nilai' => 92, 'id_absensi' => 'A005', 'komentar' => 'Luar biasa'],
         ];
 
         foreach ($laporans as $laporan) {
             LaporanPerkembangan::firstOrCreate(['id_laporan' => $laporan['id_laporan']], $laporan);
         }
+        */
 
         // Perilaku (5 data)
         $perilakus = [
-            ['id_perilaku' => 'PR1', 'id_siswa' => 'SW01', 'catatan_perilaku' => 'Ananda hari ini menunjukkan sikap kerjasama yang baik dan membantu teman yang kesulitan'],
-            ['id_perilaku' => 'PR2', 'id_siswa' => 'SW02', 'catatan_perilaku' => 'Ananda masih perlu dibimbing untuk fokus saat kegiatan belajar karena mudah teralihkan'],
-            ['id_perilaku' => 'PR3', 'id_siswa' => 'SW03', 'catatan_perilaku' => 'Ananda mampu mengikuti instruksi guru dengan baik dan menunjukkan disiplin selama kegiatan berlangsung'],
-            ['id_perilaku' => 'PR4', 'id_siswa' => 'SW04', 'catatan_perilaku' => 'Ananda tampak kurang percaya diri saat diminta maju ke depan kelas, perlu diberikan motivasi lebih'],
-            ['id_perilaku' => 'PR5', 'id_siswa' => 'SW05', 'catatan_perilaku' => 'Ananda sangat antusias mengikuti kegiatan seni dan menunjukkan kreativitas yang tinggi'],
+            ['id_perilaku' => 'PR1', 'id_siswa' => 'S001', 'catatan_perilaku' => 'Ananda hari ini menunjukkan sikap kerjasama yang baik dan membantu teman yang kesulitan'],
+            ['id_perilaku' => 'PR2', 'id_siswa' => 'S002', 'catatan_perilaku' => 'Ananda masih perlu dibimbing untuk fokus saat kegiatan belajar karena mudah teralihkan'],
+            ['id_perilaku' => 'PR3', 'id_siswa' => 'S003', 'catatan_perilaku' => 'Ananda mampu mengikuti instruksi guru dengan baik dan menunjukkan disiplin selama kegiatan berlangsung'],
+            ['id_perilaku' => 'PR4', 'id_siswa' => 'S004', 'catatan_perilaku' => 'Ananda tampak kurang percaya diri saat diminta maju ke depan kelas, perlu diberikan motivasi lebih'],
+            ['id_perilaku' => 'PR5', 'id_siswa' => 'S005', 'catatan_perilaku' => 'Ananda sangat antusias mengikuti kegiatan seni dan menunjukkan kreativitas yang tinggi'],
         ];
 
         foreach ($perilakus as $perilaku) {
