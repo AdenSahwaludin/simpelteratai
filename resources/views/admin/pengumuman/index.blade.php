@@ -56,10 +56,6 @@
                     <tr>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                            <x-sort-header column="id_pengumuman" label="ID" />
-                        </th>
-                        <th
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                             <x-sort-header column="judul" label="Judul" />
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Isi</th>
@@ -70,8 +66,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pembuat
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Publikasi
-                        </th>
+                            Publikasi</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
                         </th>
                     </tr>
@@ -79,7 +74,6 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($pengumuman as $item)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->id_pengumuman }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->judul }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-600">
@@ -99,29 +93,29 @@
                                         Admin</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
                                 <a href="{{ route('admin.pengumuman.show', $item->id_pengumuman) }}"
-                                    class="text-green-600 hover:text-green-900 mr-3">
-                                    <i class="fas fa-eye"></i> Lihat
+                                    class="text-green-600 hover:text-green-900">
+                                    <i class="fas fa-eye"></i>
                                 </a>
                                 <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
-                                    class="text-blue-600 hover:text-blue-900 mr-3">
-                                    <i class="fas fa-edit"></i> Edit
+                                    class="text-blue-600 hover:text-blue-900">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('admin.pengumuman.destroy', $item->id_pengumuman) }}" method="POST"
-                                    class="inline-block"
+                                    class="inline"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900">
-                                        <i class="fas fa-trash"></i> Hapus
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
                                 <i class="fas fa-inbox text-4xl mb-2"></i>
                                 <p>Tidak ada data pengumuman{{ $search ? ' yang sesuai dengan pencarian' : '' }}</p>
                             </td>

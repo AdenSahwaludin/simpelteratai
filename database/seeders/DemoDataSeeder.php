@@ -10,8 +10,6 @@ use App\Models\Komentar;
 use App\Models\LaporanPerkembangan;
 use App\Models\MataPelajaran;
 use App\Models\OrangTua;
-use App\Models\Pengumuman;
-use App\Models\Perilaku;
 use App\Models\Siswa;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -140,46 +138,6 @@ class DemoDataSeeder extends Seeder
             LaporanPerkembangan::firstOrCreate(['id_laporan' => $laporan['id_laporan']], $laporan);
         }
         */
-
-        // Perilaku (5 data)
-        $perilakus = [
-            ['id_perilaku' => 'PR1', 'id_siswa' => 'S001', 'catatan_perilaku' => 'Ananda hari ini menunjukkan sikap kerjasama yang baik dan membantu teman yang kesulitan'],
-            ['id_perilaku' => 'PR2', 'id_siswa' => 'S002', 'catatan_perilaku' => 'Ananda masih perlu dibimbing untuk fokus saat kegiatan belajar karena mudah teralihkan'],
-            ['id_perilaku' => 'PR3', 'id_siswa' => 'S003', 'catatan_perilaku' => 'Ananda mampu mengikuti instruksi guru dengan baik dan menunjukkan disiplin selama kegiatan berlangsung'],
-            ['id_perilaku' => 'PR4', 'id_siswa' => 'S004', 'catatan_perilaku' => 'Ananda tampak kurang percaya diri saat diminta maju ke depan kelas, perlu diberikan motivasi lebih'],
-            ['id_perilaku' => 'PR5', 'id_siswa' => 'S005', 'catatan_perilaku' => 'Ananda sangat antusias mengikuti kegiatan seni dan menunjukkan kreativitas yang tinggi'],
-        ];
-
-        foreach ($perilakus as $perilaku) {
-            Perilaku::firstOrCreate(['id_perilaku' => $perilaku['id_perilaku']], $perilaku);
-        }
-
-        // Pengumuman (5 data)
-        $pengumumans = [
-            ['id_pengumuman' => 'PG1', 'judul' => 'Libur Semester Ganjil', 'isi' => 'Libur semester ganjil akan dimulai tanggal 20 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A01', 'publikasi' => true],
-            ['id_pengumuman' => 'PG2', 'judul' => 'Rapat Orang Tua', 'isi' => 'Rapat orang tua akan diadakan pada tanggal 25 November 2025 pukul 09.00 WIB', 'tanggal' => '2025-11-18', 'id_admin' => 'A02', 'publikasi' => true],
-            ['id_pengumuman' => 'PG3', 'judul' => 'Ujian Akhir Semester', 'isi' => 'Ujian akhir semester akan dilaksanakan tanggal 1-10 Desember 2025', 'tanggal' => '2025-11-18', 'id_admin' => 'A03', 'publikasi' => true],
-            ['id_pengumuman' => 'PG4', 'judul' => 'Penerimaan Siswa Baru', 'isi' => 'Pendaftaran siswa baru tahun ajaran 2026/2027 dibuka mulai 1 Januari 2026', 'tanggal' => '2025-11-18', 'id_admin' => 'A04', 'publikasi' => false],
-            ['id_pengumuman' => 'PG5', 'judul' => 'Kegiatan Ekstrakurikuler', 'isi' => 'Pendaftaran ekstrakurikuler dibuka untuk semester genap', 'tanggal' => '2025-11-18', 'id_admin' => 'A05', 'publikasi' => true],
-        ];
-
-        foreach ($pengumumans as $pengumuman) {
-            Pengumuman::firstOrCreate(['id_pengumuman' => $pengumuman['id_pengumuman']], $pengumuman);
-        }
-
-        // Komentar (5 data)
-        $komentars = [
-            ['id_komentar' => 'KM01', 'id_orang_tua' => 'OT01', 'komentar' => 'Terima kasih atas informasinya'],
-            ['id_komentar' => 'KM02', 'id_orang_tua' => 'OT02', 'komentar' => 'Saya akan hadir'],
-            ['id_komentar' => 'KM03', 'id_orang_tua' => 'OT03', 'komentar' => 'Baik, akan dipersiapkan'],
-            ['id_komentar' => 'KM04', 'id_orang_tua' => 'OT04', 'komentar' => 'Terima kasih infonya'],
-            ['id_komentar' => 'KM05', 'id_orang_tua' => 'OT05', 'komentar' => 'Sangat bagus'],
-        ];
-
-        foreach ($komentars as $komentar) {
-            Komentar::firstOrCreate(['id_komentar' => $komentar['id_komentar']], $komentar);
-        }
-
         $this->command->info('✅ Demo data seeded successfully!');
         $this->command->info('📊 Summary:');
         $this->command->info('   - Admins: '.Admin::count());
@@ -187,11 +145,8 @@ class DemoDataSeeder extends Seeder
         $this->command->info('   - Orang Tua: '.OrangTua::count());
         $this->command->info('   - Siswa: '.Siswa::count());
         $this->command->info('   - Mata Pelajaran: '.MataPelajaran::count());
-        $this->command->info('   - Jadwal: '.Jadwal::count());
-        $this->command->info('   - Absensi: '.Absensi::count());
-        $this->command->info('   - Laporan: '.LaporanPerkembangan::count());
-        $this->command->info('   - Perilaku: '.Perilaku::count());
-        $this->command->info('   - Pengumuman: '.Pengumuman::count());
-        $this->command->info('   - Komentar: '.Komentar::count());
+        // $this->command->info('   - Jadwal: '.Jadwal::count());
+        // $this->command->info('   - Absensi: '.Absensi::count());
+        // $this->command->info('   - Laporan: '.LaporanPerkembangan::count());
     }
 }

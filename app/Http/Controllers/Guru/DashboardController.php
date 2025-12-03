@@ -49,7 +49,8 @@ class DashboardController extends Controller
         $totalPerilaku = Perilaku::count();
 
         // Recent announcements (last 5)
-        $pengumumanTerbaru = Pengumuman::orderBy('tanggal', 'desc')
+        $pengumumanTerbaru = Pengumuman::where('publikasi', true)
+            ->orderBy('tanggal', 'desc')
             ->limit(5)
             ->get();
 
