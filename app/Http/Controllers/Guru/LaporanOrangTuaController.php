@@ -16,7 +16,7 @@ class LaporanOrangTuaController extends Controller
         $kelas = $request->input('kelas');
         $mataPelajaran = $request->input('mata_pelajaran');
 
-        // Get mata pelajaran taught by this guru
+        /** @var \App\Models\Guru $guru */
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
 
         $laporan = LaporanPerkembangan::query()

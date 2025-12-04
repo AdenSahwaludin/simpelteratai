@@ -141,3 +141,6 @@
         </form>
     </div>
 @endsection
+@section('sidebar-menu')
+    <x-sidebar-menu :guard="'guru'" :currentRoute="request()->route()->getName()" />
+@endsection

@@ -19,7 +19,7 @@ class InputNilaiController extends Controller
         $kelas = $request->input('kelas');
         $mataPelajaran = $request->input('mata_pelajaran');
 
-        // Get mata pelajaran taught by this guru
+        /** @var \App\Models\Guru $guru */
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
 
         $laporan = LaporanPerkembangan::query()
@@ -50,7 +50,7 @@ class InputNilaiController extends Controller
     }
 
     public function edit(string $id): View
-    {
+    {/** @var \App\Models\Guru $guru */
         $guru = auth('guru')->user();
         $laporan = LaporanPerkembangan::with(['siswa', 'mataPelajaran'])->findOrFail($id);
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
@@ -96,8 +96,7 @@ class InputNilaiController extends Controller
     public function bulkIndex(Request $request): View
     {
         $guru = auth('guru')->user();
-
-        // Get all jadwal for this guru with mata pelajaran
+        /** @var \App\Models\Guru $guru */
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         // Get unique class list
@@ -114,7 +113,7 @@ class InputNilaiController extends Controller
         $id_jadwal = $request->input('id_jadwal');
         $guru = auth('guru')->user();
 
-        // Verify jadwal belongs to this guru
+        /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->where('id_jadwal', $id_jadwal)
             ->with('mataPelajaran', 'siswa')
@@ -154,7 +153,7 @@ class InputNilaiController extends Controller
         $guru = auth('guru')->user();
         $id_jadwal = $request->input('id_jadwal');
 
-        // Verify jadwal belongs to this guru
+        /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->where('id_jadwal', $id_jadwal)
             ->firstOrFail();

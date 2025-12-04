@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $guru = auth('guru')->user();
 
-        // Total classes taught (based on jadwal)
+        /** @var \App\Models\Guru $guru */
         $totalKelas = $guru->jadwal()->distinct('ruang')->count('ruang');
 
         // Total students in all classes

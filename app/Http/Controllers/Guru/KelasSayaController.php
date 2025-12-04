@@ -12,7 +12,7 @@ class KelasSayaController extends Controller
     {
         $guru = auth('guru')->user();
 
-        // Get distinct classes from jadwal
+        /** @var \App\Models\Guru $guru */
         $kelasData = $guru->jadwal()
             ->with(['mataPelajaran', 'siswa'])
             ->get()
@@ -40,7 +40,7 @@ class KelasSayaController extends Controller
     {
         $guru = auth('guru')->user();
 
-        // Get jadwal for this class
+        /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->where('ruang', $ruang)
             ->with(['mataPelajaran', 'siswa.orangTua'])

@@ -13,7 +13,7 @@ class JadwalController extends Controller
         $guru = auth('guru')->user();
         $search = $request->input('search');
         $ruang = $request->input('ruang');
-
+        /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->with(['mataPelajaran'])
             ->when($search, function ($query, $search) {

@@ -65,8 +65,10 @@
                 </div>
                 <div class="w-full md:w-48">
                     <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" value="{{ request('tanggal') }}"
+                    <input type="date" name="tanggal" id="tanggal"
+                        value="{{ request('tanggal', now()->toDateString()) }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+
                 </div>
                 <div class="flex gap-2 w-full md:w-auto">
                     <button type="submit"

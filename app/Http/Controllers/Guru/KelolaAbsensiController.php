@@ -56,7 +56,7 @@ class KelolaAbsensiController extends Controller
         // Get unique classes from guru's students
         $kelasList = Siswa::distinct('kelas')->pluck('kelas');
 
-        // Get jadwal list for guru
+        /** @var \App\Models\Guru $guru */
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         return view('guru.kelola-absensi.index', compact('absensi', 'search', 'tanggal', 'kelas', 'id_jadwal', 'kelasList', 'jadwalList', 'hasFilter'));
@@ -65,6 +65,7 @@ class KelolaAbsensiController extends Controller
     public function create(): View
     {
         $guru = auth('guru')->user();
+        /** @var \App\Models\Guru $guru */
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         return view('guru.kelola-absensi.create', compact('jadwalList'));
@@ -121,8 +122,7 @@ class KelolaAbsensiController extends Controller
         ]);
 
         $guru = auth('guru')->user();
-
-        // Verify that the jadwal belongs to the logged-in guru
+        /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()->find($validated['id_jadwal']);
         if (! $jadwal) {
             return back()->with('error', 'Jadwal tidak ditemukan atau tidak milik Anda.');
@@ -173,6 +173,7 @@ class KelolaAbsensiController extends Controller
     {
         $guru = auth('guru')->user();
         $absensi = Absensi::with(['siswa', 'pertemuan.jadwal'])->findOrFail($id);
+        /** @var \App\Models\Guru $guru */
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         return view('guru.kelola-absensi.edit', compact('absensi', 'jadwalList'));
