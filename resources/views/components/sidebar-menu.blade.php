@@ -125,13 +125,13 @@
                     ],
                 ],
                 [
-                    'category' => 'Laporan Ke Orang Tua',
+                    'category' => 'Laporan',
                     'items' => [
                         [
-                            'label' => 'Pilih Data Perkembangan',
+                            'label' => 'Laporan Lengkap',
                             'icon' => 'fa-file-alt',
                             'color' => 'text-indigo-500',
-                            'route' => 'guru.laporan-orangtua.index',
+                            'route' => 'guru.laporan-lengkap.index',
                         ],
                     ],
                 ],
@@ -180,6 +180,12 @@
                             'icon' => 'fa-calendar-check',
                             'color' => 'text-green-500',
                             'route' => 'orangtua.kehadiran.index',
+                        ],
+                        [
+                            'label' => 'Laporan Lengkap',
+                            'icon' => 'fa-file-alt',
+                            'color' => 'text-indigo-500',
+                            'route' => 'orangtua.laporan-lengkap.index',
                         ],
                     ],
                 ],
