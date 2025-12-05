@@ -24,6 +24,28 @@
             </a>
         </div>
 
+        @if (session('success'))
+            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg mb-6">
+                <p class="text-sm text-green-700">{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg mb-6">
+                <p class="text-sm text-red-700">{{ session('error') }}</p>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg mb-6">
+                <ul class="list-disc list-inside text-sm text-red-700">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="bg-white rounded-lg shadow-md p-6">
             <form action="{{ route('guru.kelola-absensi.store') }}" method="POST" id="absensiForm">
                 @csrf
@@ -142,23 +164,14 @@
                                     <button type="button" onclick="setAllStatus('hadir')" class="bg-green-100 text-green-700 hover:bg-green-200 px-3 py-2 rounded text-sm font-medium transition">
                                         <i class="fas fa-check mr-1"></i>Hadir Semua
                                     </button>
-                                    <button type="button" onclick="setAllStatus('izin')" class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-2 rounded text-sm font-medium transition">
-                                        <i class="fas fa-file mr-1"></i>Izin Semua
-                                    </button>
-                                    <button type="button" onclick="setAllStatus('sakit')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-2 rounded text-sm font-medium transition">
-                                        <i class="fas fa-heartbeat mr-1"></i>Sakit Semua
-                                    </button>
-                                    <button type="button" onclick="setAllStatus('alpha')" class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded text-sm font-medium transition">
-                                        <i class="fas fa-times mr-1"></i>Alpha Semua
-                                    </button>
                                 </div>
                             </div>
                             <div class="space-y-3">
                         `;
 
                         data.siswa.forEach(siswa => {
-                            // Get saved status if exists
-                            const savedStatus = data.existingAbsensi[siswa.id_siswa] || '';
+                            // Get saved status if exists, otherwise default to 'alpha'
+                            const savedStatus = data.existingAbsensi[siswa.id_siswa] || 'alpha';
 
                             html += `
                                 <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
@@ -169,7 +182,6 @@
                                     <select name="absensi[${siswa.id_siswa}]" 
                                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                         onchange="updateSelectColor(this)">
-                                        <option value="">-- Pilih Status --</option>
                                         <option value="hadir" ${savedStatus === 'hadir' ? 'selected' : ''}>Hadir</option>
                                         <option value="izin" ${savedStatus === 'izin' ? 'selected' : ''}>Izin</option>
                                         <option value="sakit" ${savedStatus === 'sakit' ? 'selected' : ''}>Sakit</option>
@@ -182,11 +194,9 @@
                         html += '</div>';
                         siswaContainer.innerHTML = html;
 
-                        // Update colors for pre-filled options
+                        // Update colors for all select options (including defaults)
                         document.querySelectorAll('select[name^="absensi["]').forEach(select => {
-                            if (select.value) {
-                                updateSelectColor(select);
-                            }
+                            updateSelectColor(select);
                         });
 
                         submitBtn.disabled = false;

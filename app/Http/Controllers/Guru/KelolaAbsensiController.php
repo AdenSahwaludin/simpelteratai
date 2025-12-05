@@ -128,17 +128,42 @@ class KelolaAbsensiController extends Controller
             return back()->with('error', 'Jadwal tidak ditemukan atau tidak milik Anda.');
         }
 
-        // Find pertemuan for this jadwal and tanggal
+        // Find or create pertemuan for this jadwal and tanggal
         $pertemuan = \App\Models\Pertemuan::where('id_jadwal', $validated['id_jadwal'])
             ->whereDate('tanggal', $validated['tanggal'])
             ->first();
 
         if (! $pertemuan) {
-            return back()->with('error', 'Pertemuan tidak ditemukan untuk tanggal tersebut.');
+            // Create new pertemuan automatically
+            $lastPertemuan = \App\Models\Pertemuan::orderByRaw('CAST(SUBSTRING(id_pertemuan, 2) AS UNSIGNED) DESC')
+                ->limit(1)
+                ->pluck('id_pertemuan')
+                ->first();
+            $nextNumber = $lastPertemuan ? (int) substr($lastPertemuan, 1) + 1 : 1;
+
+            // Get pertemuan_ke for this jadwal
+            $pertemuanKe = \App\Models\Pertemuan::where('id_jadwal', $validated['id_jadwal'])
+                ->max('pertemuan_ke');
+            $pertemuanKe = $pertemuanKe ? $pertemuanKe + 1 : 1;
+
+            $pertemuan = \App\Models\Pertemuan::create([
+                'id_pertemuan' => 'P'.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT),
+                'id_jadwal' => $validated['id_jadwal'],
+                'pertemuan_ke' => $pertemuanKe,
+                'tanggal' => $validated['tanggal'],
+                'materi' => 'Pertemuan otomatis dari absensi',
+                'status' => 'selesai',
+            ]);
         }
 
         // Get students registered for this schedule from pivot table
         $siswaList = $jadwal->siswa()->get();
+
+        if ($siswaList->isEmpty()) {
+            return back()->with('error', 'Tidak ada siswa yang terdaftar untuk jadwal ini.');
+        }
+
+        $savedCount = 0;
 
         // Create/update absensi records for registered students only
         foreach ($siswaList as $siswa) {
@@ -163,10 +188,15 @@ class KelolaAbsensiController extends Controller
 
                 $absensi->status_kehadiran = $status;
                 $absensi->save();
+                $savedCount++;
             }
         }
 
-        return redirect()->route('guru.kelola-absensi.index')->with('success', 'Absensi jadwal berhasil disimpan.');
+        if ($savedCount === 0) {
+            return back()->with('error', 'Tidak ada status kehadiran yang diisi.');
+        }
+
+        return redirect()->route('guru.kelola-absensi.index')->with('success', "Absensi berhasil disimpan untuk {$savedCount} siswa.");
     }
 
     public function edit(string $id): View
@@ -200,5 +230,18 @@ class KelolaAbsensiController extends Controller
         $absensi->delete();
 
         return redirect()->route('guru.kelola-absensi.index')->with('success', 'Absensi berhasil dihapus.');
+    }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return redirect()->route('guru.kelola-absensi.index')->with('error', 'Tidak ada absensi yang dipilih.');
+        }
+
+        $deletedCount = Absensi::whereIn('id_absensi', $ids)->delete();
+
+        return redirect()->route('guru.kelola-absensi.index')->with('success', "{$deletedCount} absensi berhasil dihapus.");
     }
 }

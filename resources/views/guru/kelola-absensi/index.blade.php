@@ -97,10 +97,38 @@
                     <p>Tidak ada data absensi yang ditemukan untuk filter yang Anda pilih</p>
                 </div>
             @elseif ($absensi && $absensi->count() > 0)
+                <!-- Bulk Delete Form & UI -->
+                <form id="bulkDeleteForm" action="{{ route('guru.kelola-absensi.bulk-destroy') }}" method="POST"
+                    class="mb-4 px-6 py-4 bg-gray-50 border-b border-gray-200 hidden">
+                    @csrf
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span id="selectedCount" class="text-gray-700 font-semibold">0</span>
+                            <span class="text-gray-600">absensi dipilih</span>
+                            <input type="hidden" id="selectedIds" name="ids" value="">
+                        </div>
+                        <div class="flex gap-3">
+                            <button type="button" id="cancelBulkDelete"
+                                class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-300">
+                                <i class="fas fa-times mr-2"></i>Batal
+                            </button>
+                            <button type="button" id="confirmBulkDelete"
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                                onclick="if (confirm('Apakah Anda yakin ingin menghapus absensi yang dipilih?')) { document.getElementById('bulkDeleteForm').submit(); }">
+                                <i class="fas fa-trash mr-2"></i>Hapus
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <input type="checkbox" id="selectAll"
+                                        class="w-4 h-4 rounded border-gray-300 cursor-pointer">
+                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Tanggal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -116,6 +144,11 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($absensi as $item)
                                 <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox"
+                                            class="bulkCheckbox w-4 h-4 rounded border-gray-300 cursor-pointer"
+                                            value="{{ $item->id_absensi }}" data-id="{{ $item->id_absensi }}">
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -164,41 +197,49 @@
                 <div class="md:hidden p-4 space-y-4">
                     @foreach ($absensi as $item)
                         <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <p class="font-semibold text-gray-800">{{ $item->siswa->nama }}</p>
-                                    <p class="text-sm text-gray-600">{{ $item->siswa->kelas }} •
-                                        {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</p>
+                            <div class="flex gap-3 mb-3">
+                                <input type="checkbox"
+                                    class="bulkCheckbox w-4 h-4 rounded border-gray-300 cursor-pointer mt-1"
+                                    value="{{ $item->id_absensi }}" data-id="{{ $item->id_absensi }}">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ $item->siswa->nama }}</p>
+                                            <p class="text-sm text-gray-600">{{ $item->siswa->kelas }} •
+                                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</p>
+                                        </div>
+                                        @php
+                                            $statusColors = [
+                                                'hadir' => 'bg-green-100 text-green-800',
+                                                'izin' => 'bg-blue-100 text-blue-800',
+                                                'sakit' => 'bg-yellow-100 text-yellow-800',
+                                                'alpha' => 'bg-red-100 text-red-800',
+                                            ];
+                                        @endphp
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-medium {{ $statusColors[$item->status_kehadiran] ?? 'bg-gray-100 text-gray-800' }}">
+                                            {{ ucfirst($item->status_kehadiran) }}
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-700 mb-3">
+                                        {{ $item->jadwal->mataPelajaran->nama_mapel ?? '-' }}</p>
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('guru.kelola-absensi.edit', $item->id_absensi) }}"
+                                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 text-center">
+                                            <i class="fas fa-edit mr-1"></i>Edit
+                                        </a>
+                                        <form action="{{ route('guru.kelola-absensi.destroy', $item->id_absensi) }}"
+                                            method="POST" class="flex-1"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus absensi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300">
+                                                <i class="fas fa-trash mr-1"></i>Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
-                                @php
-                                    $statusColors = [
-                                        'hadir' => 'bg-green-100 text-green-800',
-                                        'izin' => 'bg-blue-100 text-blue-800',
-                                        'sakit' => 'bg-yellow-100 text-yellow-800',
-                                        'alpha' => 'bg-red-100 text-red-800',
-                                    ];
-                                @endphp
-                                <span
-                                    class="px-3 py-1 rounded-full text-xs font-medium {{ $statusColors[$item->status_kehadiran] ?? 'bg-gray-100 text-gray-800' }}">
-                                    {{ ucfirst($item->status_kehadiran) }}
-                                </span>
-                            </div>
-                            <p class="text-sm text-gray-700 mb-3">{{ $item->jadwal->mataPelajaran->nama_mapel ?? '-' }}</p>
-                            <div class="flex gap-2">
-                                <a href="{{ route('guru.kelola-absensi.edit', $item->id_absensi) }}"
-                                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 text-center">
-                                    <i class="fas fa-edit mr-1"></i>Edit
-                                </a>
-                                <form action="{{ route('guru.kelola-absensi.destroy', $item->id_absensi) }}"
-                                    method="POST" class="flex-1"
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus absensi ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300">
-                                        <i class="fas fa-trash mr-1"></i>Hapus
-                                    </button>
-                                </form>
                             </div>
                         </div>
                     @endforeach
@@ -210,4 +251,65 @@
             @endif
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const bulkCheckboxes = document.querySelectorAll('.bulkCheckbox');
+            const bulkDeleteForm = document.getElementById('bulkDeleteForm');
+            const selectedCount = document.getElementById('selectedCount');
+            const selectedIds = document.getElementById('selectedIds');
+            const cancelBulkDelete = document.getElementById('cancelBulkDelete');
+
+            function updateBulkUI() {
+                const checkedCount = document.querySelectorAll('.bulkCheckbox:checked').length;
+                const checkedIds = Array.from(document.querySelectorAll('.bulkCheckbox:checked')).map(cb => cb
+                    .value);
+
+                selectedCount.textContent = checkedCount;
+                selectedIds.value = JSON.stringify(checkedIds);
+
+                if (checkedCount > 0) {
+                    bulkDeleteForm.classList.remove('hidden');
+                } else {
+                    bulkDeleteForm.classList.add('hidden');
+                }
+
+                if (checkedCount === bulkCheckboxes.length) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (checkedCount > 0) {
+                    selectAllCheckbox.indeterminate = true;
+                } else {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                }
+            }
+
+            selectAllCheckbox.addEventListener('change', function() {
+                bulkCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                updateBulkUI();
+            });
+
+            bulkCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateBulkUI);
+            });
+
+            cancelBulkDelete.addEventListener('click', function() {
+                bulkCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateBulkUI();
+            });
+
+            // Handle form submission - convert JSON string back to array
+            bulkDeleteForm.addEventListener('submit', function(e) {
+                const idsString = selectedIds.value;
+                const idsArray = JSON.parse(idsString);
+                selectedIds.value = idsArray;
+            });
+        });
+    </script>
 @endsection

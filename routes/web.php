@@ -73,6 +73,7 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
     // Kelola Absensi
     Route::resource('kelola-absensi', \App\Http\Controllers\Guru\KelolaAbsensiController::class);
     Route::get('/kelola-absensi-load-siswa', [\App\Http\Controllers\Guru\KelolaAbsensiController::class, 'loadSiswaByKelas'])->name('kelola-absensi.load-siswa');
+    Route::post('/kelola-absensi-bulk-delete', [\App\Http\Controllers\Guru\KelolaAbsensiController::class, 'bulkDestroy'])->name('kelola-absensi.bulk-destroy');
 
     // Laporan ke Orang Tua
     Route::get('/laporan-orangtua', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'index'])->name('laporan-orangtua.index');
@@ -107,6 +108,10 @@ Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')-
     // Kehadiran
     Route::get('/kehadiran', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'index'])->name('kehadiran.index');
     Route::get('/kehadiran/{id}', [\App\Http\Controllers\OrangTua\KehadiranController::class, 'show'])->name('kehadiran.show');
+
+    // Jadwal
+    Route::get('/jadwal', [\App\Http\Controllers\OrangTua\JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal/{id}', [\App\Http\Controllers\OrangTua\JadwalController::class, 'show'])->name('jadwal.show');
 
     // Pengumuman
     Route::get('/pengumuman', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'index'])->name('pengumuman.index');

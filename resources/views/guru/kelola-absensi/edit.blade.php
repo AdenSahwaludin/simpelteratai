@@ -51,44 +51,36 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-6">
-                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">
-                        Tanggal <span class="text-red-500">*</span>
-                    </label>
-                    <input type="date" name="tanggal" id="tanggal" required
-                        value="{{ old('tanggal', $absensi->tanggal?->format('Y-m-d')) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('tanggal') border-red-500 @enderror">
-                    @error('tanggal')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
+                <!-- Display-only fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Tanggal
+                        </label>
+                        <div class="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700">
+                            {{ $absensi->pertemuan->tanggal?->format('d M Y') ?? 'N/A' }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Jadwal
+                        </label>
+                        <div class="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700">
+                            {{ $absensi->pertemuan->jadwal->mataPelajaran->nama_mapel ?? 'N/A' }}
+                            ({{ $absensi->pertemuan->jadwal->ruang ?? 'N/A' }})
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-6">
-                    <label for="id_jadwal" class="block text-sm font-medium text-gray-700 mb-2">
-                        Jadwal <span class="text-red-500">*</span>
-                    </label>
-                    <select name="id_jadwal" id="id_jadwal" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('id_jadwal') border-red-500 @enderror">
-                        <option value="">-- Pilih Jadwal --</option>
-                        @foreach ($jadwalList as $jadwal)
-                            <option value="{{ $jadwal->id_jadwal }}"
-                                {{ old('id_jadwal', $absensi->id_jadwal) == $jadwal->id_jadwal ? 'selected' : '' }}>
-                                {{ $jadwal->mataPelajaran->nama_mapel }} ({{ $jadwal->ruang }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('id_jadwal')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
+                <!-- Editable field -->
                 <div class="mb-6">
                     <label for="status_kehadiran" class="block text-sm font-medium text-gray-700 mb-2">
                         Status Kehadiran <span class="text-red-500">*</span>
                     </label>
                     <select name="status_kehadiran" id="status_kehadiran" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('status_kehadiran') border-red-500 @enderror">
-                        <option value="">-- Pilih Status --</option>
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('status_kehadiran') border-red-500 @enderror"
+                        onchange="updateStatusColor(this)">
                         <option value="hadir"
                             {{ old('status_kehadiran', $absensi->status_kehadiran) == 'hadir' ? 'selected' : '' }}>Hadir
                         </option>
@@ -120,4 +112,33 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function updateStatusColor(selectElement) {
+            const statusColors = {
+                'hadir': 'border-green-500 bg-green-50 text-green-700',
+                'izin': 'border-blue-500 bg-blue-50 text-blue-700',
+                'sakit': 'border-yellow-500 bg-yellow-50 text-yellow-700',
+                'alpha': 'border-red-500 bg-red-50 text-red-700',
+            };
+
+            // Remove all color classes
+            Object.values(statusColors).forEach(classes => {
+                classes.split(' ').forEach(cls => selectElement.classList.remove(cls));
+            });
+
+            // Add appropriate color
+            if (selectElement.value && statusColors[selectElement.value]) {
+                statusColors[selectElement.value].split(' ').forEach(cls => selectElement.classList.add(cls));
+            }
+        }
+
+        // Apply color on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusSelect = document.getElementById('status_kehadiran');
+            if (statusSelect) {
+                updateStatusColor(statusSelect);
+            }
+        });
+    </script>
 @endsection

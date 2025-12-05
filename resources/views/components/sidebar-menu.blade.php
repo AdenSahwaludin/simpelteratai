@@ -182,6 +182,12 @@
                             'route' => 'orangtua.kehadiran.index',
                         ],
                         [
+                            'label' => 'Jadwal',
+                            'icon' => 'fa-calendar-alt',
+                            'color' => 'text-purple-500',
+                            'route' => 'orangtua.jadwal.index',
+                        ],
+                        [
                             'label' => 'Laporan Lengkap',
                             'icon' => 'fa-file-alt',
                             'color' => 'text-indigo-500',
