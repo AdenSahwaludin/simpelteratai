@@ -262,5 +262,37 @@
                 @endif
             </div>
         </div>
+
+        <!-- Komentar Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-comments text-purple-600"></i>
+                Komentar & Diskusi
+            </h3>
+
+            <!-- New Comment Form -->
+            <form action="{{ route('orangtua.laporan-lengkap.komentar.store', $laporan->id_laporan_lengkap) }}"
+                method="POST" class="mb-6">
+                @csrf
+                <div class="mb-2">
+                    <textarea name="komentar" rows="3" required maxlength="1000"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Tulis komentar atau pertanyaan untuk guru..."></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Maksimal 1000 karakter</p>
+                </div>
+                @error('komentar')
+                    <p class="text-red-600 text-sm mb-2">{{ $message }}</p>
+                @enderror
+                <button type="submit"
+                    class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition font-medium">
+                    <i class="fas fa-paper-plane mr-2"></i>Kirim Komentar
+                </button>
+            </form>
+
+            <!-- Comments List -->
+            <div class="border-t border-gray-200 pt-6">
+                <x-komentar-list :komentar="$laporan->komentarList" :laporanId="$laporan->id_laporan_lengkap" userRole="orangtua" />
+            </div>
+        </div>
     </div>
 @endsection

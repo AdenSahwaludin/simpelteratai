@@ -204,12 +204,6 @@
                             'color' => 'text-red-500',
                             'route' => 'orangtua.pengumuman.index',
                         ],
-                        [
-                            'label' => 'Komentar',
-                            'icon' => 'fa-comment-dots',
-                            'color' => 'text-blue-500',
-                            'route' => 'orangtua.komentar.index',
-                        ],
                     ],
                 ],
             ],

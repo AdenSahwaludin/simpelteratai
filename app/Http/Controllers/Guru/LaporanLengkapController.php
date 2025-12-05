@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\Komentar;
 use App\Models\LaporanLengkap;
 use App\Models\Siswa;
 use Illuminate\Http\RedirectResponse;
@@ -96,7 +97,7 @@ class LaporanLengkapController extends Controller
 
         $laporan = LaporanLengkap::where('id_laporan_lengkap', $id)
             ->where('id_guru', $guru->id_guru)
-            ->with(['siswa', 'guru'])
+            ->with(['siswa', 'guru', 'komentarList'])
             ->firstOrFail();
 
         $kehadiran = $laporan->getKehadiranData();
@@ -232,5 +233,39 @@ class LaporanLengkapController extends Controller
                 ];
             }),
         ]);
+    }
+
+    public function storeKomentar(Request $request, string $id): RedirectResponse
+    {
+        $guru = Auth::guard('guru')->user();
+
+        $laporan = LaporanLengkap::where('id_laporan_lengkap', $id)
+            ->where('id_guru', $guru->id_guru)
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'komentar' => 'required|string|max:1000',
+            'parent_id' => 'nullable|exists:komentar,id_komentar',
+        ], [
+            'komentar.required' => 'Komentar wajib diisi',
+            'komentar.max' => 'Komentar maksimal 1000 karakter',
+        ]);
+
+        // Generate ID
+        $lastId = Komentar::orderByRaw('CAST(SUBSTRING(id_komentar, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_komentar')
+            ->first();
+        $nextNumber = $lastId ? (int) substr($lastId, 1) + 1 : 1;
+
+        Komentar::create([
+            'id_komentar' => 'K'.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT),
+            'id_guru' => $guru->id_guru,
+            'id_laporan_lengkap' => $laporan->id_laporan_lengkap,
+            'parent_id' => $validated['parent_id'] ?? null,
+            'komentar' => $validated['komentar'],
+        ]);
+
+        return redirect()->route('guru.laporan-lengkap.show', $id)->with('success', 'Komentar berhasil ditambahkan.');
     }
 }

@@ -61,6 +61,17 @@ class LaporanLengkap extends Model
     }
 
     /**
+     * Get all comments for this laporan.
+     */
+    public function komentarList()
+    {
+        return $this->hasMany(Komentar::class, 'id_laporan_lengkap', 'id_laporan_lengkap')
+            ->whereNull('parent_id')
+            ->with(['orangTua', 'guru', 'replies'])
+            ->latest();
+    }
+
+    /**
      * Get performance reports for the period
      */
     public function getNilaiData()

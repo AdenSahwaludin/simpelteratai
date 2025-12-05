@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LaporanPerkembangan extends Model
 {
@@ -50,5 +51,16 @@ class LaporanPerkembangan extends Model
     public function absensi(): BelongsTo
     {
         return $this->belongsTo(Absensi::class, 'id_absensi', 'id_absensi');
+    }
+
+    /**
+     * Get the komentar for the laporan perkembangan.
+     */
+    public function komentarList(): HasMany
+    {
+        return $this->hasMany(Komentar::class, 'id_laporan_lengkap', 'id_laporan_lengkap')
+            ->whereNull('parent_id')
+            ->with(['orangTua', 'guru', 'replies'])
+            ->latest();
     }
 }

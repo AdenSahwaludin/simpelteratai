@@ -87,6 +87,7 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
     Route::resource('laporan-lengkap', \App\Http\Controllers\Guru\LaporanLengkapController::class);
     Route::post('/laporan-lengkap/{id}/kirim', [\App\Http\Controllers\Guru\LaporanLengkapController::class, 'kirimKeOrangTua'])->name('laporan-lengkap.kirim');
     Route::post('/laporan-lengkap-preview', [\App\Http\Controllers\Guru\LaporanLengkapController::class, 'previewData'])->name('laporan-lengkap.preview');
+    Route::post('/laporan-lengkap/{id}/komentar', [\App\Http\Controllers\Guru\LaporanLengkapController::class, 'storeKomentar'])->name('laporan-lengkap.komentar.store');
 });
 
 // OrangTua routes
@@ -117,12 +118,10 @@ Route::middleware('check.orangtua.role')->prefix('orangtua')->name('orangtua.')-
     Route::get('/pengumuman', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'index'])->name('pengumuman.index');
     Route::get('/pengumuman/{id}', [\App\Http\Controllers\OrangTua\PengumumanController::class, 'show'])->name('pengumuman.show');
 
-    // Komentar
-    Route::resource('komentar', \App\Http\Controllers\OrangTua\KomentarController::class);
-
     // Laporan Lengkap
     Route::get('/laporan-lengkap', [\App\Http\Controllers\OrangTua\LaporanLengkapController::class, 'index'])->name('laporan-lengkap.index');
     Route::get('/laporan-lengkap/{id}', [\App\Http\Controllers\OrangTua\LaporanLengkapController::class, 'show'])->name('laporan-lengkap.show');
+    Route::post('/laporan-lengkap/{id}/komentar', [\App\Http\Controllers\OrangTua\LaporanLengkapController::class, 'storeKomentar'])->name('laporan-lengkap.komentar.store');
 });
 
 // Profile routes (for all authenticated users)
