@@ -5,7 +5,7 @@
         <div class="bg-white rounded-lg border border-gray-200 p-4 {{ $comment->parent_id ? 'ml-8' : '' }}">
             <!-- Comment Header -->
             <div class="flex items-start gap-3 mb-3">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     @if ($comment->isFromParent())
                         <div class="bg-purple-100 p-2 rounded-full">
                             <i class="fas fa-user text-purple-600"></i>

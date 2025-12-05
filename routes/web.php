@@ -75,10 +75,6 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
     Route::get('/kelola-absensi-load-siswa', [\App\Http\Controllers\Guru\KelolaAbsensiController::class, 'loadSiswaByKelas'])->name('kelola-absensi.load-siswa');
     Route::post('/kelola-absensi-bulk-delete', [\App\Http\Controllers\Guru\KelolaAbsensiController::class, 'bulkDestroy'])->name('kelola-absensi.bulk-destroy');
 
-    // Laporan ke Orang Tua
-    Route::get('/laporan-orangtua', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'index'])->name('laporan-orangtua.index');
-    Route::get('/laporan-orangtua/{id}', [\App\Http\Controllers\Guru\LaporanOrangTuaController::class, 'show'])->name('laporan-orangtua.show');
-
     // Pengumuman
     Route::get('/pengumuman', [\App\Http\Controllers\Guru\PengumumanController::class, 'index'])->name('pengumuman.index');
     Route::get('/pengumuman/{id}', [\App\Http\Controllers\Guru\PengumumanController::class, 'show'])->name('pengumuman.show');

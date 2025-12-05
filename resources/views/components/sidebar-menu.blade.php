@@ -144,7 +144,6 @@
                             'color' => 'text-red-500',
                             'route' => 'guru.pengumuman.index',
                         ],
-                        ['label' => 'Pesan', 'icon' => 'fa-comments', 'color' => 'text-blue-500', 'route' => '#'],
                     ],
                 ],
             ],
