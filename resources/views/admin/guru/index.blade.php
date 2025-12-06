@@ -143,22 +143,25 @@
                         <p><i class="fas fa-envelope w-5"></i> {{ $item->email }}</p>
                         <p><i class="fas fa-phone w-5"></i> {{ $item->no_telpon }}</p>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 pt-3 border-t border-gray-200">
                         <a href="{{ route('admin.guru.show', $item->id_guru) }}"
-                            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-center text-sm transition">
-                            <i class="fas fa-eye"></i> Lihat
+                            class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-lg transition font-medium">
+                            <i class="fas fa-eye mr-2"></i>
+                            Lihat
                         </a>
                         <a href="{{ route('admin.guru.edit', $item->id_guru) }}"
-                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center text-sm transition">
-                            <i class="fas fa-edit"></i> Edit
+                            class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition font-medium">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit
                         </a>
                         <form action="{{ route('admin.guru.destroy', $item->id_guru) }}" method="POST" class="flex-1"
                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus guru ini?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition">
-                                <i class="fas fa-trash"></i> Hapus
+                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition font-medium">
+                                <i class="fas fa-trash mr-2"></i>
+                                Hapus
                             </button>
                         </form>
                     </div>
