@@ -19,7 +19,7 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <form method="GET" action="{{ route('guru.laporan-orangtua.index') }}"
+            <form method="GET" action="{{ route('guru.laporan-lengkap.index') }}"
                 class="space-y-4 md:space-y-0 md:flex md:gap-4">
                 <div class="flex-1">
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Siswa</label>
@@ -56,7 +56,7 @@
                         class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors duration-300">
                         <i class="fas fa-search mr-2"></i>Cari
                     </button>
-                    <a href="{{ route('guru.laporan-orangtua.index') }}"
+                    <a href="{{ route('guru.laporan-lengkap.index') }}"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors duration-300">
                         <i class="fas fa-redo mr-2"></i>Reset
                     </a>
@@ -109,7 +109,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <a href="{{ route('guru.laporan-orangtua.show', $item->id_laporan) }}"
+                                        <a href="{{ route('guru.laporan-lengkap.show', $item->id_laporan) }}"
                                             class="text-green-600 hover:text-green-900">
                                             <i class="fas fa-eye"></i> Detail
                                         </a>
@@ -142,7 +142,7 @@
                                 <p class="text-gray-600"><span class="font-medium">Mapel:</span>
                                     {{ $item->mataPelajaran->nama_mapel }}</p>
                             </div>
-                            <a href="{{ route('guru.laporan-orangtua.show', $item->id_laporan) }}"
+                            <a href="{{ route('guru.laporan-lengkap.show', $item->id_laporan) }}"
                                 class="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 w-full text-center">
                                 <i class="fas fa-eye mr-1"></i>Lihat Detail
                             </a>

@@ -59,18 +59,6 @@
                         ],
                     ],
                 ],
-                [
-                    'category' => 'Sistem',
-                    'items' => [
-                        ['label' => 'Pengguna', 'icon' => 'fa-user-shield', 'color' => 'text-gray-600', 'route' => '#'],
-                        [
-                            'label' => 'Log Aktivitas',
-                            'icon' => 'fa-history',
-                            'color' => 'text-gray-500',
-                            'route' => '#',
-                        ],
-                    ],
-                ],
             ],
         ],
         'guru' => [

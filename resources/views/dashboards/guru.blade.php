@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="p-4">
-                    <a href="{{ route('guru.laporan-orangtua.index') }}"
+                    <a href="{{ route('guru.laporan-lengkap.index') }}"
                         class="text-green-600 hover:text-green-700 text-sm font-medium flex items-center">
                         <span>Lihat Laporan</span>
                         <i class="fas fa-arrow-right ml-2"></i>
