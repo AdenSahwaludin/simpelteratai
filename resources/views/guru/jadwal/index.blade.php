@@ -74,6 +74,8 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID Jadwal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Hari</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Waktu</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Mata Pelajaran</th>
@@ -88,7 +90,20 @@
                                         <span class="text-sm font-medium text-gray-900">{{ $item->id_jadwal }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm text-gray-600">{{ $item->waktu }}</span>
+                                        <span
+                                            class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-semibold">
+                                            {{ $item->hari ?? '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-600">
+                                            @if ($item->waktu_mulai && $item->waktu_selesai)
+                                                {{ $item->waktu_mulai->format('H:i') }} -
+                                                {{ $item->waktu_selesai->format('H:i') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
@@ -118,8 +133,19 @@
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-sm">
                                 <div>
+                                    <p class="text-gray-500">Hari</p>
+                                    <p class="font-bold text-blue-600">{{ $item->hari ?? '-' }}</p>
+                                </div>
+                                <div>
                                     <p class="text-gray-500">Waktu</p>
-                                    <p class="font-medium text-gray-800">{{ $item->waktu }}</p>
+                                    <p class="font-medium text-gray-800">
+                                        @if ($item->waktu_mulai && $item->waktu_selesai)
+                                            {{ $item->waktu_mulai->format('H:i') }} -
+                                            {{ $item->waktu_selesai->format('H:i') }}
+                                        @else
+                                            -
+                                        @endif
+                                    </p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500">Ruang</p>

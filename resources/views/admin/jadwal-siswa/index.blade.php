@@ -95,7 +95,14 @@
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-clock text-purple-500"></i>
-                                            <span>{{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}</span>
+                                            <span>
+                                                @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
+                                                    {{ $jadwal->waktu_mulai->format('H:i') }} -
+                                                    {{ $jadwal->waktu_selesai->format('H:i') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-users text-teal-500"></i>

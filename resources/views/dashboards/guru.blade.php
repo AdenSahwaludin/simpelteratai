@@ -174,7 +174,13 @@
                                         <h4 class="font-semibold text-gray-800">{{ $jadwal->mataPelajaran->nama_mapel }}
                                         </h4>
                                         <p class="text-sm text-gray-600">Ruang {{ $jadwal->ruang }} •
-                                            {{ date('H:i', strtotime($jadwal->waktu)) }}</p>
+                                            @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
+                                                {{ $jadwal->waktu_mulai->format('H:i') }} -
+                                                {{ $jadwal->waktu_selesai->format('H:i') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </p>
                                     </div>
                                     <div class="bg-green-100 p-2 rounded-full">
                                         <i class="fas fa-book text-green-600"></i>

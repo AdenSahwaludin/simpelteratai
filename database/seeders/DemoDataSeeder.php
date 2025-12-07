@@ -86,14 +86,14 @@ class DemoDataSeeder extends Seeder
             MataPelajaran::firstOrCreate(['id_mata_pelajaran' => $mapel['id_mata_pelajaran']], $mapel);
         }
 
-        // Jadwal (DISABLED - gunakan form create jadwal untuk auto-generate 14 pertemuan)
-        // Data jadwal sekarang butuh: hari, kelas, tanggal_mulai
+        // Jadwal - gunakan waktu_mulai dan waktu_selesai (bukan waktu)
+        // Data jadwal butuh: hari, kelas, tanggal_mulai, waktu_mulai, waktu_selesai
         // Dan akan auto-generate 14 pertemuan + assign semua siswa
-        /*
+
         $jadwals = [
-            ['id_jadwal' => 'JD1', 'id_guru' => 'G01', 'id_mata_pelajaran' => 'MP1', 'waktu' => '07:00:00', 'hari' => 'Senin', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-06'],
-            ['id_jadwal' => 'JD2', 'id_guru' => 'G02', 'id_mata_pelajaran' => 'MP2', 'waktu' => '08:30:00', 'hari' => 'Selasa', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-07'],
-            ['id_jadwal' => 'JD3', 'id_guru' => 'G03', 'id_mata_pelajaran' => 'MP3', 'waktu' => '10:00:00', 'hari' => 'Rabu', 'kelas' => '5B', 'ruang' => '5B', 'tanggal_mulai' => '2025-01-08'],
+            ['id_jadwal' => 'JD1', 'id_guru' => 'G01', 'id_mata_pelajaran' => 'MP1', 'waktu_mulai' => '07:00:00', 'waktu_selesai' => '08:00:00', 'hari' => 'Senin', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-06'],
+            ['id_jadwal' => 'JD2', 'id_guru' => 'G02', 'id_mata_pelajaran' => 'MP2', 'waktu_mulai' => '08:30:00', 'waktu_selesai' => '09:30:00', 'hari' => 'Selasa', 'kelas' => '5A', 'ruang' => '5A', 'tanggal_mulai' => '2025-01-07'],
+            ['id_jadwal' => 'JD3', 'id_guru' => 'G03', 'id_mata_pelajaran' => 'MP3', 'waktu_mulai' => '10:00:00', 'waktu_selesai' => '11:00:00', 'hari' => 'Rabu', 'kelas' => '5B', 'ruang' => '5B', 'tanggal_mulai' => '2025-01-08'],
         ];
 
         foreach ($jadwals as $data) {
@@ -103,7 +103,6 @@ class DemoDataSeeder extends Seeder
                 $jadwal->generatePertemuan();
             }
         }
-        */
 
         // Absensi (DISABLED - sekarang auto-generated saat create jadwal)
         // Absensi sekarang link ke pertemuan, bukan jadwal

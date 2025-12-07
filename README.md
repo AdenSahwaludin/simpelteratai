@@ -5,36 +5,39 @@ Aplikasi manajemen sekolah untuk Taman Kanak-Kanak (TK) yang dibangun dengan Lar
 ## ✨ Fitur Utama
 
 ### 👨‍💼 Admin
-- Manajemen Data Siswa, Guru, dan Orang Tua
-- Pengelolaan Jadwal dan Mata Pelajaran
-- Kelola Jadwal Siswa per Kelas
-- Publikasi Pengumuman
+
+-   Manajemen Data Siswa, Guru, dan Orang Tua
+-   Pengelolaan Jadwal dan Mata Pelajaran
+-   Kelola Jadwal Siswa per Kelas
+-   Publikasi Pengumuman
 
 ### 👨‍🏫 Guru
-- Dashboard dengan statistik siswa dan jadwal
-- Lihat Kelas dan Jadwal Mengajar
-- Input Nilai dan Catatan Perilaku Siswa
-- Kelola Absensi (termasuk bulk delete)
-- Buat Laporan Lengkap untuk Orang Tua
-- Komunikasi via Komentar di Laporan
+
+-   Dashboard dengan statistik siswa dan jadwal
+-   Lihat Kelas dan Jadwal Mengajar
+-   Input Nilai dan Catatan Perilaku Siswa
+-   Kelola Absensi (termasuk bulk delete)
+-   Buat Laporan Lengkap untuk Orang Tua
+-   Komunikasi via Komentar di Laporan
 
 ### 👨‍👩‍👧 Orang Tua
-- Dashboard perkembangan anak
-- Lihat Profil dan Data Anak
-- Akses Jadwal Belajar Anak
-- Lihat Laporan Perkembangan Lengkap
-- Komunikasi dengan Guru via Komentar
-- Notifikasi Pengumuman
+
+-   Dashboard perkembangan anak
+-   Lihat Profil dan Data Anak
+-   Akses Jadwal Belajar Anak
+-   Lihat Laporan Perkembangan Lengkap
+-   Komunikasi dengan Guru via Komentar
+-   Notifikasi Pengumuman
 
 ## 📋 Persyaratan Sistem
 
 Sebelum memulai, pastikan komputer Anda sudah terinstal:
 
-- **PHP** >= 8.3.7
-- **Composer** (PHP Package Manager)
-- **Node.js** >= 18.x dan **NPM** (untuk frontend assets)
-- **MySQL** >= 8.0 atau **MariaDB** >= 10.x
-- **Git** (untuk clone repository)
+-   **PHP** >= 8.3.7
+-   **Composer** (PHP Package Manager)
+-   **Node.js** >= 18.x dan **NPM** (untuk frontend assets)
+-   **MySQL** >= 8.0 atau **MariaDB** >= 10.x
+-   **Git** (untuk clone repository)
 
 ### 🔧 Cara Mengecek Versi
 
@@ -50,11 +53,12 @@ git --version
 ```
 
 Jika ada yang belum terinstal, silakan download dan instal dari:
-- PHP: [https://www.php.net/downloads](https://www.php.net/downloads) atau gunakan [Laragon](https://laragon.org/download/)/[XAMPP](https://www.apachefriends.org/)
-- Composer: [https://getcomposer.org/download/](https://getcomposer.org/download/)
-- Node.js: [https://nodejs.org/](https://nodejs.org/) (pilih versi LTS)
-- MySQL: sudah termasuk di Laragon/XAMPP
-- Git: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+
+-   PHP: [https://www.php.net/downloads](https://www.php.net/downloads) atau gunakan [Laragon](https://laragon.org/download/)/[XAMPP](https://www.apachefriends.org/)
+-   Composer: [https://getcomposer.org/download/](https://getcomposer.org/download/)
+-   Node.js: [https://nodejs.org/](https://nodejs.org/) (pilih versi LTS)
+-   MySQL: sudah termasuk di Laragon/XAMPP
+-   Git: [https://git-scm.com/downloads](https://git-scm.com/downloads)
 
 ---
 
@@ -92,16 +96,19 @@ npm install
 Copy file `.env.example` menjadi `.env`:
 
 **Windows (Command Prompt):**
+
 ```bash
 copy .env.example .env
 ```
 
 **Windows (PowerShell):**
+
 ```bash
 Copy-Item .env.example .env
 ```
 
 **macOS/Linux:**
+
 ```bash
 cp .env.example .env
 ```
@@ -151,9 +158,10 @@ DB_PASSWORD=
 ```
 
 **Catatan:**
-- Jika menggunakan password MySQL, isi `DB_PASSWORD` dengan password Anda
-- Jika pakai Laragon, biasanya tidak ada password (kosongkan)
-- Jika pakai XAMPP, defaultnya juga tanpa password
+
+-   Jika menggunakan password MySQL, isi `DB_PASSWORD` dengan password Anda
+-   Jika pakai Laragon, biasanya tidak ada password (kosongkan)
+-   Jika pakai XAMPP, defaultnya juga tanpa password
 
 ### 8️⃣ Jalankan Migration & Seeder
 
@@ -164,20 +172,23 @@ php artisan migrate --seed
 ```
 
 **Jika ada error:**
-- Pastikan MySQL sudah running
-- Cek kembali konfigurasi `.env` (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
-- Pastikan database `tkt_teratai` sudah dibuat
+
+-   Pastikan MySQL sudah running
+-   Cek kembali konfigurasi `.env` (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+-   Pastikan database `tkt_teratai` sudah dibuat
 
 ### 9️⃣ Build Frontend Assets
 
 Compile CSS dan JavaScript dengan Vite:
 
 **Untuk Development (dengan hot reload):**
+
 ```bash
 npm run dev
 ```
 
 **Untuk Production (file optimized):**
+
 ```bash
 npm run build
 ```
@@ -201,19 +212,22 @@ Aplikasi akan berjalan di: **http://127.0.0.1:8000** atau **http://localhost:800
 Setelah instalasi selesai, Anda bisa login dengan akun berikut:
 
 ### Admin
-- **Email:** `admin@teratai.sch.id`
-- **Password:** `password123`
-- **URL:** http://localhost:8000/admin/login
+
+-   **Email:** `admin@teratai.sch.id`
+-   **Password:** `password123`
+-   **URL:** http://localhost:8000/admin/login
 
 ### Guru
-- **Email:** `guru@teratai.sch.id`
-- **Password:** `password123`
-- **URL:** http://localhost:8000/guru/login
+
+-   **Email:** `guru@teratai.sch.id`
+-   **Password:** `password123`
+-   **URL:** http://localhost:8000/guru/login
 
 ### Orang Tua
-- **Email:** `orangtua@teratai.sch.id`
-- **Password:** `password123`
-- **URL:** http://localhost:8000/orangtua/login
+
+-   **Email:** `orangtua@teratai.sch.id`
+-   **Password:** `password123`
+-   **URL:** http://localhost:8000/orangtua/login
 
 **⚠️ PENTING:** Segera ubah password default setelah login pertama kali!
 
@@ -222,7 +236,9 @@ Setelah instalasi selesai, Anda bisa login dengan akun berikut:
 ## 🛠️ Troubleshooting (Mengatasi Error Umum)
 
 ### ❌ Error: "Route [login] not defined"
+
 **Solusi:**
+
 ```bash
 php artisan route:clear
 php artisan config:clear
@@ -230,38 +246,50 @@ php artisan cache:clear
 ```
 
 ### ❌ Error: "SQLSTATE[HY000] [1045] Access denied"
+
 **Solusi:**
-- Cek username dan password MySQL di file `.env`
-- Pastikan MySQL service sudah running
+
+-   Cek username dan password MySQL di file `.env`
+-   Pastikan MySQL service sudah running
 
 ### ❌ Error: "SQLSTATE[HY000] [2002] No such file or directory"
+
 **Solusi:**
-- Pastikan MySQL/MariaDB sudah dijalankan
-- Di Laragon: Klik "Start All"
-- Di XAMPP: Start Apache dan MySQL
+
+-   Pastikan MySQL/MariaDB sudah dijalankan
+-   Di Laragon: Klik "Start All"
+-   Di XAMPP: Start Apache dan MySQL
 
 ### ❌ Error: "npm ERR! code ENOENT"
+
 **Solusi:**
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 ### ❌ Error: "Class 'X' not found"
+
 **Solusi:**
+
 ```bash
 composer dump-autoload
 php artisan optimize:clear
 ```
 
 ### ❌ Frontend tidak tampil dengan baik / CSS tidak load
+
 **Solusi:**
-- Pastikan `npm run dev` atau `npm run build` sudah dijalankan
-- Cek file `public/hot` ada atau tidak
-- Hapus cache browser (Ctrl+F5)
+
+-   Pastikan `npm run dev` atau `npm run build` sudah dijalankan
+-   Cek file `public/hot` ada atau tidak
+-   Hapus cache browser (Ctrl+F5)
 
 ### ❌ Error: "Permission denied" (Linux/Mac)
+
 **Solusi:**
+
 ```bash
 chmod -R 775 storage bootstrap/cache
 chown -R $USER:www-data storage bootstrap/cache
@@ -315,41 +343,49 @@ php artisan optimize:clear
 ## 📝 Development Commands
 
 ### Jalankan Development Server
+
 ```bash
 php artisan serve
 ```
 
 ### Compile Assets (dengan hot reload)
+
 ```bash
 npm run dev
 ```
 
 ### Build Production Assets
+
 ```bash
 npm run build
 ```
 
 ### Jalankan Migration Baru
+
 ```bash
 php artisan migrate
 ```
 
 ### Rollback Migration
+
 ```bash
 php artisan migrate:rollback
 ```
 
 ### Reset Database (Fresh Install)
+
 ```bash
 php artisan migrate:fresh --seed
 ```
 
 ### Clear All Cache
+
 ```bash
 php artisan optimize:clear
 ```
 
 ### Format Code (Laravel Pint)
+
 ```bash
 vendor/bin/pint
 ```
@@ -365,6 +401,7 @@ php artisan test
 ```
 
 Untuk test spesifik:
+
 ```bash
 php artisan test --filter=NamaTest
 ```
@@ -373,21 +410,22 @@ php artisan test --filter=NamaTest
 
 ## 📚 Teknologi yang Digunakan
 
-- **Backend:** Laravel 12 (PHP 8.3)
-- **Frontend:** Blade Templates + Alpine.js
-- **CSS:** Tailwind CSS v4
-- **Database:** MySQL/MariaDB
-- **Build Tool:** Vite
-- **Testing:** Pest v4
-- **Icons:** Font Awesome 6
+-   **Backend:** Laravel 12 (PHP 8.3)
+-   **Frontend:** Blade Templates + Alpine.js
+-   **CSS:** Tailwind CSS v4
+-   **Database:** MySQL/MariaDB
+-   **Build Tool:** Vite
+-   **Testing:** Pest v4
+-   **Icons:** Font Awesome 6
 
 ---
 
 ## 👨‍💻 Developer
 
 **Aden Sahwaludin**
-- GitHub: [@AdenSahwaludin](https://github.com/AdenSahwaludin)
-- Repository: [simpelteratai](https://github.com/AdenSahwaludin/simpelteratai)
+
+-   GitHub: [@AdenSahwaludin](https://github.com/AdenSahwaludin)
+-   Repository: [simpelteratai](https://github.com/AdenSahwaludin/simpelteratai)
 
 ---
 
@@ -408,4 +446,3 @@ Jika mengalami kesulitan atau menemukan bug:
 ---
 
 **Selamat Menggunakan Sistem Manajemen TK Teratai! 🎉**
-

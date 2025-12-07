@@ -107,7 +107,14 @@
                                         <span class="text-sm text-gray-900">{{ $jadwal->guru->nama ?? '-' }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm text-gray-900">{{ $jadwal->waktu }}</span>
+                                        <span class="text-sm text-gray-900">
+                                            @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
+                                                {{ $jadwal->waktu_mulai->format('H:i') }} -
+                                                {{ $jadwal->waktu_selesai->format('H:i') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-900">{{ $jadwal->ruang }}</span>

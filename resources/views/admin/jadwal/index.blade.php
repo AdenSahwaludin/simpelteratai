@@ -79,6 +79,10 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="hari" label="Hari" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                             <x-sort-header column="waktu" label="Waktu" />
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
@@ -94,6 +98,11 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {{ $item->mataPelajaran->nama_mapel }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->ruang }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
+                                    {{ $item->hari ?? '-' }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 <span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">
                                     @if ($item->waktu_mulai && $item->waktu_selesai)
@@ -160,6 +169,8 @@
                     <div class="space-y-2 mb-3 text-sm text-gray-600">
                         <p><i class="fas fa-user w-5"></i> {{ $item->guru->nama }}</p>
                         <p><i class="fas fa-door-open w-5"></i> Ruang {{ $item->ruang }}</p>
+                        <p><i class="fas fa-calendar w-5"></i> <span
+                                class="font-semibold text-blue-600">{{ $item->hari ?? '-' }}</span></p>
                     </div>
                     <div class="flex gap-2 pt-3 border-t border-gray-200">
                         <a href="{{ route('admin.jadwal.show', $item->id_jadwal) }}"

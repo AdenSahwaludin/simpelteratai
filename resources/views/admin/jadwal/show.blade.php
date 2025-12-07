@@ -52,6 +52,10 @@
                             <p class="font-semibold text-gray-900">{{ $jadwal->ruang }}</p>
                         </div>
                         <div>
+                            <p class="text-sm text-gray-600">Hari</p>
+                            <p class="font-semibold text-blue-600 text-lg">{{ $jadwal->hari ?? '-' }}</p>
+                        </div>
+                        <div>
                             <p class="text-sm text-gray-600">Waktu</p>
                             <p class="font-semibold text-gray-900">
                                 @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)

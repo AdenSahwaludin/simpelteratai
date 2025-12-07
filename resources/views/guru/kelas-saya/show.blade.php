@@ -50,7 +50,13 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-600">
-                                            {{ \Carbon\Carbon::parse($item->waktu)->format('H:i d-m-Y') }}</span>
+                                            @if ($item->waktu_mulai && $item->waktu_selesai)
+                                                {{ $item->waktu_mulai->format('H:i') }} -
+                                                {{ $item->waktu_selesai->format('H:i') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">

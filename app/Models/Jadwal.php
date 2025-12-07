@@ -25,7 +25,6 @@ class Jadwal extends Model
         'id_guru',
         'id_mata_pelajaran',
         'ruang',
-        'waktu',
         'waktu_mulai',
         'waktu_selesai',
         'hari',
@@ -34,7 +33,6 @@ class Jadwal extends Model
     ];
 
     protected $casts = [
-        'waktu' => 'datetime:H:i',
         'waktu_mulai' => 'datetime:H:i',
         'waktu_selesai' => 'datetime:H:i',
         'tanggal_mulai' => 'date',
