@@ -44,87 +44,113 @@
 
                     <!-- Schedule Content -->
                     @if (isset($jadwalByKelas[$siswa->kelas]) && $jadwalByKelas[$siswa->kelas]->count() > 0)
-                        <!-- Desktop View -->
-                        <div class="hidden md:block overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hari
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Waktu
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mata
-                                            Pelajaran</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Guru
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ruang
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($hariList as $hari)
-                                        @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
-                                            @foreach ($jadwalByKelas[$siswa->kelas][$hari] as $index => $jadwal)
-                                                <tr class="hover:bg-gray-50">
-                                                    @if ($index === 0)
-                                                        <td class="px-6 py-4 font-semibold text-purple-600"
-                                                            rowspan="{{ $jadwalByKelas[$siswa->kelas][$hari]->count() }}">
-                                                            {{ $hari }}
-                                                        </td>
-                                                    @endif
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                        {{ $jadwal->waktu_mulai?->format('H:i') }} -
-                                                        {{ $jadwal->waktu_selesai?->format('H:i') }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-sm">
-                                                        <span
-                                                            class="font-medium text-gray-800">{{ $jadwal->mataPelajaran->nama_mapel }}</span>
-                                                    </td>
-                                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                                        {{ $jadwal->guru->nama }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                                        <span
-                                                            class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">{{ $jadwal->ruang }}</span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                        <!-- Weekly Schedule Grid -->
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                @php
+                                    $hariColors = [
+                                        'Senin' => [
+                                            'bg' => 'bg-blue-50',
+                                            'border' => 'border-blue-400',
+                                            'text' => 'text-blue-700',
+                                            'badge' => 'bg-blue-500',
+                                        ],
+                                        'Selasa' => [
+                                            'bg' => 'bg-green-50',
+                                            'border' => 'border-green-400',
+                                            'text' => 'text-green-700',
+                                            'badge' => 'bg-green-500',
+                                        ],
+                                        'Rabu' => [
+                                            'bg' => 'bg-yellow-50',
+                                            'border' => 'border-yellow-400',
+                                            'text' => 'text-yellow-700',
+                                            'badge' => 'bg-yellow-500',
+                                        ],
+                                        'Kamis' => [
+                                            'bg' => 'bg-orange-50',
+                                            'border' => 'border-orange-400',
+                                            'text' => 'text-orange-700',
+                                            'badge' => 'bg-orange-500',
+                                        ],
+                                        'Jumat' => [
+                                            'bg' => 'bg-red-50',
+                                            'border' => 'border-red-400',
+                                            'text' => 'text-red-700',
+                                            'badge' => 'bg-red-500',
+                                        ],
+                                        'Sabtu' => [
+                                            'bg' => 'bg-purple-50',
+                                            'border' => 'border-purple-400',
+                                            'text' => 'text-purple-700',
+                                            'badge' => 'bg-purple-500',
+                                        ],
+                                    ];
+                                @endphp
 
-                        <!-- Mobile View -->
-                        <div class="md:hidden p-4 space-y-4">
-                            @foreach ($hariList as $hari)
-                                @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
-                                    <div class="border-l-4 border-purple-500 pl-4">
-                                        <h3 class="font-bold text-purple-600 mb-3">{{ $hari }}</h3>
-                                        <div class="space-y-3">
-                                            @foreach ($jadwalByKelas[$siswa->kelas][$hari] as $jadwal)
-                                                <div class="bg-gray-50 rounded-lg p-4">
-                                                    <div class="flex items-start gap-3">
+                                @foreach ($hariList as $hari)
+                                    <div
+                                        class="border-2 {{ $hariColors[$hari]['border'] }} rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <!-- Day Header -->
+                                        <div class="{{ $hariColors[$hari]['badge'] }} text-white px-4 py-3">
+                                            <div class="flex items-center justify-between">
+                                                <h3 class="text-lg font-bold">{{ $hari }}</h3>
+                                                @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
+                                                    <span
+                                                        class="{{ $hariColors[$hari]['badge'] }} bg-opacity-30 px-2 py-1 rounded-full text-xs font-semibold">
+                                                        {{ $jadwalByKelas[$siswa->kelas][$hari]->count() }} Pelajaran
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <!-- Schedule List -->
+                                        <div class="{{ $hariColors[$hari]['bg'] }} p-4">
+                                            @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
+                                                <div class="space-y-3">
+                                                    @foreach ($jadwalByKelas[$siswa->kelas][$hari] as $jadwal)
                                                         <div
-                                                            class="bg-purple-100 text-purple-600 px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap">
-                                                            {{ $jadwal->waktu_mulai?->format('H:i') }} -
-                                                            {{ $jadwal->waktu_selesai?->format('H:i') }}
+                                                            class="bg-white rounded-lg p-3 shadow-sm border border-gray-200 hover:border-{{ explode('-', $hariColors[$hari]['badge'])[1] }}-400 transition-colors">
+                                                            <!-- Time Badge -->
+                                                            <div class="flex items-center gap-2 mb-2">
+                                                                <i
+                                                                    class="fas fa-clock {{ $hariColors[$hari]['text'] }} text-sm"></i>
+                                                                <span
+                                                                    class="text-sm font-semibold {{ $hariColors[$hari]['text'] }}">
+                                                                    {{ $jadwal->waktu_mulai?->format('H:i') }} -
+                                                                    {{ $jadwal->waktu_selesai?->format('H:i') }}
+                                                                </span>
+                                                            </div>
+
+                                                            <!-- Subject -->
+                                                            <h4 class="font-bold text-gray-800 text-sm mb-1">
+                                                                {{ $jadwal->mataPelajaran->nama_mapel }}
+                                                            </h4>
+
+                                                            <!-- Teacher & Room -->
+                                                            <div
+                                                                class="flex items-center justify-between text-xs text-gray-600">
+                                                                <span class="flex items-center gap-1">
+                                                                    <i class="fas fa-user-tie"></i>
+                                                                    {{ $jadwal->guru->nama }}
+                                                                </span>
+                                                                <span class="px-2 py-1 bg-gray-100 rounded font-medium">
+                                                                    <i class="fas fa-door-open"></i> {{ $jadwal->ruang }}
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div class="flex-1">
-                                                            <p class="font-semibold text-gray-800">
-                                                                {{ $jadwal->mataPelajaran->nama_mapel }}</p>
-                                                            <p class="text-sm text-gray-600 mt-1">{{ $jadwal->guru->nama }}
-                                                            </p>
-                                                            <span
-                                                                class="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">{{ $jadwal->ruang }}</span>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
-                                            @endforeach
+                                            @else
+                                                <div class="text-center py-8 text-gray-400">
+                                                    <i class="fas fa-calendar-times text-3xl mb-2"></i>
+                                                    <p class="text-sm">Tidak ada pelajaran</p>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     @else
                         <div class="p-12 text-center text-gray-500">
