@@ -60,8 +60,6 @@
                             <p class="font-semibold text-gray-900">
                                 @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
                                     {{ $jadwal->waktu_mulai->format('H:i') }} - {{ $jadwal->waktu_selesai->format('H:i') }}
-                                @elseif($jadwal->waktu)
-                                    {{ $jadwal->waktu->format('H:i') }}
                                 @else
                                     -
                                 @endif

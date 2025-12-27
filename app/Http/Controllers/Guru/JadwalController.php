@@ -25,7 +25,7 @@ class JadwalController extends Controller
             ->when($ruang, function ($query, $ruang) {
                 return $query->where('ruang', $ruang);
             })
-            ->orderBy('waktu')
+            ->orderBy('waktu_mulai')
             ->paginate(20)
             ->appends($request->query());
 

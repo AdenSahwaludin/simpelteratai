@@ -133,8 +133,13 @@
                                                 </span>
                                             </td>
                                             <td class="border border-gray-200 px-4 py-3 text-gray-800">
-                                                <i
-                                                    class="fas fa-clock text-blue-600 mr-2"></i>{{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}
+                                                <i class="fas fa-clock text-blue-600 mr-2"></i>
+                                                @if ($jadwal->waktu_mulai && $jadwal->waktu_selesai)
+                                                    {{ $jadwal->waktu_mulai->format('H:i') }} -
+                                                    {{ $jadwal->waktu_selesai->format('H:i') }}
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
                                             <td class="border border-gray-200 px-4 py-3 text-gray-800">
                                                 <span

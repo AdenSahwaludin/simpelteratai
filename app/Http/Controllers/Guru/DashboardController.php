@@ -57,7 +57,7 @@ class DashboardController extends Controller
         // Recent jadwal (upcoming)
         $jadwalTerbaru = $guru->jadwal()
             ->with(['mataPelajaran'])
-            ->orderBy('waktu', 'asc')
+            ->orderBy('waktu_mulai', 'asc')
             ->limit(5)
             ->get();
 

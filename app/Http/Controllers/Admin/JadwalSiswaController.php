@@ -19,7 +19,7 @@ class JadwalSiswaController extends Controller
         $jadwals = Jadwal::with(['guru', 'mataPelajaran'])
             ->withCount('siswa')
             ->orderBy('ruang')
-            ->orderBy('waktu')
+            ->orderBy('waktu_mulai')
             ->paginate(15);
 
         return view('admin.jadwal-siswa.index', compact('jadwals'));

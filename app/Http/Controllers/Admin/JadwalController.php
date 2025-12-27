@@ -19,13 +19,13 @@ class JadwalController extends Controller
     {
         $search = $request->input('search');
         $guru = $request->input('guru');
-        $sort = $request->input('sort', 'waktu');
+        $sort = $request->input('sort', 'waktu_mulai');
         $direction = $request->input('direction', 'asc');
 
         // Validasi sort column
-        $allowedSort = ['id_jadwal', 'waktu', 'ruang'];
+        $allowedSort = ['id_jadwal', 'waktu_mulai', 'ruang'];
         if (! in_array($sort, $allowedSort)) {
-            $sort = 'waktu';
+            $sort = 'waktu_mulai';
         }
 
         $jadwal = Jadwal::query()
