@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
         // Create Guru
         Guru::create([
             'id_guru' => 'G01',
+            'nip' => '19876543210',
             'nama' => 'Ibu Sarah',
             'email' => 'sarah@simpelteratai.com',
             'password' => Hash::make('password'),
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
 
         Guru::create([
             'id_guru' => 'G02',
+            'nip' => '1987654321',
             'nama' => 'Pak Budi',
             'email' => 'budi@simpelteratai.com',
             'password' => Hash::make('password'),

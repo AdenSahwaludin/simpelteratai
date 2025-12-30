@@ -1,0 +1,265 @@
+5.2.2 DOKUMENTASI HALAMAN & ROUTE SISTEM
+
+5.2.2.1 Halaman Login
+
+Halaman login merupakan pintu masuk utama sistem POS SBS yang memastikan setiap pengguna terauthentikasi dengan benar sebelum mengakses aplikasi. Pada halaman ini, pengguna (kasir atau admin) memasukkan kredensial mereka berupa email/username dan password, kemudian sistem akan memvalidasi data tersebut dengan database. Jika login berhasil, user akan diarahkan ke dashboard sesuai dengan rolenya (admin ke /admin atau kasir ke /kasir), dan sistem akan mencatat waktu terakhir login untuk audit trail. Fitur "Remember Me" juga tersedia untuk kemudahan akses berulang kali dari perangkat yang sama.
+
+Route: GET /login → Menampilkan form login
+Route: POST /login → Memproses login dan generate session
+
+---
+
+5.2.2.2 Halaman Dashboard Admin
+
+Dashboard admin adalah pusat kontrol administrator yang menampilkan ringkasan statistik menyeluruh mengenai kinerja bisnis POS SBS. Dashboard ini menampilkan widget-widget penting seperti total penjualan hari ini, jumlah transaksi, pending approval barang masuk, dan alert untuk produk dengan stok minimum. Admin dapat melihat grafik trend penjualan mingguan/bulanan, monitoring trust score pelanggan, dan akses cepat ke berbagai fitur manajemen sistem. Setiap data pada dashboard dapat diklik untuk drill-down ke laporan yang lebih detail.
+
+Route: GET /admin → Halaman dashboard utama admin
+Route: GET /admin/users → Quick access ke manajemen pengguna
+Route: GET /admin/reports → Quick access ke laporan & analisis
+
+---
+
+5.2.2.3 Halaman Dashboard Kasir
+
+Dashboard kasir menampilkan informasi operasional harian yang relevan dengan pekerjaan kasir, termasuk POS system link, ringkasan transaksi hari ini, angsuran yang jatuh tempo hari ini, dan daftar pelanggan favorit. Dashboard ini dirancang untuk memberikan akses cepat ke fungsi-fungsi yang paling sering digunakan kasir seperti membuat transaksi baru, melihat riwayat transaksi, dan mencatat pembayaran cicilan. Widget-widget di dashboard juga menampilkan alert penting seperti stok produk yang hampir habis atau pelanggan yang status kreditnya di-blokir.
+
+Route: GET /kasir → Halaman dashboard utama kasir
+
+---
+
+5.2.2.4 Halaman Manajemen Pengguna (Admin)
+
+Halaman ini memungkinkan admin untuk melakukan CRUD (Create, Read, Update, Delete) terhadap akun pengguna sistem, baik itu kasir maupun admin. Admin dapat melihat daftar lengkap pengguna dengan informasi nama, email, role, dan waktu terakhir login. Fitur pencarian dan filter memudahkan admin menemukan user tertentu, sementara tombol action memungkinkan edit profil, reset password, atau menghapus akun user. Setiap perubahan terhadap user tercatat dalam audit log untuk keamanan dan compliance.
+
+Route: GET /admin/pengguna → Daftar semua pengguna
+Route: GET /admin/pengguna/create → Form tambah pengguna baru
+Route: POST /admin/pengguna → Simpan pengguna baru
+Route: GET /admin/pengguna/{id} → Lihat detail pengguna
+Route: GET /admin/pengguna/{id}/edit → Form edit pengguna
+Route: PUT /admin/pengguna/{id} → Update data pengguna
+Route: DELETE /admin/pengguna/{id} → Hapus pengguna
+Route: POST /admin/pengguna/{id}/reset-password → Reset password pengguna
+
+---
+
+5.2.2.5 Halaman Manajemen Produk (Admin)
+
+Halaman manajemen produk adalah dashboard lengkap untuk admin mengelola semua data produk yang dijual di POS SBS. Admin dapat melihat tabel produk dengan kolom SKU, nama, kategori, harga, stok (karton + pcs), dan status. Fitur pencarian dan filter memudahkan navigasi dalam katalog produk yang besar. Admin dapat melakukan berbagai operasi seperti tambah produk baru, edit harga/stok, hapus produk, atau melakukan bulk action untuk update multiple produk sekaligus. Setiap produk juga menampilkan informasi stok minimum dan jumlah restock yang disarankan.
+
+Route: GET /admin/produk → Daftar semua produk
+Route: GET /admin/produk/search-produk → API untuk search produk
+Route: GET /admin/produk/create → Form tambah produk baru
+Route: POST /admin/produk → Simpan produk baru
+Route: GET /admin/produk/{id} → Lihat detail produk
+Route: GET /admin/produk/{id}/edit → Form edit produk
+Route: PUT /admin/produk/{id} → Update data produk
+Route: DELETE /admin/produk/{id} → Hapus produk
+Route: POST /admin/produk/bulk-action → Bulk action untuk multiple produk
+
+---
+
+5.2.2.6 Halaman Manajemen Kategori Produk (Admin)
+
+Halaman manajemen kategori memudahkan admin mengorganisir produk ke dalam kategori-kategori yang logis dan mudah dipahami oleh kasir dan pelanggan. Admin dapat membuat kategori baru, edit nama/deskripsi kategori, atau menghapus kategori yang sudah tidak digunakan. Sistem mencegah penghapusan kategori yang masih memiliki produk yang tertaut. Fitur bulk action juga tersedia untuk update multiple kategori sekaligus jika diperlukan.
+
+Route: GET /admin/kategori → Daftar semua kategori
+Route: GET /admin/kategori/create → Form tambah kategori baru
+Route: POST /admin/kategori → Simpan kategori baru
+Route: GET /admin/kategori/{id} → Lihat detail kategori
+Route: GET /admin/kategori/{id}/edit → Form edit kategori
+Route: PUT /admin/kategori/{id} → Update data kategori
+Route: DELETE /admin/kategori/{id} → Hapus kategori
+Route: POST /admin/kategori/bulk-action → Bulk action kategori
+
+---
+
+5.2.2.7 Halaman Manajemen Pelanggan (Admin)
+
+Halaman manajemen pelanggan memberikan admin visibility penuh terhadap master data semua pelanggan yang terdaftar di sistem. Admin dapat melihat informasi pelanggan seperti nama, email, telepon, kota, trust score, credit limit, dan status kredit. Fitur filter memudahkan admin menemukan pelanggan berdasarkan criteria tertentu (status kredit AKTIF/BLOKIR/TANDA, trust score range, dll). Admin juga dapat melakukan operasi seperti edit data pelanggan, melihat riwayat transaksi pelanggan, atau memblokir/unblokir akses kredit pelanggan.
+
+Route: GET /admin/pelanggan → Daftar semua pelanggan
+Route: GET /admin/pelanggan/create → Form tambah pelanggan baru
+Route: POST /admin/pelanggan → Simpan pelanggan baru
+Route: GET /admin/pelanggan/{id} → Lihat detail pelanggan
+Route: GET /admin/pelanggan/{id}/edit → Form edit pelanggan
+Route: PUT /admin/pelanggan/{id} → Update data pelanggan
+Route: DELETE /admin/pelanggan/{id} → Hapus pelanggan
+
+---
+
+5.2.2.8 Halaman Laporan Transaksi (Admin)
+
+Halaman laporan transaksi menampilkan analisis mendalam terhadap semua penjualan yang telah dilakukan melalui sistem. Admin dapat melihat list transaksi dengan detail seperti nomor transaksi, pelanggan, total, metode pembayaran, status, dan tanggal. Tersedia filter berdasarkan tanggal range, status (lunas/pending), dan metode pembayaran. Admin juga dapat melihat sub-laporan khusus seperti laporan harian, mingguan, atau bulanan yang menampilkan statistik penjualan dan trend. Export ke Excel juga tersedia untuk keperluan analisis lebih lanjut di spreadsheet.
+
+Route: GET /admin/transactions → Daftar transaksi lengkap
+Route: GET /admin/transactions/{nomorTransaksi} → Detail transaksi
+Route: GET /admin/transactions/laporan-harian → Laporan transaksi harian
+Route: GET /admin/transactions/laporan-mingguan → Laporan transaksi mingguan
+Route: GET /admin/transactions/laporan-bulanan → Laporan transaksi bulanan
+
+---
+
+5.2.2.9 Halaman Manajemen Trust Score & Kredit (Admin)
+
+Halaman ini memungkinkan admin untuk memonitor dan memanage trust score serta credit limit setiap pelanggan secara detail. Admin dapat melihat riwayat perubahan trust score, faktor-faktor yang mempengaruhi (bayar tepat waktu, terlambat, dll), dan current trust score category (SANGAT BAIK, BAIK, CUKUP, KURANG). Admin juga dapat melakukan operasi seperti melihat detailed breakdown trust score, melakukan recalculate otomatis untuk satu atau semua pelanggan, atau melakukan adjustment manual jika diperlukan untuk kasus-kasus khusus.
+
+Route: GET /admin/trust-score/{id} → Lihat detail trust score pelanggan
+Route: POST /admin/trust-score/{id}/recalculate → Recalculate trust score satu pelanggan
+Route: POST /admin/trust-score/recalculate-all → Recalculate trust score semua pelanggan
+
+---
+
+5.2.2.10 Halaman Persetujuan Barang Masuk (Admin)
+
+Halaman ini menjadi workflow approval untuk semua pembelian barang yang dilakukan melalui sistem. Admin dapat melihat daftar pending purchase orders yang menunggu persetujuan, lengkap dengan detail PO seperti supplier, jumlah item, dan tanggal PO. Admin dapat melakukan review detail sebelum approve atau reject. Jika approve, sistem akan auto-generate Goods In record dan menunggu penerimaan fisik barang oleh bagian warehouse/kasir. Jika reject, sistem akan mengirim notifikasi ke requester dan PO akan kembali ke status draft untuk revisi.
+
+Route: GET /admin/goods-in-approval → Daftar PO pending approval
+Route: GET /admin/goods-in-approval/{id} → Detail PO untuk review
+Route: POST /admin/goods-in-approval/{id}/approve → Approve PO
+Route: POST /admin/goods-in-approval/{id}/reject → Reject PO
+
+---
+
+5.2.2.11 Halaman Riwayat Barang Masuk (Admin)
+
+Halaman ini menampilkan audit trail lengkap dari semua transaksi barang masuk (goods in) yang telah diproses. Admin dapat melihat list dengan informasi seperti nomor GI, PO yang terkait, supplier, tanggal terima, dan status. Fitur filter memudahkan pencarian berdasarkan tanggal, supplier, atau status. Admin juga dapat melihat detail GI yang mencakup breakdown item-per-item, foto receipt/invoice, dan approval trail untuk compliance & audit purposes.
+
+Route: GET /admin/goods-in-history → Daftar goods in history
+Route: GET /admin/goods-in-history/{id} → Detail goods in history
+
+---
+
+5.2.2.12 Halaman Point of Sale (POS) - Kasir
+
+Halaman POS adalah jantung dari sistem penjualan real-time tempat kasir melakukan transaksi penjualan kepada pelanggan. Interface dirancang user-friendly dengan area input pelanggan di bagian atas, keranjang belanja (cart) di tengah, dan ringkasan total di bagian bawah. Kasir dapat dengan cepat menambahkan produk ke cart dengan scan barcode atau search produk, mengatur jumlah & satuan (karton/pcs), menerapkan diskon, dan memilih metode pembayaran. Sistem auto-calculate total termasuk pajak, dan untuk transaksi kredit, kasir dapat input DP dan tenor untuk auto-calculate cicilan.
+
+Route: GET /kasir/pos → Halaman POS interface
+Route: POST /kasir/pos → Proses transaksi penjualan
+Route: GET /kasir/pos/search-produk → API search produk untuk POS
+Route: GET /kasir/pos/produk → API get produk by barcode
+Route: GET /kasir/pos/receipt/{nomorTransaksi} → Lihat/print receipt transaksi
+Route: GET /kasir/pos/today-transactions → List transaksi hari ini
+Route: POST /kasir/pos/cancel/{nomorTransaksi} → Cancel transaksi
+
+---
+
+5.2.2.13 Halaman Riwayat Transaksi - Kasir
+
+Halaman ini menampilkan daftar semua transaksi yang telah dilakukan kasir, baik hari ini maupun hari-hari sebelumnya. Kasir dapat melihat informasi seperti nomor transaksi, pelanggan, total, metode pembayaran, dan status. Fitur filter memudahkan pencarian berdasarkan tanggal atau pelanggan tertentu. Kasir juga dapat melakukan operasi seperti melihat detail transaksi, reprint receipt, atau melakukan cancel/refund jika diperlukan (sesuai dengan policy bisnis).
+
+Route: GET /kasir/transactions → Daftar transaksi kasir
+Route: GET /kasir/transactions/today → Transaksi hari ini
+Route: GET /kasir/transactions/{nomorTransaksi} → Detail transaksi
+Route: PATCH /kasir/transactions/{nomorTransaksi}/status → Update status transaksi
+
+---
+
+5.2.2.14 Halaman Produk - Kasir (View Only)
+
+Halaman ini memberikan kasir akses untuk melihat katalog produk yang tersedia dan detail masing-masing produk, namun dalam mode read-only (tidak bisa edit). Kasir dapat mencari produk berdasarkan nama, SKU, atau kategori untuk membantu dalam melayani pelanggan yang bertanya tentang ketersediaan atau spesifikasi produk. Setiap produk menampilkan informasi detail seperti nama, deskripsi, harga (satuan karton & pcs), stok real-time, dan kategori.
+
+Route: GET /kasir/products → Daftar produk (view only)
+Route: GET /kasir/products/{id} → Detail produk
+
+---
+
+5.2.2.15 Halaman Manajemen Pelanggan - Kasir
+
+Halaman manajemen pelanggan kasir mirip dengan yang admin, namun akses terbatas untuk operasi basic seperti melihat list pelanggan, tambah pelanggan baru, atau edit data pelanggan. Kasir tidak memiliki akses untuk menghapus pelanggan atau mengubah credit limit. Halaman ini memudahkan kasir untuk melakukan operasi yang diperlukan saat transaksi, seperti membuat akun pelanggan baru yang ingin melakukan transaksi kredit.
+
+Route: GET /kasir/customers → Daftar pelanggan
+Route: GET /kasir/customers/create → Form tambah pelanggan
+Route: POST /kasir/customers → Simpan pelanggan baru
+Route: GET /kasir/customers/{id} → Detail pelanggan
+Route: GET /kasir/customers/{id}/edit → Form edit pelanggan
+Route: PATCH /kasir/customers/{id} → Update pelanggan
+Route: DELETE /kasir/customers/{id} → Hapus pelanggan
+
+---
+
+5.2.2.16 Halaman Manajemen Angsuran (Cicilan) - Kasir
+
+Halaman angsuran memudahkan kasir untuk mencatat pembayaran cicilan dari pelanggan yang melakukan transaksi kredit. Kasir dapat melihat daftar jadwal angsuran yang jatuh tempo atau pending pembayaran, lengkap dengan informasi pelanggan, nominal cicilan, dan tanggal jatuh tempo. Kasir dapat melakukan mark as paid dan sistem akan auto-process pembayaran, mencatat ke database, dan trigger event untuk auto-update trust score pelanggan. Status angsuran juga menampilkan apakah sudah dibayar tepat waktu atau terlambat.
+
+Route: GET /kasir/angsuran → Daftar angsuran
+Route: GET /kasir/angsuran/{id} → Detail angsuran
+Route: POST /kasir/angsuran/{id}/pay → Record pembayaran angsuran
+
+---
+
+5.2.2.17 Halaman Konversi Stok - Kasir
+
+Halaman konversi stok memudahkan kasir untuk melakukan operasi SPLIT (membuka karton menjadi pcs) atau COMBINE (menggabungkan pcs menjadi karton). Interface yang user-friendly memudahkan kasir memilih produk, menentukan mode konversi, dan melakukan operasi. Setiap konversi otomatis tercatat di database dengan detail lengkap seperti stok awal, stok akhir, dan timestamp, untuk keperluan audit dan tracking akurasi stok.
+
+Route: GET /kasir/stock-conversion → Halaman konversi stok
+Route: GET /kasir/stock-conversion/create → Form konversi stok
+Route: POST /kasir/stock-conversion → Proses konversi stok
+
+---
+
+5.2.2.18 Halaman Penerimaan Barang (Goods In) - Kasir
+
+Halaman ini memudahkan kasir/warehouse untuk menerima barang yang telah di-approve oleh admin. Kasir dapat melihat list pending goods in yang siap diterima, melakukan review, dan mencatat penerimaan fisik. Kasir dapat menambahkan detail seperti jumlah item yang diterima (bisa berbeda dengan PO jika ada shortage), kondisi barang, nomor batch/expiry date, dan upload dokumentasi (foto). Setelah diconfirm, sistem otomatis update stok di master produk dan barang siap untuk penjualan.
+
+Route: GET /kasir/goods-in-receiving → Daftar pending goods in
+Route: GET /kasir/goods-in/{goodsIn}/receiving → Detail goods in untuk receiving
+Route: POST /kasir/goods-in/{goodsIn}/record-received → Record penerimaan barang
+
+---
+
+5.2.2.19 Halaman Penyesuaian Stok (Stock Adjustment) - Kasir
+
+Halaman ini memungkinkan kasir untuk melakukan adjustment stok karena berbagai alasan seperti kerusakan barang, kehilangan, atau inventory discrepancy yang terdeteksi saat stock opname. Kasir dapat membuat adjustment baru, memilih produk, menentukan tipe adjustment (dalam/keluar), dan jumlah item. Setiap adjustment tercatat dengan detail alasan dan approval trail untuk audit purposes.
+
+Route: GET /kasir/stock-adjustment → Daftar stock adjustment
+Route: GET /kasir/stock-adjustment/create → Form tambah adjustment
+Route: POST /kasir/stock-adjustment → Simpan stock adjustment
+
+---
+
+5.2.2.20 Halaman Goods In (PO Pending) - Kasir
+
+Halaman ini menampilkan list purchase orders yang telah di-approve admin dan menunggu untuk diproses lebih lanjut (baik itu receiving maupun dalam proses approval). Kasir dapat melihat detail PO lengkap dan melakukan action sesuai status PO. Halaman ini memudahkan koordinasi antara kasir dengan bagian procurement/supply.
+
+Route: GET /kasir/goods-in → Daftar goods in
+Route: GET /kasir/goods-in/create → Form buat goods in baru (PO)
+Route: POST /kasir/goods-in → Simpan goods in baru
+Route: GET /kasir/goods-in/{goodsIn} → Detail goods in
+Route: GET /kasir/goods-in/{goodsIn}/edit → Form edit goods in
+Route: PATCH /kasir/goods-in/{goodsIn} → Update goods in
+Route: DELETE /kasir/goods-in/{goodsIn} → Hapus goods in
+
+---
+
+5.2.2.21 Halaman Profile - Kasir
+
+Halaman profile memungkinkan kasir untuk melihat dan mengedit informasi profil pribadi mereka seperti nama, email, dan telepon. Kasir juga dapat melakukan perubahan password untuk keamanan akun. Halaman ini dirancang sederhana dengan fokus pada data yang relevan untuk kasir tanpa fitur-fitur administrative yang tidak perlu.
+
+Route: GET /kasir/profile → Lihat profile kasir
+Route: PATCH /kasir/profile → Update profile kasir
+Route: PATCH /kasir/profile/password → Update password kasir
+
+---
+
+5.2.2.22 Halaman Auth Profile (Authenticated User)
+
+Halaman profile authenticated adalah halaman universal untuk semua user yang sudah login (baik kasir maupun admin) untuk manage informasi pribadi mereka. User dapat melihat informasi profil seperti nama, email, dan akses terakhir. Fitur utama di halaman ini adalah kemampuan untuk update profil dan mengganti password.
+
+Route: GET /auth/profile → Lihat profile user
+Route: PATCH /auth/profile → Update profile user
+Route: PATCH /auth/profile/password → Update password user
+
+---
+
+5.2.2.23 Halaman Logout
+
+Proses logout dilakukan ketika user ingin keluar dari sistem. Sistem akan menghapus session, invalidate token, dan redirect user kembali ke halaman login. Logout dapat dilakukan melalui menu user atau hyperlink di berbagai halaman sistem.
+
+Route: POST /logout → Proses logout user
+Route: DELETE /logout → Alternatif logout dengan DELETE method
+
+---
+
+Last Updated: Desember 2025
+Status: Dokumentasi Lengkap Semua Halaman & Route
+Total Halaman: 23 halaman utama
