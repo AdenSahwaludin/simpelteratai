@@ -86,7 +86,8 @@
                                     <h3 class="text-xl font-bold">{{ $hari }}</h3>
                                 </div>
                                 @if (isset($jadwal[$hari]))
-                                    <span class="bg-white bg-opacity-30 px-3 py-1 rounded-full text-xs font-bold">
+                                    <span
+                                        class="bg-white {{ $hariColors[$hari]['text'] }}  bg-opacity-30 px-3 py-1 rounded-full text-xs font-bold">
                                         {{ $jadwal[$hari]->count() }}
                                     </span>
                                 @endif

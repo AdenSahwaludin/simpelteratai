@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\OrangTua;
 use App\Models\Siswa;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class SiswaController extends Controller
@@ -162,5 +164,80 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('admin.siswa.index')->with('success', 'Data siswa berhasil dihapus.');
+    }
+
+    /**
+     * Search orang tua for AJAX select2.
+     */
+    public function searchOrangTua(Request $request): JsonResponse
+    {
+        $search = $request->input('q');
+
+        $orangTua = OrangTua::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('nama', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('no_telpon', 'like', "%{$search}%");
+            })
+            ->orderBy('nama')
+            ->limit(20)
+            ->get();
+
+        $results = $orangTua->map(function ($item) {
+            return [
+                'id' => $item->id_orang_tua,
+                'text' => "{$item->nama} ({$item->email})",
+            ];
+        });
+
+        return response()->json([
+            'results' => $results,
+            'pagination' => ['more' => false],
+        ]);
+    }
+
+    /**
+     * Store a newly created orang tua via AJAX.
+     */
+    public function storeOrangTua(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|unique:orang_tua,email',
+                'no_telpon' => 'required|string|max:15',
+                'password' => 'required|string|min:6',
+            ], [
+                'nama.required' => 'Nama orang tua wajib diisi',
+                'email.required' => 'Email wajib diisi',
+                'email.email' => 'Format email tidak valid',
+                'email.unique' => 'Email sudah terdaftar',
+                'no_telpon.required' => 'No. telepon wajib diisi',
+                'password.required' => 'Password wajib diisi',
+                'password.min' => 'Password minimal 6 karakter',
+            ]);
+
+            $orangTua = new OrangTua;
+            $orangTua->id_orang_tua = 'OT'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
+            $orangTua->nama = $validated['nama'];
+            $orangTua->email = $validated['email'];
+            $orangTua->no_telpon = $validated['no_telpon'];
+            $orangTua->password = Hash::make($validated['password']);
+            $orangTua->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data orang tua berhasil ditambahkan',
+                'data' => [
+                    'id' => $orangTua->id_orang_tua,
+                    'text' => "{$orangTua->nama} ({$orangTua->email})",
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
+            ], 500);
+        }
     }
 }

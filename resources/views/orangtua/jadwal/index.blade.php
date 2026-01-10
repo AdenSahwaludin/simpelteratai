@@ -43,7 +43,7 @@
                     </div>
 
                     <!-- Schedule Content -->
-                    @if (isset($jadwalByKelas[$siswa->kelas]) && $jadwalByKelas[$siswa->kelas]->count() > 0)
+                    @if (isset($jadwalBySiswa[$siswa->id_siswa]) && $jadwalBySiswa[$siswa->id_siswa]->count() > 0)
                         <!-- Weekly Schedule Grid -->
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -95,10 +95,10 @@
                                         <div class="{{ $hariColors[$hari]['badge'] }} text-white px-4 py-3">
                                             <div class="flex items-center justify-between">
                                                 <h3 class="text-lg font-bold">{{ $hari }}</h3>
-                                                @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
+                                                @if (isset($jadwalBySiswa[$siswa->id_siswa][$hari]))
                                                     <span
                                                         class="{{ $hariColors[$hari]['badge'] }} bg-opacity-30 px-2 py-1 rounded-full text-xs font-semibold">
-                                                        {{ $jadwalByKelas[$siswa->kelas][$hari]->count() }} Pelajaran
+                                                        {{ $jadwalBySiswa[$siswa->id_siswa][$hari]->count() }} Pelajaran
                                                     </span>
                                                 @endif
                                             </div>
@@ -106,9 +106,9 @@
 
                                         <!-- Schedule List -->
                                         <div class="{{ $hariColors[$hari]['bg'] }} p-4">
-                                            @if (isset($jadwalByKelas[$siswa->kelas][$hari]))
+                                            @if (isset($jadwalBySiswa[$siswa->id_siswa][$hari]))
                                                 <div class="space-y-3">
-                                                    @foreach ($jadwalByKelas[$siswa->kelas][$hari] as $jadwal)
+                                                    @foreach ($jadwalBySiswa[$siswa->id_siswa][$hari] as $jadwal)
                                                         <div
                                                             class="bg-white rounded-lg p-3 shadow-sm border border-gray-200 hover:border-{{ explode('-', $hariColors[$hari]['badge'])[1] }}-400 transition-colors">
                                                             <!-- Time Badge -->

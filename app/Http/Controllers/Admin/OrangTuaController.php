@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrangTua;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class OrangTuaController extends Controller
@@ -69,10 +70,10 @@ class OrangTuaController extends Controller
         ]);
 
         $orangTua = new OrangTua;
-        $orangTua->id_orang_tua = 'O'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
+        $orangTua->id_orang_tua = 'OT'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
         $orangTua->nama = $validated['nama'];
         $orangTua->email = $validated['email'];
-        $orangTua->password = $validated['password'];
+        $orangTua->password = Hash::make($validated['password']);
         $orangTua->no_telpon = $validated['no_telpon'];
         $orangTua->save();
 
@@ -127,7 +128,7 @@ class OrangTuaController extends Controller
         $orangTua->nama = $validated['nama'];
         $orangTua->email = $validated['email'];
         if (! empty($validated['password'])) {
-            $orangTua->password = $validated['password'];
+            $orangTua->password = Hash::make($validated['password']);
         }
         $orangTua->no_telpon = $validated['no_telpon'];
         $orangTua->save();

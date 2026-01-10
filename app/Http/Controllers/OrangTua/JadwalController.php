@@ -16,36 +16,33 @@ class JadwalController extends Controller
     {
         $orangTua = auth('orangtua')->user();
 
-        // Get all children of the logged-in parent
-        $siswaList = Siswa::where('id_orang_tua', $orangTua->id_orang_tua)->get();
+        // Get all children of the logged-in parent with their jadwal
+        $siswaList = Siswa::where('id_orang_tua', $orangTua->id_orang_tua)
+            ->with(['jadwal.mataPelajaran', 'jadwal.guru'])
+            ->get();
 
-        // Get jadwal for all children grouped by kelas
-        $jadwalByKelas = [];
+        // Get jadwal for all children grouped by siswa id
+        $jadwalBySiswa = [];
         foreach ($siswaList as $siswa) {
-            if (! isset($jadwalByKelas[$siswa->kelas])) {
-                $jadwal = Jadwal::where('kelas', $siswa->kelas)
-                    ->with(['mataPelajaran', 'guru'])
-                    ->orderByRaw("
-                        CASE 
-                            WHEN hari = 'Senin' THEN 1
-                            WHEN hari = 'Selasa' THEN 2
-                            WHEN hari = 'Rabu' THEN 3
-                            WHEN hari = 'Kamis' THEN 4
-                            WHEN hari = 'Jumat' THEN 5
-                            WHEN hari = 'Sabtu' THEN 6
-                            ELSE 7
-                        END
-                    ")
-                    ->orderBy('waktu_mulai')
-                    ->get();
+            $jadwalBySiswa[$siswa->id_siswa] = $siswa->jadwal
+                ->sortBy(function ($jadwal) {
+                    $hariOrder = [
+                        'Senin' => 1,
+                        'Selasa' => 2,
+                        'Rabu' => 3,
+                        'Kamis' => 4,
+                        'Jumat' => 5,
+                        'Sabtu' => 6,
+                    ];
 
-                $jadwalByKelas[$siswa->kelas] = $jadwal->groupBy('hari');
-            }
+                    return [$hariOrder[$jadwal->hari] ?? 7, $jadwal->waktu_mulai];
+                })
+                ->groupBy('hari');
         }
 
         $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        return view('orangtua.jadwal.index', compact('siswaList', 'jadwalByKelas', 'hariList'));
+        return view('orangtua.jadwal.index', compact('siswaList', 'jadwalBySiswa', 'hariList'));
     }
 
     /**
@@ -56,23 +53,22 @@ class JadwalController extends Controller
         $orangTua = auth('orangtua')->user();
         $siswa = Siswa::where('id_siswa', $id)
             ->where('id_orang_tua', $orangTua->id_orang_tua)
+            ->with(['jadwal.mataPelajaran', 'jadwal.guru'])
             ->firstOrFail();
 
-        $jadwal = Jadwal::where('kelas', $siswa->kelas)
-            ->with(['mataPelajaran', 'guru'])
-            ->orderByRaw("
-                CASE 
-                    WHEN hari = 'Senin' THEN 1
-                    WHEN hari = 'Selasa' THEN 2
-                    WHEN hari = 'Rabu' THEN 3
-                    WHEN hari = 'Kamis' THEN 4
-                    WHEN hari = 'Jumat' THEN 5
-                    WHEN hari = 'Sabtu' THEN 6
-                    ELSE 7
-                END
-            ")
-            ->orderBy('waktu_mulai')
-            ->get()
+        $jadwal = $siswa->jadwal
+            ->sortBy(function ($jadwal) {
+                $hariOrder = [
+                    'Senin' => 1,
+                    'Selasa' => 2,
+                    'Rabu' => 3,
+                    'Kamis' => 4,
+                    'Jumat' => 5,
+                    'Sabtu' => 6,
+                ];
+
+                return [$hariOrder[$jadwal->hari] ?? 7, $jadwal->waktu_mulai];
+            })
             ->groupBy('hari');
 
         $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];

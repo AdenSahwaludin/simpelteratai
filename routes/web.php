@@ -24,6 +24,10 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     // Data Siswa
     Route::resource('siswa', \App\Http\Controllers\Admin\SiswaController::class);
 
+    // AJAX routes untuk siswa
+    Route::get('/siswa-search-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'searchOrangTua'])->name('siswa.search-orangtua');
+    Route::post('/siswa-store-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'storeOrangTua'])->name('siswa.store-orangtua');
+
     // Data Orang Tua
     Route::resource('orangtua', \App\Http\Controllers\Admin\OrangTuaController::class);
 
