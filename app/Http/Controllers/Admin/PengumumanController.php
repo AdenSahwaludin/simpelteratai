@@ -67,7 +67,7 @@ class PengumumanController extends Controller
         $admin = Auth::guard('admin')->user();
 
         $pengumuman = new Pengumuman;
-        $pengumuman->id_pengumuman = 'P'.str_pad((string) (Pengumuman::count() + 1), 2, '0', STR_PAD_LEFT);
+        $pengumuman->id_pengumuman = Pengumuman::generateUniqueId();
         $pengumuman->judul = $validated['judul'];
         $pengumuman->isi = $validated['isi'];
         $pengumuman->tanggal = $validated['tanggal'];

@@ -47,6 +47,25 @@ class Guru extends Authenticatable
     }
 
     /**
+     * Generate unique ID with format G00001, G00002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(6): G + 5 digits = 6 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_guru, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_guru')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 1) + 1
+            : 1;
+
+        return 'G'.str_pad((string) $nextNumber, 5, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the perilaku for the guru.
      */
     public function perilaku(): HasMany

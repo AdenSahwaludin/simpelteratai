@@ -73,7 +73,7 @@ class GuruController extends Controller
         ]);
 
         $guru = new Guru;
-        $guru->id_guru = 'G'.str_pad((string) (Guru::count() + 1), 2, '0', STR_PAD_LEFT);
+        $guru->id_guru = Guru::generateUniqueId();
         $guru->nip = $validated['nip'];
         $guru->nama = $validated['nama'];
         $guru->email = $validated['email'];

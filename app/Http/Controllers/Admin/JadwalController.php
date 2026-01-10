@@ -94,7 +94,7 @@ class JadwalController extends Controller
         ]);
 
         $jadwal = new Jadwal;
-        $jadwal->id_jadwal = 'J'.str_pad((string) (Jadwal::count() + 1), 2, '0', STR_PAD_LEFT);
+        $jadwal->id_jadwal = Jadwal::generateUniqueId();
         $jadwal->id_guru = $validated['id_guru'];
         $jadwal->id_mata_pelajaran = $validated['id_mata_pelajaran'];
         $jadwal->ruang = $validated['ruang'];

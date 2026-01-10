@@ -60,7 +60,7 @@ class MataPelajaranController extends Controller
         ]);
 
         $mataPelajaran = new MataPelajaran;
-        $mataPelajaran->id_mata_pelajaran = 'MP'.str_pad((string) (MataPelajaran::count() + 1), 1, '0', STR_PAD_LEFT);
+        $mataPelajaran->id_mata_pelajaran = MataPelajaran::generateUniqueId();
         $mataPelajaran->nama_mapel = $validated['nama_mapel'];
         $mataPelajaran->save();
 

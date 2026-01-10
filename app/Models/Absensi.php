@@ -40,6 +40,24 @@ class Absensi extends Model
     }
 
     /**
+     * Generate unique ID with format A000001, A000002, etc.
+     * Safe from duplicate even when data is deleted.
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_absensi, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_absensi')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 1) + 1
+            : 1;
+
+        return 'A'.str_pad((string) $nextNumber, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the jadwal through pertemuan.
      */
     public function jadwal(): BelongsTo

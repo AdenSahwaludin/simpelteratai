@@ -40,6 +40,25 @@ class Perilaku extends Model
     }
 
     /**
+     * Generate unique ID with format PR0001, PR0002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(6): PR + 4 digits = 6 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_perilaku, 3) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_perilaku')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 2) + 1
+            : 1;
+
+        return 'PR'.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the guru that owns the perilaku.
      */
     public function guru(): BelongsTo

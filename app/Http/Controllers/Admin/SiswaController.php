@@ -81,7 +81,7 @@ class SiswaController extends Controller
         ]);
 
         $siswa = new Siswa;
-        $siswa->id_siswa = 'S'.str_pad((string) (Siswa::count() + 1), 3, '0', STR_PAD_LEFT);
+        $siswa->id_siswa = Siswa::generateUniqueId();
         $siswa->nama = $validated['nama'];
         $siswa->jenis_kelamin = $validated['jenis_kelamin'];
         $siswa->tempat_lahir = $validated['tempat_lahir'];
@@ -218,7 +218,7 @@ class SiswaController extends Controller
             ]);
 
             $orangTua = new OrangTua;
-            $orangTua->id_orang_tua = 'OT'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
+            $orangTua->id_orang_tua = OrangTua::generateUniqueId();
             $orangTua->nama = $validated['nama'];
             $orangTua->email = $validated['email'];
             $orangTua->no_telpon = $validated['no_telpon'];

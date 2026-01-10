@@ -55,6 +55,25 @@ class Jadwal extends Model
     }
 
     /**
+     * Generate unique ID with format J00001, J00002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(6): J + 5 digits = 6 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_jadwal, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_jadwal')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 1) + 1
+            : 1;
+
+        return 'J'.str_pad((string) $nextNumber, 5, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get all pertemuan for this jadwal.
      */
     public function pertemuan(): HasMany
@@ -130,7 +149,7 @@ class Jadwal extends Model
         foreach ($pertemuanList as $pertemuan) {
             foreach ($siswaList as $siswa) {
                 Absensi::firstOrCreate([
-                    'id_absensi' => 'A'.str_pad((string) (Absensi::count() + 1), 3, '0', STR_PAD_LEFT),
+                    'id_absensi' => Absensi::generateUniqueId(),
                     'id_siswa' => $siswa->id_siswa,
                     'id_pertemuan' => $pertemuan->id_pertemuan,
                 ], [

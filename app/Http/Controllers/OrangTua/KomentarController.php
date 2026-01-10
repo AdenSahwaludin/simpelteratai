@@ -53,7 +53,7 @@ class KomentarController extends Controller
         ]);
 
         $komentar = new Komentar;
-        $komentar->id_komentar = 'K'.str_pad((string) (Komentar::count() + 1), 3, '0', STR_PAD_LEFT);
+        $komentar->id_komentar = Komentar::generateUniqueId();
         $komentar->id_orang_tua = $orangTua->id_orang_tua;
         $komentar->komentar = $validated['komentar'];
         $komentar->save();

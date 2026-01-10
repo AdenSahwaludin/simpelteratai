@@ -21,6 +21,25 @@ class MataPelajaran extends Model
     ];
 
     /**
+     * Generate unique ID with format MP0001, MP0002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(6): MP + 4 digits = 6 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_mata_pelajaran, 3) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_mata_pelajaran')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 2) + 1
+            : 1;
+
+        return 'MP'.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the jadwal for the mata pelajaran.
      */
     public function jadwal(): HasMany

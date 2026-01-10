@@ -70,7 +70,7 @@ class OrangTuaController extends Controller
         ]);
 
         $orangTua = new OrangTua;
-        $orangTua->id_orang_tua = 'OT'.str_pad((string) (OrangTua::count() + 1), 3, '0', STR_PAD_LEFT);
+        $orangTua->id_orang_tua = OrangTua::generateUniqueId();
         $orangTua->nama = $validated['nama'];
         $orangTua->email = $validated['email'];
         $orangTua->password = Hash::make($validated['password']);

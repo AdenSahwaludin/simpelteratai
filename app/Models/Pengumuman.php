@@ -30,6 +30,25 @@ class Pengumuman extends Model
     ];
 
     /**
+     * Generate unique ID with format P00001, P00002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(6): P + 5 digits = 6 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_pengumuman, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_pengumuman')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 1) + 1
+            : 1;
+
+        return 'P'.str_pad((string) $nextNumber, 5, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the admin that owns the pengumuman.
      */
     public function admin(): BelongsTo

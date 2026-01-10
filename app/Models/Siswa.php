@@ -56,6 +56,24 @@ class Siswa extends Model
     }
 
     /**
+     * Generate unique ID with format S000001, S000002, etc.
+     * Safe from duplicate even when data is deleted.
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_siswa, 2) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_siswa')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 1) + 1
+            : 1;
+
+        return 'S'.str_pad((string) $nextNumber, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get the perilaku for the siswa.
      */
     public function perilaku(): HasMany

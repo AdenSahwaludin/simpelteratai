@@ -74,7 +74,7 @@ class LaporanLengkapController extends Controller
         ]);
 
         $laporan = new LaporanLengkap;
-        $laporan->id_laporan_lengkap = 'LL'.str_pad((string) (LaporanLengkap::count() + 1), 3, '0', STR_PAD_LEFT);
+        $laporan->id_laporan_lengkap = LaporanLengkap::generateUniqueId();
         $laporan->id_siswa = $validated['id_siswa'];
         $laporan->id_guru = $guru->id_guru;
         $laporan->periode_mulai = $validated['periode_mulai'];

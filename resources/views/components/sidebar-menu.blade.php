@@ -8,14 +8,8 @@
             'dashboardRoute' => 'admin.dashboard',
             'menus' => [
                 [
-                    'category' => 'Data Management',
+                    'category' => 'Data Pengguna dan Siswa',
                     'items' => [
-                        [
-                            'label' => 'Data Siswa',
-                            'icon' => 'fa-users',
-                            'color' => 'text-blue-500',
-                            'route' => 'admin.siswa.index',
-                        ],
                         [
                             'label' => 'Data Guru',
                             'icon' => 'fa-chalkboard-user',
@@ -28,6 +22,17 @@
                             'color' => 'text-purple-500',
                             'route' => 'admin.orangtua.index',
                         ],
+                        [
+                            'label' => 'Data Siswa',
+                            'icon' => 'fa-users',
+                            'color' => 'text-blue-500',
+                            'route' => 'admin.siswa.index',
+                        ],
+                    ],
+                ],
+                [
+                    'category' => 'Jadwal & Kurikulum',
+                    'items' => [
                         [
                             'label' => 'Kelola Jadwal',
                             'icon' => 'fa-calendar-alt',

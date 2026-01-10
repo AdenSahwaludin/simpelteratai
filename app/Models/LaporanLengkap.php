@@ -47,6 +47,25 @@ class LaporanLengkap extends Model
     }
 
     /**
+     * Generate unique ID with format LL00000001, LL00000002, etc.
+     * Safe from duplicate even when data is deleted.
+     * varchar(13): LL + 11 digits = 13 characters
+     */
+    public static function generateUniqueId(): string
+    {
+        $lastId = static::orderByRaw('CAST(SUBSTRING(id_laporan_lengkap, 3) AS UNSIGNED) DESC')
+            ->limit(1)
+            ->pluck('id_laporan_lengkap')
+            ->first();
+
+        $nextNumber = $lastId
+            ? (int) substr($lastId, 2) + 1
+            : 1;
+
+        return 'LL'.str_pad((string) $nextNumber, 11, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Get aggregated attendance data for the period
      */
     public function getKehadiranData()
