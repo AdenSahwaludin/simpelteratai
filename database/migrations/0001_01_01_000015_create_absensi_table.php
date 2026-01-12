@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
-            $table->string('id_absensi', 4)->primary();
-            $table->string('id_siswa', 4);
-            $table->string('id_jadwal', 3);
+            $table->string('id_absensi', 7)->primary();
+            $table->string('id_siswa', 7);
+            $table->string('id_pertemuan', 7); // Changed from id_jadwal: 2025_11_30_122604
             $table->date('tanggal');
-            $table->enum('status_kehadiran', ['hadir', 'izin', 'sakit', 'alpha']);
+            $table->enum('status_kehadiran', ['present', 'permit', 'sick', 'absent']); // Updated: 2025_11_30_122856
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
-            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
+            $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan')->onDelete('cascade');
         });
     }
 

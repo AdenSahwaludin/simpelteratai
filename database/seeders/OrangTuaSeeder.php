@@ -13,7 +13,7 @@ class OrangTuaSeeder extends Seeder
     public function run(): void
     {
         OrangTua::create([
-            'id_orang_tua' => 'O001',
+            'id_orang_tua' => 'O000001',
             'nama' => 'Edward',
             'email' => 'edward@tkteratai.com',
             'password' => 'password',
@@ -21,7 +21,7 @@ class OrangTuaSeeder extends Seeder
         ]);
 
         OrangTua::create([
-            'id_orang_tua' => 'O002',
+            'id_orang_tua' => 'O000002',
             'nama' => 'Aden',
             'email' => 'aden@tkteratai.com',
             'password' => 'password',

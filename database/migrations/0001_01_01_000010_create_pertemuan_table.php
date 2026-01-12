@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pertemuan', function (Blueprint $table) {
-            $table->string('id_pertemuan', 10)->primary();
-            $table->string('id_jadwal', 3);
+            $table->string('id_pertemuan', 13)->primary();
+            $table->string('id_jadwal', 6);
             $table->unsignedTinyInteger('pertemuan_ke'); // 1-14
             $table->date('tanggal');
             $table->text('materi')->nullable();

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orang_tua', function (Blueprint $table) {
-            $table->string('id_orang_tua', 4)->primary();
+            $table->string('id_orang_tua', 7)->primary();
             $table->string('nama', 255);
             $table->string('password', 100);
             $table->string('email', 150);

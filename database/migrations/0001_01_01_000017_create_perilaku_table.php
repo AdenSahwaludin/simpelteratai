@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perilaku', function (Blueprint $table) {
-            $table->string('id_perilaku', 3)->primary();
-            $table->string('id_siswa', 4);
+            $table->string('id_perilaku', 6)->primary();
+            $table->string('id_siswa', 7);
             $table->text('catatan_perilaku')->nullable();
+            $table->integer('sosial')->nullable(); // Added: 2024_11_24_000001 (1-5 scale)
+            $table->integer('emosional')->nullable(); // Added: 2024_11_24_000001 (1-5 scale)
+            $table->integer('disiplin')->nullable(); // Added: 2024_11_24_000001 (1-5 scale)
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');

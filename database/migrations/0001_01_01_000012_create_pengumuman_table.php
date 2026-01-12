@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengumuman', function (Blueprint $table) {
-            $table->string('id_pengumuman', 3)->primary();
+            $table->string('id_pengumuman', 6)->primary();
             $table->string('judul', 255);
             $table->text('isi');
             $table->date('tanggal');
-            $table->string('id_admin', 3);
+            $table->boolean('publikasi')->default(true); // Added: 2025_11_19_073203
+            $table->string('id_admin', 6);
             $table->timestamps();
 
             $table->foreign('id_admin')->references('id_admin')->on('admin')->onDelete('cascade');

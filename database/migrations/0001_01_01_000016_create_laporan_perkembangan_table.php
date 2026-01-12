@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('laporan_perkembangan', function (Blueprint $table) {
-            $table->string('id_laporan', 3)->primary();
-            $table->string('id_siswa', 4);
-            $table->string('id_mata_pelajaran', 3);
+            $table->string('id_laporan', 6)->primary();
+            $table->string('id_siswa', 7);
+            $table->string('id_mata_pelajaran', 6);
             $table->integer('nilai');
-            $table->string('id_absensi', 4);
+            $table->string('id_absensi', 7)->nullable(); // Made nullable: 2025_11_18_100454
             $table->text('komentar')->nullable();
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
             $table->foreign('id_mata_pelajaran')->references('id_mata_pelajaran')->on('mata_pelajaran')->onDelete('cascade');
-            $table->foreign('id_absensi')->references('id_absensi')->on('absensi')->onDelete('cascade');
+            $table->foreign('id_absensi')->references('id_absensi')->on('absensi')->onDelete('set null');
         });
     }
 

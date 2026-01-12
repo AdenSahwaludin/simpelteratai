@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('komentar', function (Blueprint $table) {
-            $table->string('id_komentar', 4)->primary();
-            $table->string('id_orang_tua', 4);
-            $table->text('komentar');
+        Schema::create('siswa', function (Blueprint $table) {
+            $table->string('id_siswa', 7)->primary();
+            $table->string('nama', 255);
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('tempat_lahir', 50)->nullable();
+            $table->date('tanggal_lahir');
+            $table->string('kelas', 20);
+            $table->string('alamat', 100);
+            $table->string('id_orang_tua', 7);
             $table->timestamps();
 
             $table->foreign('id_orang_tua')->references('id_orang_tua')->on('orang_tua')->onDelete('cascade');
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('komentar');
+        Schema::dropIfExists('siswa');
     }
 };
