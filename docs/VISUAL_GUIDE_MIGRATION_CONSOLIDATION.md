@@ -193,7 +193,7 @@ GURU
 └─ Result: Final schema with nip field
 
 JADWAL
-├─ Sources: 0001_01_01_000008, 2025_11_30_120818, 
+├─ Sources: 0001_01_01_000008, 2025_11_30_120818,
 │           2025_11_30_172208, 2025_12_07_125511
 ├─ Changes: ADD hari, ADD waktu_mulai, ADD waktu_selesai
 │          REMOVE waktu, UPDATE all varchar
@@ -460,6 +460,6 @@ Performance:
 
 ---
 
-*Visual Guide Created: 2026-01-10*  
-*For detailed information, refer to documentation files*  
-*Status: Ready for Implementation ✅*
+_Visual Guide Created: 2026-01-10_  
+_For detailed information, refer to documentation files_  
+_Status: Ready for Implementation ✅_

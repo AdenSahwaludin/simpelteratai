@@ -3,14 +3,16 @@
 ## 📊 Analisis Situasi Saat Ini
 
 ### Status Migration
-- **Total Migration**: 34 files
-- **Create Tables**: 15 files (baseline)
-- **Modify/Add/Update**: 19 files (technical debt)
-- **Problem**: Struktur terlalu kompleks, sulit untuk maintain
+
+-   **Total Migration**: 34 files
+-   **Create Tables**: 15 files (baseline)
+-   **Modify/Add/Update**: 19 files (technical debt)
+-   **Problem**: Struktur terlalu kompleks, sulit untuk maintain
 
 ### Daftar Migration yang Perlu Dikonsolidasikan
 
 **Baseline (Keep):**
+
 ```
 ✓ 0001_01_01_000000_create_users_table.php
 ✓ 0001_01_01_000001_create_cache_table.php
@@ -29,6 +31,7 @@
 ```
 
 **Modify/Add/Drop (Consolidate into Create):**
+
 ```
 ✗ 2024_11_24_000001_add_assessment_columns_to_perilaku_table.php
 ✗ 2024_11_24_000002_modify_id_perilaku_column.php
@@ -57,14 +60,17 @@
 ## 🎯 Strategi Pembersihan (Recommended Approach)
 
 ### Phase 1: Analisis Perubahan (Current)
+
 ✅ Inventory semua changes dari 19 modification files
 
 ### Phase 2: Konsolidasi (2-3 hari)
+
 1. Update semua CREATE files dengan final schema
 2. Hapus semua modification files
 3. Test dengan `migrate:fresh`
 
 ### Phase 3: Backup & Deployment
+
 1. Backup database production
 2. Test di staging dengan migrate:fresh + seed
 3. Deploy ke production dengan caution
@@ -74,6 +80,7 @@
 ## 🔧 Perubahan yang Perlu Dikonsolidasikan
 
 ### 1. **Tabel PERILAKU**
+
 ```php
 // Add: assessment_columns (sosial, emosional, disiplin)
 // Modify: id_perilaku format
@@ -81,6 +88,7 @@
 ```
 
 ### 2. **Tabel LAPORAN_PERKEMBANGAN**
+
 ```php
 // Make nullable: id_absensi
 // Alter: id_laporan column
@@ -88,18 +96,21 @@
 ```
 
 ### 3. **Tabel PENGUMUMAN**
+
 ```php
 // Add: publikasi column (boolean)
 // Final: Sudah ada atau update create file
 ```
 
 ### 4. **Tabel GURU**
+
 ```php
 // Add: nip column (string)
 // Final: Consolidate ke create_guru_table.php
 ```
 
 ### 5. **Tabel JADWAL**
+
 ```php
 // Add: hari column
 // Remove: waktu column
@@ -108,6 +119,7 @@
 ```
 
 ### 6. **Tabel ABSENSI**
+
 ```php
 // Modify: relationships (jadwal → pertemuan)
 // Update: enum values
@@ -115,6 +127,7 @@
 ```
 
 ### 7. **Tabel KOMENTAR**
+
 ```php
 // Add: laporan, parent columns
 // Make nullable: id_orang_tua
@@ -122,6 +135,7 @@
 ```
 
 ### 8. **Semua ID Columns**
+
 ```php
 // Increase varchar lengths: +3 digits
 // From: 4→7, 3→6, 10→13
@@ -129,6 +143,7 @@
 ```
 
 ### New Tables (KEEP)
+
 ```php
 ✓ jadwal_siswa (pivot table)
 ✓ pertemuan (new entity)
@@ -142,6 +157,7 @@
 ### Step 1: Update CREATE Files dengan Final Schema
 
 #### A. Create ORANG_TUA Table (Final)
+
 ```php
 // File: 0001_01_01_000004_create_orang_tua_table.php
 Schema::create('orang_tua', function (Blueprint $table) {
@@ -155,6 +171,7 @@ Schema::create('orang_tua', function (Blueprint $table) {
 ```
 
 #### B. Create SISWA Table (Final)
+
 ```php
 // File: 0001_01_01_000014_create_siswa_table.php
 Schema::create('siswa', function (Blueprint $table) {
@@ -167,12 +184,13 @@ Schema::create('siswa', function (Blueprint $table) {
     $table->string('alamat', 100);
     $table->string('id_orang_tua', 7);  // ← UPDATED: 4→7
     $table->timestamps();
-    
+
     $table->foreign('id_orang_tua')->references('id_orang_tua')->on('orang_tua')->onDelete('cascade');
 });
 ```
 
 #### C. Create GURU Table (Final)
+
 ```php
 // File: 0001_01_01_000005_create_guru_table.php
 Schema::create('guru', function (Blueprint $table) {
@@ -187,6 +205,7 @@ Schema::create('guru', function (Blueprint $table) {
 ```
 
 #### D. Create JADWAL Table (Final)
+
 ```php
 // File: 0001_01_01_000008_create_jadwal_table.php
 Schema::create('jadwal', function (Blueprint $table) {
@@ -200,13 +219,14 @@ Schema::create('jadwal', function (Blueprint $table) {
     $table->time('waktu_selesai');             // ← ADDED
     $table->date('tanggal_mulai');
     $table->timestamps();
-    
+
     $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
     $table->foreign('id_mata_pelajaran')->references('id_mata_pelajaran')->on('mata_pelajaran')->onDelete('cascade');
 });
 ```
 
 #### E. Create PENGUMUMAN Table (Final)
+
 ```php
 // File: 0001_01_01_000012_create_pengumuman_table.php
 Schema::create('pengumuman', function (Blueprint $table) {
@@ -221,6 +241,7 @@ Schema::create('pengumuman', function (Blueprint $table) {
 ```
 
 #### F. Create ABSENSI Table (Final)
+
 ```php
 // File: 0001_01_01_000015_create_absensi_table.php
 Schema::create('absensi', function (Blueprint $table) {
@@ -229,13 +250,14 @@ Schema::create('absensi', function (Blueprint $table) {
     $table->string('id_pertemuan', 13);             // ← NEW KEY
     $table->enum('status_kehadiran', ['hadir', 'sakit', 'izin', 'alfa'])->default('hadir');  // ← UPDATED ENUM
     $table->timestamps();
-    
+
     $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
     $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan')->onDelete('cascade');
 });
 ```
 
 #### G. Create KOMENTAR Table (Final)
+
 ```php
 // File: 0001_01_01_000013_create_komentar_table.php
 Schema::create('komentar', function (Blueprint $table) {
@@ -246,7 +268,7 @@ Schema::create('komentar', function (Blueprint $table) {
     $table->string('parent_id', 7)->nullable();         // ← ADDED (for nesting)
     $table->longText('komentar');
     $table->timestamps();
-    
+
     $table->foreign('id_orang_tua')->references('id_orang_tua')->on('orang_tua')->onDelete('cascade');
     $table->foreign('id_laporan_lengkap')->references('id_laporan_lengkap')->on('laporan_lengkap')->onDelete('cascade');
     $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
@@ -255,6 +277,7 @@ Schema::create('komentar', function (Blueprint $table) {
 ```
 
 #### H. Create LAPORAN_PERKEMBANGAN Table (Final)
+
 ```php
 // File: 0001_01_01_000016_create_laporan_perkembangan_table.php
 Schema::create('laporan_perkembangan', function (Blueprint $table) {
@@ -265,7 +288,7 @@ Schema::create('laporan_perkembangan', function (Blueprint $table) {
     $table->integer('nilai')->nullable();
     $table->string('catatan_guru', 255)->nullable();
     $table->timestamps();
-    
+
     $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
     $table->foreign('id_mata_pelajaran')->references('id_mata_pelajaran')->on('mata_pelajaran')->onDelete('cascade');
     $table->foreign('id_absensi')->references('id_absensi')->on('absensi')->onDelete('set null');
@@ -273,6 +296,7 @@ Schema::create('laporan_perkembangan', function (Blueprint $table) {
 ```
 
 #### I. Create PERILAKU Table (Final)
+
 ```php
 // File: 0001_01_01_000017_create_perilaku_table.php
 Schema::create('perilaku', function (Blueprint $table) {
@@ -286,7 +310,7 @@ Schema::create('perilaku', function (Blueprint $table) {
     $table->longText('catatan_perilaku')->nullable();
     $table->string('file_lampiran', 255)->nullable();
     $table->timestamps();
-    
+
     $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
     $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
 });
@@ -338,47 +362,53 @@ php artisan db:seed
 ## ✅ Checklist Implementasi
 
 ### Pre-Migration
-- [ ] Backup database production
-- [ ] Extract semua changes dari modification files
-- [ ] Document current state
-- [ ] Test pada staging environment
+
+-   [ ] Backup database production
+-   [ ] Extract semua changes dari modification files
+-   [ ] Document current state
+-   [ ] Test pada staging environment
 
 ### Migration Update
-- [ ] Update create_orang_tua_table.php
-- [ ] Update create_siswa_table.php
-- [ ] Update create_guru_table.php
-- [ ] Update create_jadwal_table.php
-- [ ] Update create_pengumuman_table.php
-- [ ] Update create_absensi_table.php
-- [ ] Update create_komentar_table.php
-- [ ] Update create_laporan_perkembangan_table.php
-- [ ] Update create_perilaku_table.php
-- [ ] Update create_mata_pelajaran_table.php
-- [ ] Verify create_jadwal_siswa_table.php (keep)
-- [ ] Verify create_pertemuan_table.php (keep)
-- [ ] Verify create_laporan_lengkap_table.php (keep)
+
+-   [ ] Update create_orang_tua_table.php
+-   [ ] Update create_siswa_table.php
+-   [ ] Update create_guru_table.php
+-   [ ] Update create_jadwal_table.php
+-   [ ] Update create_pengumuman_table.php
+-   [ ] Update create_absensi_table.php
+-   [ ] Update create_komentar_table.php
+-   [ ] Update create_laporan_perkembangan_table.php
+-   [ ] Update create_perilaku_table.php
+-   [ ] Update create_mata_pelajaran_table.php
+-   [ ] Verify create_jadwal_siswa_table.php (keep)
+-   [ ] Verify create_pertemuan_table.php (keep)
+-   [ ] Verify create_laporan_lengkap_table.php (keep)
 
 ### Cleanup
-- [ ] Delete 17 modification migration files
-- [ ] Commit: "refactor: consolidate migrations to single-source definition"
+
+-   [ ] Delete 17 modification migration files
+-   [ ] Commit: "refactor: consolidate migrations to single-source definition"
 
 ### Testing
-- [ ] Run `migrate:fresh` on local
-- [ ] Verify all tables created
-- [ ] Run `db:seed` to verify seeders
-- [ ] Check data integrity
-- [ ] Test app functionality
+
+-   [ ] Run `migrate:fresh` on local
+-   [ ] Verify all tables created
+-   [ ] Run `db:seed` to verify seeders
+-   [ ] Check data integrity
+-   [ ] Test app functionality
 
 ### Deployment
-- [ ] Test on staging: `migrate:fresh + seed`
-- [ ] Production deployment with backup plan
-- [ ] Monitor logs for errors
+
+-   [ ] Test on staging: `migrate:fresh + seed`
+-   [ ] Production deployment with backup plan
+-   [ ] Monitor logs for errors
 
 ---
 
 ## 🎯 Best Practices Going Forward
 
 ### 1. **Update CREATE Files Langsung**
+
 ```php
 // JANGAN bikin migration alter/add
 // Kalau ada schema change:
@@ -391,12 +421,14 @@ php artisan db:seed
 ```
 
 ### 2. **Manage Seeding**
+
 ```php
 // database/seeders/DatabaseSeeder.php
 php artisan db:seed --class=DatabaseSeeder
 ```
 
 ### 3. **Version Control untuk Schema**
+
 ```
 ✓ Create files selalu up-to-date dengan actual schema
 ✓ Modification files di-eliminate
@@ -404,6 +436,7 @@ php artisan db:seed --class=DatabaseSeeder
 ```
 
 ### 4. **Data Migrations (Separate)**
+
 ```php
 // Jika ada data yang perlu ditransform:
 // Gunakan dedicated migration SETELAH schema final
@@ -414,6 +447,7 @@ php artisan db:seed --class=DatabaseSeeder
 ```
 
 ### 5. **Development Workflow**
+
 ```bash
 # Local development
 php artisan migrate:fresh --seed
@@ -429,27 +463,30 @@ php artisan migrate
 ## 📚 Referensi
 
 **Laravel Migration Best Practices:**
-- https://laravel.com/docs/11.x/migrations
-- Schema: Definisikan lengkap di create file
-- Avoid: Banyak modify/alter files
-- Prefer: Clean structure, fresh start saat development
+
+-   https://laravel.com/docs/11.x/migrations
+-   Schema: Definisikan lengkap di create file
+-   Avoid: Banyak modify/alter files
+-   Prefer: Clean structure, fresh start saat development
 
 ---
 
 ## 🔍 Notes
 
 1. **Migration:Fresh** = `DROP ALL TABLES` + `RUN ALL MIGRATIONS`
-   - Hanya untuk development/testing
-   - JANGAN di production tanpa backup
+
+    - Hanya untuk development/testing
+    - JANGAN di production tanpa backup
 
 2. **Order matters** untuk foreign keys:
-   - Parent tables harus dibuat sebelum child
-   - Current order sudah benar (check timestamps)
+
+    - Parent tables harus dibuat sebelum child
+    - Current order sudah benar (check timestamps)
 
 3. **Seeding** harus robust:
-   - Factories untuk test data
-   - Seeders untuk baseline data
-   - Idempotent (aman run berkali-kali)
+    - Factories untuk test data
+    - Seeders untuk baseline data
+    - Idempotent (aman run berkali-kali)
 
 ---
 

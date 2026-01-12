@@ -1,9 +1,11 @@
 # 📋 Panduan Praktis Implementasi Konsolidasi Migration
 
 ## 🎯 Tujuan
+
 Menyederhanakan 34 migration files menjadi 17 files dengan struktur yang clean dan maintainable.
 
 ## 📊 Hasil Akhir
+
 ```
 BEFORE: 34 files (14 create + 20 modify/add/alter)
 AFTER:  17 files (14 create final + 3 new tables)
@@ -17,6 +19,7 @@ SAVED:  17 files (50% reduction)
 ### STEP 1: Analisis & Persiapan (30 menit)
 
 #### 1.1 Backup Database
+
 ```bash
 # Export current database structure
 mysqldump -u root -p tkt_db --no-data > db_schema_backup.sql
@@ -28,6 +31,7 @@ cp db_*.sql backups/$(date +%Y%m%d_%H%M%S)/
 ```
 
 #### 1.2 Check Current State
+
 ```bash
 # Verify migrations history
 php artisan migrate:status
@@ -37,22 +41,27 @@ php artisan db:show
 ```
 
 #### 1.3 Document Changes Needed
+
 Buat file `MIGRATION_CHANGES.md` untuk tracking:
+
 ```markdown
 # Changes to Consolidate
 
 ## Perilaku Table
-- Add: sosial, emosional, disiplin columns
-- Update id_perilaku varchar: 3 → 6
+
+-   Add: sosial, emosional, disiplin columns
+-   Update id_perilaku varchar: 3 → 6
 
 ## Guru Table
-- Add: nip column
+
+-   Add: nip column
 
 ## Jadwal Table
-- Add: hari column
-- Add: waktu_mulai, waktu_selesai
-- Remove: waktu column
-- Update id_jadwal varchar: 3 → 6
+
+-   Add: hari column
+-   Add: waktu_mulai, waktu_selesai
+-   Remove: waktu column
+-   Update id_jadwal varchar: 3 → 6
 
 ... (dan seterusnya untuk semua tabel)
 ```
@@ -66,6 +75,7 @@ Buat file `MIGRATION_CHANGES.md` untuk tracking:
 Mulai dari file yang paling sedikit dependency-nya:
 
 **Priority 1 - Standalone Tables:**
+
 ```
 ✓ create_orang_tua_table.php
 ✓ create_guru_table.php
@@ -74,6 +84,7 @@ Mulai dari file yang paling sedikit dependency-nya:
 ```
 
 **Priority 2 - Dependent Tables:**
+
 ```
 ✓ create_jadwal_table.php (depends on guru, mata_pelajaran)
 ✓ create_pengumuman_table.php (depends on admin)
@@ -82,6 +93,7 @@ Mulai dari file yang paling sedikit dependency-nya:
 ```
 
 **Priority 3 - Complex Tables:**
+
 ```
 ✓ create_absensi_table.php (depends on siswa, pertemuan)
 ✓ create_komentar_table.php (depends on orang_tua, laporan_lengkap, guru)
@@ -91,6 +103,7 @@ Mulai dari file yang paling sedikit dependency-nya:
 #### 2.2 Contoh Update (Copy-Paste Template)
 
 **Template untuk update CREATE file:**
+
 ```php
 <?php
 
@@ -102,7 +115,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * FINAL SCHEMA - Includes all modifications consolidated from:
      * - 2024_11_24_000001_add_assessment_columns_to_perilaku_table
      * - 2024_11_24_000002_modify_id_perilaku_column
@@ -113,13 +126,13 @@ return new class extends Migration
         Schema::create('table_name', function (Blueprint $table) {
             // Primary Key
             $table->string('id_column', LENGTH)->primary();
-            
+
             // Data columns
             // ... all columns here
-            
+
             // Timestamps
             $table->timestamps();
-            
+
             // Foreign Keys
             $table->foreign('id_related')->references('id_related')->on('related_table')->onDelete('cascade');
         });
@@ -144,6 +157,7 @@ return new class extends Migration
 **File**: `database/migrations/0001_01_01_000005_create_guru_table.php`
 
 Current state:
+
 ```php
 // CURRENT (incomplete)
 $table->string('id_guru', 3)->primary();
@@ -152,6 +166,7 @@ $table->string('id_guru', 3)->primary();
 ```
 
 After consolidation:
+
 ```php
 return new class extends Migration {
     public function up(): void
@@ -161,7 +176,7 @@ return new class extends Migration {
             // - Original columns
             // - Add nip (from 2025_11_19_080516)
             // - Update id_guru varchar from 3 → 6
-            
+
             $table->string('id_guru', 6)->primary();
             $table->string('nip', 30)->nullable();
             $table->string('nama', 255);
@@ -178,12 +193,14 @@ return new class extends Migration {
 #### 3.2 Jadwal Table (Depends on guru, mata_pelajaran)
 
 Current issues:
-- Missing: hari column
-- Has: waktu column (should be removed)
-- Wrong: missing waktu_mulai, waktu_selesai
-- Wrong length: id_jadwal should be 6, not 3
+
+-   Missing: hari column
+-   Has: waktu column (should be removed)
+-   Wrong: missing waktu_mulai, waktu_selesai
+-   Wrong length: id_jadwal should be 6, not 3
 
 After consolidation:
+
 ```php
 return new class extends Migration {
     public function up(): void
@@ -192,7 +209,7 @@ return new class extends Migration {
         // - 2025_11_30_120818_add_hari_column_to_jadwal_table
         // - 2025_12_07_125511_remove_waktu_column_from_jadwal_table
         // - 2025_11_30_172208_drop_jadwal_harian_and_add_time_range_to_jadwal
-        
+
         Schema::create('jadwal', function (Blueprint $table) {
             $table->string('id_jadwal', 6)->primary();
             $table->string('id_guru', 6);
@@ -204,7 +221,7 @@ return new class extends Migration {
             $table->time('waktu_selesai');
             $table->date('tanggal_mulai');
             $table->timestamps();
-            
+
             $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
             $table->foreign('id_mata_pelajaran')->references('id_mata_pelajaran')->on('mata_pelajaran')->onDelete('cascade');
         });
@@ -216,10 +233,11 @@ return new class extends Migration {
 #### 3.3 Absensi Table (Complex - depends on siswa, pertemuan)
 
 Consolidated from:
-- Original create
-- 2025_11_30_122604_modify_absensi_table_for_pertemuan
-- 2025_11_30_122856_update_absensi_status_enum
-- 2026 varchar expansions
+
+-   Original create
+-   2025_11_30_122604_modify_absensi_table_for_pertemuan
+-   2025_11_30_122856_update_absensi_status_enum
+-   2026 varchar expansions
 
 ```php
 return new class extends Migration {
@@ -230,13 +248,13 @@ return new class extends Migration {
             // - Change FK from jadwal to pertemuan
             // - Update status enum values
             // - Expand all varchar lengths
-            
+
             $table->string('id_absensi', 7)->primary();
             $table->string('id_siswa', 7);
             $table->string('id_pertemuan', 13);
             $table->enum('status_kehadiran', ['hadir', 'sakit', 'izin', 'alfa'])->default('hadir');
             $table->timestamps();
-            
+
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
             $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan')->onDelete('cascade');
         });
@@ -250,6 +268,7 @@ return new class extends Migration {
 ### STEP 4: Verification (30 menit)
 
 #### 4.1 Validate Syntax
+
 ```bash
 # Check PHP syntax
 php -l database/migrations/0001_01_01_000005_create_guru_table.php
@@ -261,6 +280,7 @@ find database/migrations -name "*.php" -exec php -l {} \;
 ```
 
 #### 4.2 Test Fresh Migration on Local
+
 ```bash
 # Backup current migration status
 php artisan migrate:status > migration_status_before.txt
@@ -279,6 +299,7 @@ php artisan db:seed
 ```
 
 #### 4.3 Check Foreign Keys
+
 ```bash
 # Verify foreign key relationships
 php artisan db:show --table=jadwal
@@ -292,6 +313,7 @@ php artisan db:show --table=komentar
 ```
 
 #### 4.4 Test Application
+
 ```bash
 # Run tests to ensure app still works
 php artisan test
@@ -305,6 +327,7 @@ php artisan migrate:fresh
 ### STEP 5: Delete Old Migration Files (20 menit)
 
 List of files to delete:
+
 ```
 ❌ 2024_11_24_000001_add_assessment_columns_to_perilaku_table.php
 ❌ 2024_11_24_000002_modify_id_perilaku_column.php
@@ -331,6 +354,7 @@ List of files to delete:
 ```
 
 Deletion script:
+
 ```bash
 #!/bin/bash
 cd database/migrations
@@ -412,33 +436,36 @@ Consolidated from 34 migration files to 17 clean files.
 ### Tables
 
 #### orang_tua
-- id_orang_tua: string(7) PRIMARY
-- nama: string(255)
-- email: string(150)
-- password: string(100)
-- no_telpon: string(15)
-- timestamps
+
+-   id_orang_tua: string(7) PRIMARY
+-   nama: string(255)
+-   email: string(150)
+-   password: string(100)
+-   no_telpon: string(15)
+-   timestamps
 
 #### guru
-- id_guru: string(6) PRIMARY
-- nip: string(30) NULLABLE
-- nama: string(255)
-- email: string(150)
-- password: string(100)
-- no_telpon: string(15)
-- timestamps
+
+-   id_guru: string(6) PRIMARY
+-   nip: string(30) NULLABLE
+-   nama: string(255)
+-   email: string(150)
+-   password: string(100)
+-   no_telpon: string(15)
+-   timestamps
 
 #### jadwal
-- id_jadwal: string(6) PRIMARY
-- id_guru: string(6) FK → guru.id_guru
-- id_mata_pelajaran: string(6) FK → mata_pelajaran.id_mata_pelajaran
-- hari: enum(Senin, Selasa, ...)
-- ruang: string(50)
-- kelas: string(20)
-- waktu_mulai: time
-- waktu_selesai: time
-- tanggal_mulai: date
-- timestamps
+
+-   id_jadwal: string(6) PRIMARY
+-   id_guru: string(6) FK → guru.id_guru
+-   id_mata_pelajaran: string(6) FK → mata_pelajaran.id_mata_pelajaran
+-   hari: enum(Senin, Selasa, ...)
+-   ruang: string(50)
+-   kelas: string(20)
+-   waktu_mulai: time
+-   waktu_selesai: time
+-   tanggal_mulai: date
+-   timestamps
 
 ... (dan seterusnya untuk semua tabel)
 ```
@@ -448,12 +475,14 @@ Consolidated from 34 migration files to 17 clean files.
 ### STEP 8: Deployment Plan
 
 #### 8.1 For Staging Environment
+
 ```bash
 # Fresh start (safe - testing only)
 php artisan migrate:fresh --seed
 ```
 
 #### 8.2 For Production Environment
+
 ```bash
 # OPTION 1: If starting fresh (no existing data)
 php artisan migrate:fresh --seed
@@ -477,52 +506,58 @@ tail -f storage/logs/laravel.log
 ## ✅ Checklist Lengkap
 
 ### Preparation
-- [ ] Backup database production
-- [ ] Document current migration status
-- [ ] Identify all changes from 17 modification files
+
+-   [ ] Backup database production
+-   [ ] Document current migration status
+-   [ ] Identify all changes from 17 modification files
 
 ### Implementation
-- [ ] Update create_orang_tua_table.php
-- [ ] Update create_guru_table.php
-- [ ] Update create_admin_table.php
-- [ ] Update create_mata_pelajaran_table.php
-- [ ] Update create_jadwal_table.php
-- [ ] Update create_pengumuman_table.php
-- [ ] Update create_siswa_table.php
-- [ ] Update create_perilaku_table.php
-- [ ] Update create_absensi_table.php
-- [ ] Update create_komentar_table.php
-- [ ] Update create_laporan_perkembangan_table.php
-- [ ] Verify create_jadwal_siswa_table.php (keep)
-- [ ] Verify create_pertemuan_table.php (keep)
-- [ ] Verify create_laporan_lengkap_table.php (keep)
+
+-   [ ] Update create_orang_tua_table.php
+-   [ ] Update create_guru_table.php
+-   [ ] Update create_admin_table.php
+-   [ ] Update create_mata_pelajaran_table.php
+-   [ ] Update create_jadwal_table.php
+-   [ ] Update create_pengumuman_table.php
+-   [ ] Update create_siswa_table.php
+-   [ ] Update create_perilaku_table.php
+-   [ ] Update create_absensi_table.php
+-   [ ] Update create_komentar_table.php
+-   [ ] Update create_laporan_perkembangan_table.php
+-   [ ] Verify create_jadwal_siswa_table.php (keep)
+-   [ ] Verify create_pertemuan_table.php (keep)
+-   [ ] Verify create_laporan_lengkap_table.php (keep)
 
 ### Validation
-- [ ] Check PHP syntax all migration files
-- [ ] Run migrate:fresh on local
-- [ ] Verify all tables created correctly
-- [ ] Run db:seed
-- [ ] Test application features
-- [ ] Run test suite: `php artisan test`
+
+-   [ ] Check PHP syntax all migration files
+-   [ ] Run migrate:fresh on local
+-   [ ] Verify all tables created correctly
+-   [ ] Run db:seed
+-   [ ] Test application features
+-   [ ] Run test suite: `php artisan test`
 
 ### Cleanup
-- [ ] Delete 17 old modification files
-- [ ] Update documentation
-- [ ] Commit and push to main
+
+-   [ ] Delete 17 old modification files
+-   [ ] Update documentation
+-   [ ] Commit and push to main
 
 ### Testing
-- [ ] Test on staging: migrate:fresh
-- [ ] Verify data integrity
-- [ ] Test API endpoints
-- [ ] Check logs
+
+-   [ ] Test on staging: migrate:fresh
+-   [ ] Verify data integrity
+-   [ ] Test API endpoints
+-   [ ] Check logs
 
 ### Deployment
-- [ ] Get approval
-- [ ] Backup production
-- [ ] Deploy migration files
-- [ ] Run migrations: php artisan migrate
-- [ ] Monitor production logs
-- [ ] Verify functionality
+
+-   [ ] Get approval
+-   [ ] Backup production
+-   [ ] Deploy migration files
+-   [ ] Run migrations: php artisan migrate
+-   [ ] Monitor production logs
+-   [ ] Verify functionality
 
 ---
 
@@ -546,14 +581,14 @@ php artisan migrate:status
 
 ## 🎯 Success Criteria
 
-- [x] All 17 modification files consolidated into CREATE files
-- [x] migrate:fresh runs successfully
-- [x] All tables created with correct schema
-- [x] All foreign keys present and correct
-- [x] db:seed executes without errors
-- [x] Application features work correctly
-- [x] No warnings or errors in logs
-- [x] Documentation updated
+-   [x] All 17 modification files consolidated into CREATE files
+-   [x] migrate:fresh runs successfully
+-   [x] All tables created with correct schema
+-   [x] All foreign keys present and correct
+-   [x] db:seed executes without errors
+-   [x] Application features work correctly
+-   [x] No warnings or errors in logs
+-   [x] Documentation updated
 
 ---
 

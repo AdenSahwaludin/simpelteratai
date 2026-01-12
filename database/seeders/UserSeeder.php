@@ -19,41 +19,41 @@ class UserSeeder extends Seeder
         Admin::create([
             'id_admin' => 'A01',
             'nama' => 'Admin Simpel Teratai',
-            'email' => 'admin@tkteratai.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'no_telpon' => '081234567890',
         ]);
 
         // Create Guru
         Guru::create([
-            'id_guru' => 'G01',
+            'id_guru' => 'G00001',
             'nip' => '19876543210',
-            'nama' => 'Ibu Sarah',
-            'email' => 'sarah@simpelteratai.com',
+            'nama' => 'Ibu Guru',
+            'email' => 'guru@gmail.com',
             'password' => Hash::make('password'),
             'no_telpon' => '081234567891',
         ]);
 
         Guru::create([
-            'id_guru' => 'G02',
+            'id_guru' => 'G00002',
             'nip' => '1987654321',
             'nama' => 'Pak Budi',
-            'email' => 'budi@simpelteratai.com',
+            'email' => 'budi@gmail.com',
             'password' => Hash::make('password'),
             'no_telpon' => '081234567892',
         ]);
 
         // Create Orang Tua
         OrangTua::create([
-            'id_orang_tua' => 'O001',
+            'id_orang_tua' => 'OT00003',
             'nama' => 'Ibu Ani',
-            'email' => 'ani@gmail.com',
+            'email' => 'orangtua@gmail.com',
             'password' => Hash::make('password'),
             'no_telpon' => '081234567893',
         ]);
 
         OrangTua::create([
-            'id_orang_tua' => 'O002',
+            'id_orang_tua' => 'OT00003',
             'nama' => 'Bapak Ahmad',
             'email' => 'ahmad@gmail.com',
             'password' => Hash::make('password'),
