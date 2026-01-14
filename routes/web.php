@@ -28,6 +28,10 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     Route::get('/siswa-search-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'searchOrangTua'])->name('siswa.search-orangtua');
     Route::post('/siswa-store-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'storeOrangTua'])->name('siswa.store-orangtua');
 
+    // Bulk class transfer
+    Route::get('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'showBulkTransfer'])->name('siswa.bulk-transfer');
+    Route::post('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'processBulkTransfer'])->name('siswa.bulk-transfer.process');
+
     // Data Orang Tua
     Route::resource('orangtua', \App\Http\Controllers\Admin\OrangTuaController::class);
 

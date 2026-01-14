@@ -240,4 +240,48 @@ class SiswaController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Show bulk class transfer form.
+     */
+    public function showBulkTransfer(Request $request): View
+    {
+        $sourceKelas = $request->input('source_kelas');
+
+        $siswaList = collect();
+        if ($sourceKelas) {
+            $siswaList = Siswa::query()
+                ->where('kelas', $sourceKelas)
+                ->with('orangTua')
+                ->orderBy('nama')
+                ->get();
+        }
+
+        $kelasList = Siswa::query()->distinct()->pluck('kelas')->sort();
+
+        return view('admin.siswa.bulk-transfer', compact('siswaList', 'kelasList', 'sourceKelas'));
+    }
+
+    /**
+     * Process bulk class transfer.
+     */
+    public function processBulkTransfer(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'siswa_ids' => 'required|array|min:1',
+            'siswa_ids.*' => 'exists:siswa,id_siswa',
+            'target_kelas' => 'required|string|max:255',
+        ], [
+            'siswa_ids.required' => 'Pilih minimal 1 siswa untuk dipindahkan',
+            'siswa_ids.min' => 'Pilih minimal 1 siswa untuk dipindahkan',
+            'target_kelas.required' => 'Kelas tujuan wajib diisi',
+        ]);
+
+        $updatedCount = Siswa::whereIn('id_siswa', $validated['siswa_ids'])
+            ->update(['kelas' => $validated['target_kelas']]);
+
+        return redirect()
+            ->route('admin.siswa.bulk-transfer', ['source_kelas' => $validated['target_kelas']])
+            ->with('success', "Berhasil memindahkan {$updatedCount} siswa ke kelas {$validated['target_kelas']}");
+    }
 }

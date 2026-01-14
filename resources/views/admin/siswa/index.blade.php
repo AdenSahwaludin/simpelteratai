@@ -15,10 +15,16 @@
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
             <h2 class="text-2xl font-bold text-gray-800">Daftar Siswa</h2>
-            <a href="{{ route('admin.siswa.create') }}"
-                class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
-                <i class="fas fa-plus mr-2"></i>Tambah Siswa
-            </a>
+            <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <a href="{{ route('admin.siswa.bulk-transfer') }}"
+                    class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                    <i class="fas fa-exchange-alt mr-2"></i>Pindah Kelas Massal
+                </a>
+                <a href="{{ route('admin.siswa.create') }}"
+                    class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
+                    <i class="fas fa-plus mr-2"></i>Tambah Siswa
+                </a>
+            </div>
         </div>
 
         @if (session('success'))
