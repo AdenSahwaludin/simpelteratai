@@ -50,24 +50,26 @@
 
 ## 🎯 Fitur Unggulan
 
-| Fitur | Deskripsi |
-|-------|-----------|
-| **Select All** | Pilih semua siswa dengan satu klik |
-| **Live Counter** | Lihat jumlah siswa terpilih secara real-time |
-| **Flexible Target** | Pindah ke kelas lama atau buat kelas baru |
-| **Confirmation** | Konfirmasi sebelum proses untuk keamanan |
-| **Batch Process** | Update database secara efisien |
+| Fitur               | Deskripsi                                    |
+| ------------------- | -------------------------------------------- |
+| **Select All**      | Pilih semua siswa dengan satu klik           |
+| **Live Counter**    | Lihat jumlah siswa terpilih secara real-time |
+| **Flexible Target** | Pindah ke kelas lama atau buat kelas baru    |
+| **Confirmation**    | Konfirmasi sebelum proses untuk keamanan     |
+| **Batch Process**   | Update database secara efisien               |
 
 ---
 
 ## ⚡ Shortcut & Tips
 
 ### Keyboard Shortcuts
-- `Spacebar` - Toggle checkbox saat focus
-- `Tab` - Navigasi antar checkbox
-- `Enter` - Submit form
+
+-   `Spacebar` - Toggle checkbox saat focus
+-   `Tab` - Navigasi antar checkbox
+-   `Enter` - Submit form
 
 ### Pro Tips
+
 1. **Kenaikan Kelas**: Gunakan format nama konsisten (5A → 6A)
 2. **Reorganisasi**: Buat kelas baru langsung tanpa perlu create manual
 3. **Koreksi**: Filter kelas asal untuk fokus pada siswa tertentu
@@ -78,20 +80,23 @@
 ## ⚠️ Validasi
 
 ### Akan Ditolak Jika:
-- ❌ Tidak ada siswa terpilih
-- ❌ Kelas tujuan kosong
-- ❌ Siswa ID tidak valid
+
+-   ❌ Tidak ada siswa terpilih
+-   ❌ Kelas tujuan kosong
+-   ❌ Siswa ID tidak valid
 
 ### Akan Diterima Jika:
-- ✅ Minimal 1 siswa terpilih
-- ✅ Kelas tujuan terisi
-- ✅ Semua siswa ID valid
+
+-   ✅ Minimal 1 siswa terpilih
+-   ✅ Kelas tujuan terisi
+-   ✅ Semua siswa ID valid
 
 ---
 
 ## 📊 Use Cases
 
 ### 1. Kenaikan Kelas Tahunan
+
 ```
 Kelas 5A (20 siswa) → Kelas 6A
 - Pilih kelas 5A
@@ -101,6 +106,7 @@ Kelas 5A (20 siswa) → Kelas 6A
 ```
 
 ### 2. Split Kelas Besar
+
 ```
 Kelas 5A (30 siswa) → 5A (15) + 5B (15)
 - Batch 1: Pilih 15 siswa → 5A (biarkan)
@@ -108,6 +114,7 @@ Kelas 5A (30 siswa) → 5A (15) + 5B (15)
 ```
 
 ### 3. Merge Kelas Kecil
+
 ```
 Kelas 5A (8) + 5B (7) → Kelas 5A (15)
 - Pilih kelas 5B
@@ -117,6 +124,7 @@ Kelas 5A (8) + 5B (7) → Kelas 5A (15)
 ```
 
 ### 4. Koreksi Penempatan
+
 ```
 3 siswa salah masuk 5A → seharusnya 5B
 - Pilih kelas 5A
@@ -129,12 +137,12 @@ Kelas 5A (8) + 5B (7) → Kelas 5A (15)
 
 ## 🔍 Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Siswa tidak muncul | Periksa apakah kelas memiliki siswa |
-| Tidak bisa submit | Centang minimal 1 siswa dan isi kelas tujuan |
-| Konfirmasi tidak muncul | Enable JavaScript di browser |
-| Perpindahan gagal | Cek log Laravel di `storage/logs/` |
+| Problem                 | Solution                                     |
+| ----------------------- | -------------------------------------------- |
+| Siswa tidak muncul      | Periksa apakah kelas memiliki siswa          |
+| Tidak bisa submit       | Centang minimal 1 siswa dan isi kelas tujuan |
+| Konfirmasi tidak muncul | Enable JavaScript di browser                 |
+| Perpindahan gagal       | Cek log Laravel di `storage/logs/`           |
 
 ---
 
@@ -142,52 +150,56 @@ Kelas 5A (8) + 5B (7) → Kelas 5A (15)
 
 Sebelum memproses perpindahan, pastikan:
 
-- [ ] Kelas asal sudah benar
-- [ ] Siswa yang dipilih sudah sesuai
-- [ ] Nama kelas tujuan sudah benar (typo!)
-- [ ] Backup database (untuk perpindahan besar)
-- [ ] Informasikan ke guru & orang tua (jika perlu)
+-   [ ] Kelas asal sudah benar
+-   [ ] Siswa yang dipilih sudah sesuai
+-   [ ] Nama kelas tujuan sudah benar (typo!)
+-   [ ] Backup database (untuk perpindahan besar)
+-   [ ] Informasikan ke guru & orang tua (jika perlu)
 
 ---
 
 ## 🎨 Interface Elements
 
 ### Colors
-- **Purple Button** (🟣): Pindah Kelas Massal
-- **Blue Button** (🔵): Tampilkan Siswa, Proses Perpindahan
-- **Gray Button** (⚫): Kembali
-- **Green Alert** (🟢): Success message
-- **Red Alert** (🔴): Error message
-- **Yellow Alert** (🟡): Empty class warning
+
+-   **Purple Button** (🟣): Pindah Kelas Massal
+-   **Blue Button** (🔵): Tampilkan Siswa, Proses Perpindahan
+-   **Gray Button** (⚫): Kembali
+-   **Green Alert** (🟢): Success message
+-   **Red Alert** (🔴): Error message
+-   **Yellow Alert** (🟡): Empty class warning
 
 ### Icons
-- 🔄 `fa-exchange-alt` - Pindah kelas
-- 🔍 `fa-search` - Tampilkan siswa
-- ☑️ `fa-check-square` - Pilih semua
-- ✅ `fa-check-circle` - Proses
-- 👥 `fa-users` - Daftar siswa
-- 🔙 `fa-arrow-left` - Kembali
+
+-   🔄 `fa-exchange-alt` - Pindah kelas
+-   🔍 `fa-search` - Tampilkan siswa
+-   ☑️ `fa-check-square` - Pilih semua
+-   ✅ `fa-check-circle` - Proses
+-   👥 `fa-users` - Daftar siswa
+-   🔙 `fa-arrow-left` - Kembali
 
 ---
 
 ## 📈 Statistik
 
 ### Efisiensi
-- **Proses Manual**: 1 siswa = 30 detik → 20 siswa = 10 menit
-- **Proses Bulk**: 20 siswa = 2 menit (83% lebih cepat!)
+
+-   **Proses Manual**: 1 siswa = 30 detik → 20 siswa = 10 menit
+-   **Proses Bulk**: 20 siswa = 2 menit (83% lebih cepat!)
 
 ### Kapasitas
-- **Rekomendasi**: 1-50 siswa per batch
-- **Maksimum**: Tidak terbatas (tergantung server)
-- **Optimal**: 10-30 siswa per proses
+
+-   **Rekomendasi**: 1-50 siswa per batch
+-   **Maksimum**: Tidak terbatas (tergantung server)
+-   **Optimal**: 10-30 siswa per proses
 
 ---
 
 ## 🔗 Related Features
 
-- **Data Siswa** (`/admin/siswa`) - Lihat semua siswa
-- **Tambah Siswa** (`/admin/siswa/create`) - Tambah siswa baru
-- **Edit Siswa** (`/admin/siswa/{id}/edit`) - Edit individual
+-   **Data Siswa** (`/admin/siswa`) - Lihat semua siswa
+-   **Tambah Siswa** (`/admin/siswa/create`) - Tambah siswa baru
+-   **Edit Siswa** (`/admin/siswa/{id}/edit`) - Edit individual
 
 ---
 
