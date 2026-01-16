@@ -151,12 +151,13 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Total Pertemuan</p>
-                            <p class="text-3xl font-bold text-green-600">{{ $jadwal->pertemuan->count() }}</p>
+                            <p class="text-3xl font-bold text-green-600">14</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Total Catatan Kehadiran</p>
                             <p class="text-3xl font-bold text-purple-600">
-                                {{ $jadwal->pertemuan->sum(fn($p) => $p->absensi->count()) }}</p>
+                                {{ \App\Models\Absensi::whereHas('pertemuan', fn($q) => $q->where('id_jadwal', $jadwal->id_jadwal))->count() }}
+                            </p>
                         </div>
                     </div>
                 </div>

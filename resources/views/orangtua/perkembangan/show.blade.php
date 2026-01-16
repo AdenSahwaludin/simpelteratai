@@ -110,6 +110,57 @@
                     </div>
                 </div>
 
+                <!-- Attendance Information (Pertemuan) -->
+                @if ($perkembangan->absensi && $perkembangan->absensi->pertemuan)
+                    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                        <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-calendar-alt text-blue-600"></i>
+                            Informasi Pertemuan
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ml-6">
+                            <div>
+                                <span class="text-gray-600">Pertemuan Ke:</span>
+                                <span
+                                    class="font-medium text-gray-800 ml-2">#{{ $perkembangan->absensi->pertemuan->pertemuan_ke }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Tanggal:</span>
+                                <span
+                                    class="font-medium text-gray-800 ml-2">{{ \Carbon\Carbon::parse($perkembangan->absensi->pertemuan->tanggal)->format('d F Y') }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Hari:</span>
+                                <span
+                                    class="font-medium text-gray-800 ml-2">{{ \Carbon\Carbon::parse($perkembangan->absensi->pertemuan->tanggal)->translatedFormat('l') }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Status Kehadiran:</span>
+                                <span class="font-medium text-gray-800 ml-2">
+                                    @php
+                                        $statusLabel = match ($perkembangan->absensi->status_kehadiran) {
+                                            'hadir' => 'Hadir',
+                                            'izin' => 'Izin',
+                                            'sakit' => 'Sakit',
+                                            'alpha' => 'Alpa',
+                                            'belum_absen' => 'Belum Absen',
+                                            default => $perkembangan->absensi->status_kehadiran,
+                                        };
+                                        $statusClass = match ($perkembangan->absensi->status_kehadiran) {
+                                            'hadir' => 'text-green-700',
+                                            'izin' => 'text-blue-700',
+                                            'sakit' => 'text-yellow-700',
+                                            'alpha' => 'text-red-700',
+                                            'belum_absen' => 'text-gray-700',
+                                            default => 'text-gray-700',
+                                        };
+                                    @endphp
+                                    <span class="{{ $statusClass }}">{{ $statusLabel }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Comments Section -->
                 @if ($perkembangan->komentar)
                     <div class="mb-6">

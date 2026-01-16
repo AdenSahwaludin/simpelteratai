@@ -73,6 +73,7 @@ Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(funct
     Route::delete('/input-nilai/{id}', [\App\Http\Controllers\Guru\InputNilaiController::class, 'destroy'])->name('input-nilai.destroy');
     Route::get('/input-nilai-bulk', [\App\Http\Controllers\Guru\InputNilaiController::class, 'bulkIndex'])->name('input-nilai.bulk');
     Route::get('/kelola-nilai-load-siswa', [\App\Http\Controllers\Guru\InputNilaiController::class, 'loadSiswaByJadwal'])->name('input-nilai.load-siswa');
+    Route::get('/kelola-nilai-load-absensi', [\App\Http\Controllers\Guru\InputNilaiController::class, 'loadAbsensiByPertemuan'])->name('input-nilai.load-absensi');
     Route::post('/input-nilai-bulk', [\App\Http\Controllers\Guru\InputNilaiController::class, 'bulkStore'])->name('input-nilai.bulk-store');
 
     // Catatan Perilaku

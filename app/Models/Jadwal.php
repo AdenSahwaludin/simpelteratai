@@ -143,7 +143,8 @@ class Jadwal extends Model
      */
     public function assignSiswaToPertemuan(): void
     {
-        $siswaList = Siswa::where('kelas', $this->kelas)->get();
+        // Hanya assign siswa yang terdaftar di jadwal_siswa, bukan semua siswa di kelas
+        $siswaList = $this->siswa;
         $pertemuanList = $this->pertemuan;
 
         foreach ($pertemuanList as $pertemuan) {

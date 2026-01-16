@@ -189,27 +189,6 @@
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <!-- File Lampiran -->
-                <div class="mb-6">
-                    <label for="file_lampiran" class="block text-sm font-medium text-gray-700 mb-2">
-                        Pilih file
-                    </label>
-                    @if ($perilaku->file_lampiran)
-                        <div class="mb-2 text-sm text-gray-600">
-                            File saat ini: <a href="{{ asset('storage/perilaku/' . $perilaku->file_lampiran) }}"
-                                target="_blank" class="text-blue-600 hover:underline">{{ $perilaku->file_lampiran }}</a>
-                        </div>
-                    @endif
-                    <input type="file" name="file_lampiran" id="file_lampiran" accept=".jpg,.jpeg,.png,.pdf"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('file_lampiran') border-red-500 @enderror">
-                    <p class="mt-1 text-xs text-gray-500">Format: JPG, JPEG, PNG, PDF (Maksimal 2MB)</p>
-                    <p id="file-name" class="mt-1 text-sm text-gray-600"></p>
-                    @error('file_lampiran')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <div class="flex gap-4 justify-end">
                     <button type="button" onclick="window.location='{{ route('guru.catatan-perilaku.index') }}'"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-300">

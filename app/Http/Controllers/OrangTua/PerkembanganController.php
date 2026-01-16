@@ -24,7 +24,7 @@ class PerkembanganController extends Controller
             ->get();
 
         $perkembangan = LaporanPerkembangan::query()
-            ->with(['siswa', 'mataPelajaran', 'absensi'])
+            ->with(['siswa', 'mataPelajaran', 'absensi.pertemuan'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })
@@ -54,7 +54,7 @@ class PerkembanganController extends Controller
 
         $perkembangan = LaporanPerkembangan::query()
             ->where('id_laporan', $id)
-            ->with(['siswa', 'mataPelajaran', 'absensi'])
+            ->with(['siswa', 'mataPelajaran', 'absensi.pertemuan'])
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })

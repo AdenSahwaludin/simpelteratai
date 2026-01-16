@@ -19,6 +19,7 @@ class LaporanPerkembangan extends Model
     protected $fillable = [
         'id_laporan',
         'id_siswa',
+        'id_guru',
         'id_mata_pelajaran',
         'nilai',
         'id_absensi',
@@ -43,6 +44,14 @@ class LaporanPerkembangan extends Model
     public function mataPelajaran(): BelongsTo
     {
         return $this->belongsTo(MataPelajaran::class, 'id_mata_pelajaran', 'id_mata_pelajaran');
+    }
+
+    /**
+     * Get the guru that owns the laporan perkembangan.
+     */
+    public function guru(): BelongsTo
+    {
+        return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
     }
 
     /**

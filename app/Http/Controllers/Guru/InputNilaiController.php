@@ -23,10 +23,8 @@ class InputNilaiController extends Controller
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
 
         $laporan = LaporanPerkembangan::query()
-            ->with(['siswa', 'mataPelajaran'])
-            ->whereHas('mataPelajaran.jadwal', function ($query) use ($guru) {
-                $query->where('id_guru', $guru->id_guru);
-            })
+            ->with(['siswa', 'mataPelajaran', 'absensi.pertemuan'])
+            ->where('id_guru', $guru->id_guru)
             ->when($search, function ($query, $search) {
                 return $query->whereHas('siswa', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
@@ -52,7 +50,9 @@ class InputNilaiController extends Controller
     public function edit(string $id): View
     {/** @var \App\Models\Guru $guru */
         $guru = auth('guru')->user();
-        $laporan = LaporanPerkembangan::with(['siswa', 'mataPelajaran'])->findOrFail($id);
+        $laporan = LaporanPerkembangan::with(['siswa', 'mataPelajaran', 'absensi'])
+            ->where('id_guru', $guru->id_guru)
+            ->findOrFail($id);
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
         $siswaList = Siswa::orderBy('nama')->get();
 
@@ -84,7 +84,9 @@ class InputNilaiController extends Controller
 
     public function destroy(string $id): RedirectResponse
     {
-        $laporan = LaporanPerkembangan::findOrFail($id);
+        $guru = auth('guru')->user();
+        /** @var \App\Models\Guru $guru */
+        $laporan = LaporanPerkembangan::where('id_guru', $guru->id_guru)->findOrFail($id);
         $laporan->delete();
 
         return redirect()->route('guru.input-nilai.index')->with('success', 'Nilai berhasil dihapus.');
@@ -116,7 +118,7 @@ class InputNilaiController extends Controller
         /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->where('id_jadwal', $id_jadwal)
-            ->with('mataPelajaran', 'siswa')
+            ->with('mataPelajaran', 'siswa', 'pertemuan')
             ->firstOrFail();
 
         // Get siswa registered for this jadwal
@@ -124,11 +126,17 @@ class InputNilaiController extends Controller
             ->orderBy('siswa.nama')
             ->get();
 
-        // Get existing nilai for these siswa in this mata pelajaran
-        $existingNilai = LaporanPerkembangan::whereIn('id_siswa', $siswa->pluck('id_siswa'))
-            ->where('id_mata_pelajaran', $jadwal->id_mata_pelajaran)
+        // Get all pertemuan for this jadwal with past dates only
+        $pertemuanList = $jadwal->pertemuan()
+            ->whereDate('tanggal', '<=', today())
+            ->orderBy('tanggal')
             ->get()
-            ->keyBy('id_siswa');
+            ->map(fn ($p) => [
+                'id_pertemuan' => $p->id_pertemuan,
+                'pertemuan_ke' => $p->pertemuan_ke,
+                'tanggal' => $p->tanggal,
+                'tanggal_formatted' => \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y'),
+            ]);
 
         return response()->json([
             'siswa' => $siswa->map(fn ($s) => [
@@ -136,12 +144,46 @@ class InputNilaiController extends Controller
                 'nama' => $s->nama,
                 'kelas' => $s->kelas,
             ]),
-            'existingNilai' => $existingNilai->map(fn ($n) => [
-                'nilai' => $n->nilai,
-                'komentar' => $n->komentar,
-                'id_laporan' => $n->id_laporan,
-            ])->toArray(),
+            'pertemuan' => $pertemuanList,
             'mata_pelajaran' => $jadwal->mataPelajaran->nama_mapel,
+        ]);
+    }
+
+    /**
+     * Load absensi by pertemuan for AJAX (returns absensi list with existing nilai)
+     */
+    public function loadAbsensiByPertemuan(Request $request)
+    {
+        $id_pertemuan = $request->input('id_pertemuan');
+        $id_jadwal = $request->input('id_jadwal');
+        $guru = auth('guru')->user();
+
+        /** @var \App\Models\Guru $guru */
+        // Verify jadwal belongs to guru
+        $jadwal = $guru->jadwal()->where('id_jadwal', $id_jadwal)->firstOrFail();
+
+        // Get all absensi for this pertemuan
+        $absensiList = \App\Models\Absensi::where('id_pertemuan', $id_pertemuan)
+            ->with(['siswa', 'laporanPerkembangan' => function ($q) use ($guru) {
+                $q->where('id_guru', $guru->id_guru);
+            }])
+            ->get();
+
+        return response()->json([
+            'absensiList' => $absensiList->map(function ($a) {
+                // Get first laporan (should only be one per guru per absensi)
+                $laporan = $a->laporanPerkembangan->first();
+
+                return [
+                    'id_absensi' => $a->id_absensi,
+                    'id_siswa' => $a->id_siswa,
+                    'nilai' => $laporan ? [
+                        'nilai' => $laporan->nilai,
+                        'komentar' => $laporan->komentar,
+                        'id_laporan' => $laporan->id_laporan,
+                    ] : null,
+                ];
+            }),
         ]);
     }
 
@@ -153,21 +195,27 @@ class InputNilaiController extends Controller
         $guru = auth('guru')->user();
         $id_jadwal = $request->input('id_jadwal');
 
+        // Get nilai array from form
+        $nilaiData = $request->input('nilai', []);
+        $komentarData = $request->input('komentar', []);
+        $absensiData = $request->input('id_absensi', []);  // Array id_absensi per siswa
+
+        // Validate has absensi data
+        if (empty($absensiData)) {
+            return back()->with('error', 'Pilih pertemuan/absensi terlebih dahulu.');
+        }
+
         /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
             ->where('id_jadwal', $id_jadwal)
             ->firstOrFail();
 
-        // Get nilai array from form
-        $nilaiData = $request->input('nilai', []);
-        $komentarData = $request->input('komentar', []);
-
         // Log for debugging
         Log::info('Bulk Store Request', [
             'jadwal' => $id_jadwal,
+            'guru' => $guru->id_guru,
             'nilai_count' => count($nilaiData),
-            'nilai_data' => $nilaiData,
-            'komentar_data' => $komentarData,
+            'absensi_count' => count($absensiData),
         ]);
 
         if (empty($nilaiData)) {
@@ -186,6 +234,14 @@ class InputNilaiController extends Controller
                 continue;
             }
 
+            // Get absensi for this siswa
+            $id_absensi = $absensiData[$id_siswa] ?? null;
+            if (! $id_absensi) {
+                $errors[] = "Absensi tidak ditemukan untuk siswa (ID: $id_siswa).";
+
+                continue;
+            }
+
             // Convert to integer and validate nilai
             $nilaiInt = (int) $nilai;
             if (! is_numeric($nilai) || $nilaiInt < 0 || $nilaiInt > 100) {
@@ -201,27 +257,34 @@ class InputNilaiController extends Controller
                 continue;
             }
 
-            // Check if nilai already exists (update) or create new
+            // Verify absensi belongs to this siswa and jadwal
+            $absensiCheck = \App\Models\Absensi::where('id_absensi', $id_absensi)
+                ->where('id_siswa', $id_siswa)
+                ->whereHas('pertemuan', function ($q) use ($id_jadwal) {
+                    $q->where('id_jadwal', $id_jadwal);
+                })
+                ->exists();
+
+            if (! $absensiCheck) {
+                $errors[] = "Absensi tidak valid untuk siswa (ID: $id_siswa).";
+
+                continue;
+            }
+
+            // Check if nilai already exists for this siswa + absensi (update) or create new
             $existingNilai = LaporanPerkembangan::where('id_siswa', $id_siswa)
-                ->where('id_mata_pelajaran', $jadwal->id_mata_pelajaran)
+                ->where('id_absensi', $id_absensi)
+                ->where('id_guru', $guru->id_guru)
                 ->first();
 
             if ($existingNilai) {
                 // Update existing
-                Log::info("Updating existing nilai for {$id_siswa}", [
-                    'old_nilai' => $existingNilai->nilai,
-                    'new_nilai' => $nilaiInt,
-                    'id_laporan' => $existingNilai->id_laporan,
-                ]);
-
                 $existingNilai->update([
                     'nilai' => $nilaiInt,
                     'komentar' => $komentarData[$id_siswa] ?? null,
                 ]);
 
-                Log::info("Updated nilai for {$id_siswa}", [
-                    'updated_nilai' => $existingNilai->fresh()->nilai,
-                ]);
+                Log::info("Updated nilai for {$id_siswa}");
             } else {
                 // Create new - generate unique ID
                 $maxId = LaporanPerkembangan::orderByRaw('CAST(SUBSTRING(id_laporan, 3) AS UNSIGNED) DESC')
@@ -230,25 +293,19 @@ class InputNilaiController extends Controller
                     ->first();
 
                 $nextNumber = $maxId ? (int) substr($maxId, 2) + 1 : 1;
-                $nextId = 'LP'.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
+                $nextId = 'LP'.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
 
-                Log::info("Creating new nilai for {$id_siswa}", [
-                    'new_id' => $nextId,
-                    'nilai' => $nilaiInt,
-                ]);
-
-                $created = LaporanPerkembangan::create([
+                LaporanPerkembangan::create([
                     'id_laporan' => $nextId,
                     'id_siswa' => $id_siswa,
+                    'id_guru' => $guru->id_guru,
                     'id_mata_pelajaran' => $jadwal->id_mata_pelajaran,
                     'nilai' => $nilaiInt,
+                    'id_absensi' => $id_absensi,
                     'komentar' => $komentarData[$id_siswa] ?? null,
                 ]);
 
-                Log::info("Created nilai for {$id_siswa}", [
-                    'created' => $created ? 'yes' : 'no',
-                    'id_laporan' => $created->id_laporan ?? 'null',
-                ]);
+                Log::info("Created nilai for {$id_siswa} with id {$nextId}");
             }
 
             $savedCount++;

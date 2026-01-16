@@ -53,7 +53,7 @@
 
         <!-- Selection Form -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pilih Jadwal</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pilih Jadwal dan Pertemuan</h3>
 
             <div class="mb-6">
                 <label for="jadwalSelect" class="block text-sm font-medium text-gray-700 mb-2">
@@ -68,6 +68,17 @@
                         </option>
                     @endforeach
                 </select>
+            </div>
+
+            <div id="absensiSelectContainer" class="mb-6 hidden">
+                <label for="absensiSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                    Pertemuan / Absensi <span class="text-red-500">*</span>
+                </label>
+                <select id="absensiSelect"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <option value="">-- Pilih Pertemuan --</option>
+                </select>
+                <p class="text-sm text-gray-500 mt-1">Pilih pertemuan untuk input nilai siswa</p>
             </div>
 
             <div id="siswaContainer" class="hidden">
@@ -207,6 +218,8 @@
 
     <script>
         const jadwalSelect = document.getElementById('jadwalSelect');
+        const absensiSelectContainer = document.getElementById('absensiSelectContainer');
+        const absensiSelect = document.getElementById('absensiSelect');
         const siswaContainer = document.getElementById('siswaContainer');
         const emptyState = document.getElementById('emptyState');
         const loadingIndicator = document.getElementById('loadingIndicator');
@@ -218,13 +231,18 @@
         const siswaCount = document.getElementById('siswaCount');
         const hiddenJadwal = document.getElementById('hiddenJadwal');
 
-        jadwalSelect.addEventListener('change', loadSiswa);
+        let currentPertemuanList = [];
+        let currentSiswaList = [];
 
-        async function loadSiswa() {
+        jadwalSelect.addEventListener('change', loadJadwalData);
+        absensiSelect.addEventListener('change', loadSiswa);
+
+        async function loadJadwalData() {
             const id_jadwal = jadwalSelect.value;
 
             if (!id_jadwal) {
                 siswaContainer.classList.add('hidden');
+                absensiSelectContainer.classList.add('hidden');
                 emptyState.classList.remove('hidden');
                 nilaiForm.classList.add('hidden');
                 return;
@@ -234,6 +252,8 @@
             loadingIndicator.classList.remove('hidden');
             errorMessage.classList.add('hidden');
             siswaContainer.classList.remove('hidden');
+            absensiSelectContainer.classList.add('hidden');
+            nilaiForm.classList.add('hidden');
 
             try {
                 const response = await fetch(
@@ -241,7 +261,7 @@
                 );
 
                 if (!response.ok) {
-                    throw new Error('Gagal memuat data siswa');
+                    throw new Error('Gagal memuat data jadwal');
                 }
 
                 const data = await response.json();
@@ -251,21 +271,75 @@
                     siswaContainer.classList.add('hidden');
                     errorMessage.classList.remove('hidden');
                     errorText.textContent = 'Tidak ada siswa yang terdaftar untuk jadwal ini.';
-                    nilaiForm.classList.add('hidden');
                     return;
                 }
 
+                if (data.pertemuan.length === 0) {
+                    siswaContainer.classList.add('hidden');
+                    errorMessage.classList.remove('hidden');
+                    errorText.textContent = 'Tidak ada pertemuan yang tersedia untuk jadwal ini.';
+                    return;
+                }
+
+                // Store data
+                currentSiswaList = data.siswa;
+                currentPertemuanList = data.pertemuan;
+
                 // Set hidden jadwal value
                 hiddenJadwal.value = id_jadwal;
+
+                // Populate absensi select
+                absensiSelect.innerHTML = '<option value="">-- Pilih Pertemuan --</option>';
+                data.pertemuan.forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p.id_pertemuan; // Store id_pertemuan for AJAX call
+                    option.textContent = `Pertemuan ${p.pertemuan_ke} - ${p.tanggal_formatted}`;
+                    absensiSelect.appendChild(option);
+                });
+
+                absensiSelectContainer.classList.remove('hidden');
+            } catch (error) {
+                loadingIndicator.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+                errorText.textContent = error.message || 'Terjadi kesalahan saat memuat data jadwal.';
+            }
+        }
+
+        async function loadSiswa() {
+            const id_pertemuan = absensiSelect.value;
+
+            if (!id_pertemuan) {
+                nilaiForm.classList.add('hidden');
+                return;
+            }
+
+            loadingIndicator.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+
+            try {
+                // Get absensi for this pertemuan and siswa
+                const response = await fetch(
+                    `/guru/kelola-nilai-load-absensi?id_pertemuan=${id_pertemuan}&id_jadwal=${jadwalSelect.value}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Gagal memuat data absensi');
+                }
+
+                const absensiData = await response.json();
+                loadingIndicator.classList.add('hidden');
 
                 // Render table
                 tableBody.innerHTML = '';
                 cardView.innerHTML = '';
 
-                data.siswa.forEach((siswa, index) => {
-                    const existingData = data.existingNilai[siswa.id_siswa] || {};
+                currentSiswaList.forEach((siswa, index) => {
+                    const absensiForSiswa = absensiData.absensiList.find(a => a.id_siswa === siswa.id_siswa) ||
+                    {};
+                    const existingData = absensiForSiswa.nilai || {};
                     const nilai = existingData.nilai || '';
                     const komentar = existingData.komentar || '';
+                    const id_absensi_siswa = absensiForSiswa.id_absensi || '';
 
                     // Table row (Desktop only)
                     const tr = document.createElement('tr');
@@ -275,6 +349,7 @@
                         <td class="px-6 py-4 text-sm font-medium text-gray-900">${siswa.nama}</td>
                         <td class="px-6 py-4 text-sm text-gray-600">${siswa.kelas}</td>
                         <td class="px-6 py-4">
+                            <input type="hidden" name="id_absensi[${siswa.id_siswa}]" value="${id_absensi_siswa}" />
                             <input 
                                 type="number" 
                                 name="nilai[${siswa.id_siswa}]" 
@@ -298,7 +373,7 @@
                     `;
                     tableBody.appendChild(tr);
 
-                    // Card for mobile (Mobile only - will use same name to avoid duplication issue)
+                    // Card for mobile
                     const card = document.createElement('div');
                     card.className = 'bg-gray-50 rounded-lg p-4 border border-gray-200';
                     card.innerHTML = `
@@ -307,6 +382,7 @@
                             <p class="text-sm text-gray-600">${siswa.kelas}</p>
                         </div>
                         <div class="space-y-3">
+                            <input type="hidden" name="id_absensi[${siswa.id_siswa}]" value="${id_absensi_siswa}" />
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nilai</label>
                                 <input 
@@ -335,7 +411,7 @@
                     cardView.appendChild(card);
                 });
 
-                siswaCount.textContent = `(${data.siswa.length} siswa)`;
+                siswaCount.textContent = `(${currentSiswaList.length} siswa)`;
                 nilaiForm.classList.remove('hidden');
             } catch (error) {
                 loadingIndicator.classList.add('hidden');

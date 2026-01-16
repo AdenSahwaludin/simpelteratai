@@ -2,18 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Guru;
 use App\Models\Jadwal;
 use App\Models\Komentar;
 use App\Models\LaporanLengkap;
 use App\Models\LaporanPerkembangan;
 use App\Models\MataPelajaran;
-use App\Models\OrangTua;
 use App\Models\Pengumuman;
 use App\Models\Perilaku;
 use App\Models\Siswa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class SeederDua extends Seeder
 {
@@ -22,7 +19,6 @@ class SeederDua extends Seeder
      */
     public function run(): void
     {
-       
 
         // ========================================
         // 4. MATA PELAJARAN (2 data)
@@ -76,10 +72,10 @@ class SeederDua extends Seeder
             'waktu_selesai' => '08:00:00',
             'tanggal_mulai' => '2026-01-01',
         ]);
-        // Auto-generate 14 pertemuan
-        $jadwal1->generatePertemuan();
-        // Daftarkan siswa kelas A ke jadwal
+        // Daftarkan siswa kelas A ke jadwal SEBELUM generate pertemuan
         $jadwal1->siswa()->attach(['S000001']);
+        // Auto-generate 14 pertemuan (akan assign siswa yang sudah terdaftar)
+        $jadwal1->generatePertemuan();
 
         $jadwal2 = Jadwal::create([
             'id_jadwal' => 'J00002',
@@ -92,27 +88,40 @@ class SeederDua extends Seeder
             'waktu_selesai' => '09:00:00',
             'tanggal_mulai' => '2026-01-01',
         ]);
-        // Auto-generate 14 pertemuan
-        $jadwal2->generatePertemuan();
-        // Daftarkan siswa kelas B ke jadwal
+        // Daftarkan siswa kelas B ke jadwal SEBELUM generate pertemuan
         $jadwal2->siswa()->attach(['S000002']);
+        // Auto-generate 14 pertemuan (akan assign siswa yang sudah terdaftar)
+        $jadwal2->generatePertemuan();
 
         // ========================================
         // 7. LAPORAN PERKEMBANGAN / NILAI (2 data)
         // ========================================
+        // Get absensi untuk siswa S000001 di jadwal pertama (ada di pertemuan yang sudah dibuat)
+        $absensi1 = \App\Models\Absensi::whereHas('pertemuan', function ($q) {
+            $q->where('id_jadwal', 'J00001');
+        })->where('id_siswa', 'S000001')->first();
+
+        $absensi2 = \App\Models\Absensi::whereHas('pertemuan', function ($q) {
+            $q->where('id_jadwal', 'J00002');
+        })->where('id_siswa', 'S000002')->first();
+
         LaporanPerkembangan::create([
             'id_laporan' => 'LP0001',
             'id_siswa' => 'S000001',
+            'id_guru' => 'G00001',
             'id_mata_pelajaran' => 'MP0001',
             'nilai' => 85,
+            'id_absensi' => $absensi1?->id_absensi,
             'komentar' => 'Siswa menunjukkan perkembangan yang baik dalam membaca',
         ]);
 
         LaporanPerkembangan::create([
             'id_laporan' => 'LP0002',
             'id_siswa' => 'S000002',
+            'id_guru' => 'G00002',
             'id_mata_pelajaran' => 'MP0002',
             'nilai' => 90,
+            'id_absensi' => $absensi2?->id_absensi,
             'komentar' => 'Sangat aktif dalam berhitung',
         ]);
 

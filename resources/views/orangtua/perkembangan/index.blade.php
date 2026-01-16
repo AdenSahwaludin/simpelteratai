@@ -69,6 +69,9 @@
                                 Mata Pelajaran
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Pertemuan
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Nilai
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -88,6 +91,19 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="text-sm text-gray-900">{{ $item->mataPelajaran->nama_mapel }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($item->absensi && $item->absensi->pertemuan)
+                                        <div class="text-sm text-gray-900">
+                                            <span class="font-medium">Pertemuan
+                                                {{ $item->absensi->pertemuan->pertemuan_ke }}</span>
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            {{ \Carbon\Carbon::parse($item->absensi->pertemuan->tanggal)->format('d/m/Y') }}
+                                        </div>
+                                    @else
+                                        <span class="text-sm text-gray-500">-</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <span
@@ -128,6 +144,13 @@
                             <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                             <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
                             <div class="text-sm text-gray-700 mt-1">{{ $item->mataPelajaran->nama_mapel }}</div>
+                            @if ($item->absensi && $item->absensi->pertemuan)
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                    Pertemuan {{ $item->absensi->pertemuan->pertemuan_ke }} -
+                                    {{ \Carbon\Carbon::parse($item->absensi->pertemuan->tanggal)->format('d/m/Y') }}
+                                </div>
+                            @endif
                         </div>
                         <span
                             class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 

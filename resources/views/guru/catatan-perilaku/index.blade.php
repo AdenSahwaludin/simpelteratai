@@ -79,6 +79,8 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Siswa</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Orang Tua</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Sosial</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Emosional</th>
@@ -86,8 +88,6 @@
                                     Disiplin</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Catatan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    File</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Aksi</th>
                             </tr>
@@ -100,6 +100,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
                                         <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        {{ $item->siswa->orangTua->nama ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($item->sosial)
@@ -152,16 +155,6 @@
                                     <td class="px-6 py-4 text-sm text-gray-600 max-w-xs">
                                         {{ Str::limit($item->catatan_perilaku, 50) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        @if ($item->file_lampiran)
-                                            <a href="{{ asset('storage/perilaku/' . $item->file_lampiran) }}"
-                                                target="_blank" class="text-blue-600 hover:text-blue-900">
-                                                <i class="fas fa-file"></i>
-                                            </a>
-                                        @else
-                                            <span class="text-gray-400">-</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <div class="flex gap-2">
                                             <a href="{{ route('guru.catatan-perilaku.edit', $item->id_perilaku) }}"
                                                 class="text-blue-600 hover:text-blue-900">
@@ -192,6 +185,8 @@
                                     <p class="font-semibold text-gray-800">{{ $item->siswa->nama }}</p>
                                     <p class="text-sm text-gray-600">{{ $item->siswa->kelas }} •
                                         {{ $item->tanggal ? $item->tanggal->format('d M Y') : '-' }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">Orang Tua:
+                                        {{ $item->siswa->orangTua->nama ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -250,15 +245,6 @@
                             </div>
 
                             <p class="text-sm text-gray-700 mb-3">{{ Str::limit($item->catatan_perilaku, 100) }}</p>
-
-                            @if ($item->file_lampiran)
-                                <div class="mb-3">
-                                    <a href="{{ asset('storage/perilaku/' . $item->file_lampiran) }}" target="_blank"
-                                        class="text-sm text-blue-600 hover:text-blue-900">
-                                        <i class="fas fa-file mr-1"></i>Lihat Lampiran
-                                    </a>
-                                </div>
-                            @endif
 
                             <div class="flex gap-2">
                                 <a href="{{ route('guru.catatan-perilaku.edit', $item->id_perilaku) }}"

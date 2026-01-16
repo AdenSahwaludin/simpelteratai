@@ -14,11 +14,13 @@ class CatatanPerilakuController extends Controller
 {
     public function index(Request $request): View
     {
+        $guru = auth('guru')->user();
         $search = $request->input('search');
         $kelas = $request->input('kelas');
 
         $perilaku = Perilaku::query()
             ->with(['siswa', 'guru'])
+            ->where('id_guru', $guru->id_guru)
             ->when($search, function ($query, $search) {
                 return $query->whereHas('siswa', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
