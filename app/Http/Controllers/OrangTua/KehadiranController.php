@@ -29,6 +29,9 @@ class KehadiranController extends Controller
             ->whereHas('siswa', function ($query) use ($orangTua) {
                 $query->where('id_orang_tua', $orangTua->id_orang_tua);
             })
+            ->whereHas('pertemuan', function ($query) {
+                $query->whereDate('tanggal', '<=', today());
+            })
             ->when($anakId, function ($query, $anakId) {
                 return $query->where('id_siswa', $anakId);
             })

@@ -40,27 +40,45 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Hari</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Waktu</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Mata Pelajaran</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Kelas</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($jadwal as $item)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm text-gray-600">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                            <i class="fas fa-calendar-day mr-2"></i>
+                                            {{ $item->hari }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center text-sm text-gray-900">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
                                             @if ($item->waktu_mulai && $item->waktu_selesai)
                                                 {{ $item->waktu_mulai->format('H:i') }} -
                                                 {{ $item->waktu_selesai->format('H:i') }}
                                             @else
                                                 -
                                             @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
+                                            {{ $item->mataPelajaran->nama_mapel }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                                            {{ $item->mataPelajaran->nama_mapel }}
+                                        <span class="text-sm text-gray-600">
+                                            {{ $item->kelas }}
                                         </span>
                                     </td>
                                 </tr>

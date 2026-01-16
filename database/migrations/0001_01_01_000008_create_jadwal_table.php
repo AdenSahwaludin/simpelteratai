@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('id_guru', 6);
             $table->string('id_mata_pelajaran', 6);
             $table->string('ruang', 50);
+            $table->string('kelas', 20); // Added for class grouping
             $table->string('hari', 20); // Added: 2025_11_30_120818
             $table->time('waktu_mulai'); // Added: 2025_11_30_120818, replaced waktu (2025_12_07_125511)
             $table->time('waktu_selesai'); // Added: 2025_11_30_120818

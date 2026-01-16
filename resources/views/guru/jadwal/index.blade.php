@@ -80,6 +80,8 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Mata Pelajaran</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Kelas</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Ruang</th>
                             </tr>
                         </thead>
@@ -109,6 +111,9 @@
                                         <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
                                             {{ $item->mataPelajaran->nama_mapel }}
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm font-medium text-gray-900">{{ $item->kelas }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-600">{{ $item->ruang }}</span>
@@ -146,6 +151,10 @@
                                             -
                                         @endif
                                     </p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Kelas</p>
+                                    <p class="font-medium text-gray-800">{{ $item->kelas }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500">Ruang</p>

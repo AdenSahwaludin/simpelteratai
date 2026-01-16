@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('komentar', function (Blueprint $table) {
             $table->string('id_komentar', 7)->primary();
             $table->string('id_orang_tua', 7)->nullable(); // Made nullable: 2025_12_05_093200
-            $table->string('id_laporan_lengkap', 7)->nullable(); // Added: 2025_12_05_082950
+            $table->string('id_laporan_lengkap', 13)->nullable(); // Changed from 7 to 13 to match laporan_lengkap
             $table->string('id_guru', 6)->nullable(); // Added: 2025_12_05_082950
             $table->string('parent_id', 7)->nullable(); // Added: 2025_12_05_082950 (for nested comments)
             $table->text('komentar');

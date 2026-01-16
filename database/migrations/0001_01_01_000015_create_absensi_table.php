@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('absensi', function (Blueprint $table) {
             $table->string('id_absensi', 7)->primary();
             $table->string('id_siswa', 7);
-            $table->string('id_pertemuan', 7); // Changed from id_jadwal: 2025_11_30_122604
-            $table->date('tanggal');
-            $table->enum('status_kehadiran', ['present', 'permit', 'sick', 'absent']); // Updated: 2025_11_30_122856
+            $table->string('id_pertemuan', 13); // Changed from id_jadwal: 2025_11_30_122604, length adjusted to 13
+            $table->date('tanggal')->nullable(); // Made nullable for auto-generation
+            $table->enum('status_kehadiran', ['hadir', 'izin', 'sakit', 'alpha', 'belum_absen']); // Updated to match app usage
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');

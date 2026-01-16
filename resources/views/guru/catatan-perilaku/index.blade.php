@@ -103,9 +103,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($item->sosial)
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full {{ $item->sosial == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                                {{ $item->sosial }}
+                                            @php
+                                                $sosialLabel = $item->sosial >= 4 ? 'Baik' : 'Perlu dibina';
+                                                $sosialColor =
+                                                    $item->sosial >= 4
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-yellow-100 text-yellow-800';
+                                            @endphp
+                                            <span class="px-2 py-1 text-xs rounded-full {{ $sosialColor }}">
+                                                {{ $sosialLabel }}
                                             </span>
                                         @else
                                             <span class="text-gray-400 text-sm">-</span>
@@ -113,9 +119,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($item->emosional)
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full {{ $item->emosional == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                                {{ $item->emosional }}
+                                            @php
+                                                $emosionalLabel = $item->emosional >= 4 ? 'Baik' : 'Perlu dibina';
+                                                $emosionalColor =
+                                                    $item->emosional >= 4
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-yellow-100 text-yellow-800';
+                                            @endphp
+                                            <span class="px-2 py-1 text-xs rounded-full {{ $emosionalColor }}">
+                                                {{ $emosionalLabel }}
                                             </span>
                                         @else
                                             <span class="text-gray-400 text-sm">-</span>
@@ -123,9 +135,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($item->disiplin)
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full {{ $item->disiplin == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                                {{ $item->disiplin }}
+                                            @php
+                                                $disiplinLabel = $item->disiplin >= 4 ? 'Baik' : 'Perlu dibina';
+                                                $disiplinColor =
+                                                    $item->disiplin >= 4
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-yellow-100 text-yellow-800';
+                                            @endphp
+                                            <span class="px-2 py-1 text-xs rounded-full {{ $disiplinColor }}">
+                                                {{ $disiplinLabel }}
                                             </span>
                                         @else
                                             <span class="text-gray-400 text-sm">-</span>
@@ -181,9 +199,15 @@
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-medium text-gray-700">Sosial:</span>
                                     @if ($item->sosial)
-                                        <span
-                                            class="px-2 py-1 text-xs rounded-full {{ $item->sosial == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                            {{ $item->sosial }}
+                                        @php
+                                            $sosialLabel = $item->sosial >= 4 ? 'Baik' : 'Perlu dibina';
+                                            $sosialColor =
+                                                $item->sosial >= 4
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-yellow-100 text-yellow-800';
+                                        @endphp
+                                        <span class="px-2 py-1 text-xs rounded-full {{ $sosialColor }}">
+                                            {{ $sosialLabel }}
                                         </span>
                                     @else
                                         <span class="text-gray-400 text-sm">-</span>
@@ -192,9 +216,15 @@
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-medium text-gray-700">Emosional:</span>
                                     @if ($item->emosional)
-                                        <span
-                                            class="px-2 py-1 text-xs rounded-full {{ $item->emosional == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                            {{ $item->emosional }}
+                                        @php
+                                            $emosionalLabel = $item->emosional >= 4 ? 'Baik' : 'Perlu dibina';
+                                            $emosionalColor =
+                                                $item->emosional >= 4
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-yellow-100 text-yellow-800';
+                                        @endphp
+                                        <span class="px-2 py-1 text-xs rounded-full {{ $emosionalColor }}">
+                                            {{ $emosionalLabel }}
                                         </span>
                                     @else
                                         <span class="text-gray-400 text-sm">-</span>
@@ -203,9 +233,15 @@
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-medium text-gray-700">Disiplin:</span>
                                     @if ($item->disiplin)
-                                        <span
-                                            class="px-2 py-1 text-xs rounded-full {{ $item->disiplin == 'Baik' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                            {{ $item->disiplin }}
+                                        @php
+                                            $disiplinLabel = $item->disiplin >= 4 ? 'Baik' : 'Perlu dibina';
+                                            $disiplinColor =
+                                                $item->disiplin >= 4
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-yellow-100 text-yellow-800';
+                                        @endphp
+                                        <span class="px-2 py-1 text-xs rounded-full {{ $disiplinColor }}">
+                                            {{ $disiplinLabel }}
                                         </span>
                                     @else
                                         <span class="text-gray-400 text-sm">-</span>

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('perilaku', function (Blueprint $table) {
             $table->string('id_perilaku', 6)->primary();
             $table->string('id_siswa', 7);
+            $table->string('id_guru', 6); // Guru yang mencatat perilaku
+            $table->date('tanggal'); // Tanggal pencatatan perilaku
             $table->text('catatan_perilaku')->nullable();
             $table->integer('sosial')->nullable(); // Added: 2024_11_24_000001 (1-5 scale)
             $table->integer('emosional')->nullable(); // Added: 2024_11_24_000001 (1-5 scale)
@@ -21,6 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_siswa')->references('id_siswa')->on('siswa')->onDelete('cascade');
+            $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
         });
     }
 

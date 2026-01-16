@@ -30,12 +30,41 @@ class DashboardController extends Controller
         $rataRataNilai = LaporanPerkembangan::whereIn('id_siswa', $anakIds)->avg('nilai');
         $rataRataNilai = $rataRataNilai ? round($rataRataNilai, 1) : 0;
 
-        // Attendance statistics
-        $totalKehadiran = Absensi::whereIn('id_siswa', $anakIds)->count();
-        $hadirCount = Absensi::whereIn('id_siswa', $anakIds)->where('status_kehadiran', 'hadir')->count();
-        $izinCount = Absensi::whereIn('id_siswa', $anakIds)->where('status_kehadiran', 'izin')->count();
-        $sakitCount = Absensi::whereIn('id_siswa', $anakIds)->where('status_kehadiran', 'sakit')->count();
-        $alphaCount = Absensi::whereIn('id_siswa', $anakIds)->where('status_kehadiran', 'alpha')->count();
+        // Attendance statistics (only past attendance)
+        $totalKehadiran = Absensi::query()
+            ->whereIn('id_siswa', $anakIds)
+            ->whereHas('pertemuan', function ($q) {
+                $q->whereDate('tanggal', '<=', today());
+            })
+            ->count();
+        $hadirCount = Absensi::query()
+            ->whereIn('id_siswa', $anakIds)
+            ->where('status_kehadiran', 'hadir')
+            ->whereHas('pertemuan', function ($q) {
+                $q->whereDate('tanggal', '<=', today());
+            })
+            ->count();
+        $izinCount = Absensi::query()
+            ->whereIn('id_siswa', $anakIds)
+            ->where('status_kehadiran', 'izin')
+            ->whereHas('pertemuan', function ($q) {
+                $q->whereDate('tanggal', '<=', today());
+            })
+            ->count();
+        $sakitCount = Absensi::query()
+            ->whereIn('id_siswa', $anakIds)
+            ->where('status_kehadiran', 'sakit')
+            ->whereHas('pertemuan', function ($q) {
+                $q->whereDate('tanggal', '<=', today());
+            })
+            ->count();
+        $alphaCount = Absensi::query()
+            ->whereIn('id_siswa', $anakIds)
+            ->where('status_kehadiran', 'alpha')
+            ->whereHas('pertemuan', function ($q) {
+                $q->whereDate('tanggal', '<=', today());
+            })
+            ->count();
 
         // Attendance percentage
         $persentaseKehadiran = $totalKehadiran > 0 ? round(($hadirCount / $totalKehadiran) * 100, 1) : 0;

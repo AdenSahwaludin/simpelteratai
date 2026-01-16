@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
 
         // Create Orang Tua
         OrangTua::create([
-            'id_orang_tua' => 'OT00003',
+            'id_orang_tua' => 'OT00001',
             'nama' => 'Ibu Ani',
             'email' => 'orangtua@gmail.com',
             'password' => Hash::make('password'),
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
         ]);
 
         OrangTua::create([
-            'id_orang_tua' => 'OT00003',
+            'id_orang_tua' => 'OT00002',
             'nama' => 'Bapak Ahmad',
             'email' => 'ahmad@gmail.com',
             'password' => Hash::make('password'),

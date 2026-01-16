@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_siswa', function (Blueprint $table) {
-            $table->string('id_jadwal', 3);
-            $table->string('id_siswa', 4);
+            $table->string('id_jadwal', 6); // Updated from 3 to match jadwal table
+            $table->string('id_siswa', 7); // Updated from 4 to match siswa table
             $table->timestamps();
 
             $table->primary(['id_jadwal', 'id_siswa']);

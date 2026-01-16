@@ -104,14 +104,17 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Sosial</label>
                         <div class="flex items-center gap-6">
                             <label class="flex items-center">
+                                @php
+                                    $sosialValue = old('sosial') ?? ($perilaku->sosial >= 4 ? 'Baik' : 'Perlu dibina');
+                                @endphp
                                 <input type="radio" name="sosial" value="Baik" required
-                                    {{ old('sosial', $perilaku->sosial) == 'Baik' ? 'checked' : '' }}
+                                    {{ $sosialValue == 'Baik' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('sosial') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Baik</span>
                             </label>
                             <label class="flex items-center">
                                 <input type="radio" name="sosial" value="Perlu dibina" required
-                                    {{ old('sosial', $perilaku->sosial) == 'Perlu dibina' ? 'checked' : '' }}
+                                    {{ $sosialValue == 'Perlu dibina' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('sosial') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Perlu dibina</span>
                             </label>
@@ -126,14 +129,18 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Emosional</label>
                         <div class="flex items-center gap-6">
                             <label class="flex items-center">
+                                @php
+                                    $emosionalValue =
+                                        old('emosional') ?? ($perilaku->emosional >= 4 ? 'Baik' : 'Perlu dibina');
+                                @endphp
                                 <input type="radio" name="emosional" value="Baik" required
-                                    {{ old('emosional', $perilaku->emosional) == 'Baik' ? 'checked' : '' }}
+                                    {{ $emosionalValue == 'Baik' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('emosional') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Baik</span>
                             </label>
                             <label class="flex items-center">
                                 <input type="radio" name="emosional" value="Perlu dibina" required
-                                    {{ old('emosional', $perilaku->emosional) == 'Perlu dibina' ? 'checked' : '' }}
+                                    {{ $emosionalValue == 'Perlu dibina' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('emosional') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Perlu dibina</span>
                             </label>
@@ -148,14 +155,18 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Disiplin</label>
                         <div class="flex items-center gap-6">
                             <label class="flex items-center">
+                                @php
+                                    $disiplinValue =
+                                        old('disiplin') ?? ($perilaku->disiplin >= 4 ? 'Baik' : 'Perlu dibina');
+                                @endphp
                                 <input type="radio" name="disiplin" value="Baik" required
-                                    {{ old('disiplin', $perilaku->disiplin) == 'Baik' ? 'checked' : '' }}
+                                    {{ $disiplinValue == 'Baik' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('disiplin') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Baik</span>
                             </label>
                             <label class="flex items-center">
                                 <input type="radio" name="disiplin" value="Perlu dibina" required
-                                    {{ old('disiplin', $perilaku->disiplin) == 'Perlu dibina' ? 'checked' : '' }}
+                                    {{ $disiplinValue == 'Perlu dibina' ? 'checked' : '' }}
                                     class="w-4 h-4 text-green-600 focus:ring-green-500 @error('disiplin') border-red-500 @enderror">
                                 <span class="ml-2 text-gray-700">Perlu dibina</span>
                             </label>

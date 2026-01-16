@@ -74,9 +74,9 @@ class CatatanPerilakuController extends Controller
         $perilaku->id_siswa = $validated['id_siswa'];
         $perilaku->id_guru = $guru->id_guru;
         $perilaku->tanggal = $validated['tanggal'];
-        $perilaku->sosial = $validated['sosial'];
-        $perilaku->emosional = $validated['emosional'];
-        $perilaku->disiplin = $validated['disiplin'];
+        $perilaku->sosial = $validated['sosial'] === 'Baik' ? 5 : 3;
+        $perilaku->emosional = $validated['emosional'] === 'Baik' ? 5 : 3;
+        $perilaku->disiplin = $validated['disiplin'] === 'Baik' ? 5 : 3;
         $perilaku->catatan_perilaku = $validated['catatan_perilaku'];
 
         if ($request->hasFile('file_lampiran')) {
@@ -124,9 +124,9 @@ class CatatanPerilakuController extends Controller
 
         $perilaku->id_siswa = $validated['id_siswa'];
         $perilaku->tanggal = $validated['tanggal'];
-        $perilaku->sosial = $validated['sosial'];
-        $perilaku->emosional = $validated['emosional'];
-        $perilaku->disiplin = $validated['disiplin'];
+        $perilaku->sosial = $validated['sosial'] === 'Baik' ? 5 : 3;
+        $perilaku->emosional = $validated['emosional'] === 'Baik' ? 5 : 3;
+        $perilaku->disiplin = $validated['disiplin'] === 'Baik' ? 5 : 3;
         $perilaku->catatan_perilaku = $validated['catatan_perilaku'];
 
         if ($request->hasFile('file_lampiran')) {
