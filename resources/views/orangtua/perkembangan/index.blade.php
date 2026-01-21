@@ -32,7 +32,7 @@
                         <option value="">Semua Anak</option>
                         @foreach ($anakList as $child)
                             <option value="{{ $child->id_siswa }}" {{ $anakId == $child->id_siswa ? 'selected' : '' }}>
-                                {{ $child->nama }} ({{ $child->kelas }})
+                                {{ $child->nama }} ({{ $child->kelas?->id_kelas ?? 'N/A' }})
                             </option>
                         @endforeach
                     </select>
@@ -87,7 +87,7 @@
                             <tr class="hover:bg-gray-50 transition">
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                                    <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
+                                    <div class="text-xs text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="text-sm text-gray-900">{{ $item->mataPelajaran->nama_mapel }}</span>
@@ -142,7 +142,7 @@
                     <div class="flex justify-between items-start mb-3">
                         <div>
                             <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                            <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
+                            <div class="text-xs text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</div>
                             <div class="text-sm text-gray-700 mt-1">{{ $item->mataPelajaran->nama_mapel }}</div>
                             @if ($item->absensi && $item->absensi->pertemuan)
                                 <div class="text-xs text-gray-500 mt-1">

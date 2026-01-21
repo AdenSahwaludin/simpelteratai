@@ -32,13 +32,14 @@
 
                 <!-- Kelas Filter -->
                 <div class="w-full md:w-48">
-                    <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
-                    <select name="kelas" id="kelas"
+                    <label for="id_kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                    <select name="id_kelas" id="id_kelas"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         <option value="">Semua Kelas</option>
                         @foreach ($kelasList as $kls)
-                            <option value="{{ $kls }}" {{ request('kelas') == $kls ? 'selected' : '' }}>
-                                {{ $kls }}
+                            <option value="{{ $kls->id_kelas }}"
+                                {{ request('id_kelas') == $kls->id_kelas ? 'selected' : '' }}>
+                                {{ $kls->id_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -96,7 +97,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                                            {{ $item->kelas }}
+                                            {{ $item->kelas?->id_kelas ?? 'N/A' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -127,7 +128,7 @@
                                     <p class="text-sm text-gray-600 mt-1">{{ $item->id_siswa }}</p>
                                 </div>
                                 <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                                    {{ $item->kelas }}
+                                    {{ $item->kelas?->id_kelas ?? 'N/A' }}
                                 </span>
                             </div>
                             <div class="space-y-1 text-sm mb-3">

@@ -14,7 +14,7 @@ class KelasSayaController extends Controller
 
         /** @var \App\Models\Guru $guru */
         $kelasData = $guru->jadwal()
-            ->with(['mataPelajaran', 'siswa'])
+            ->with(['mataPelajaran', 'siswa.kelas'])
             ->get()
             ->groupBy('ruang')
             ->map(function ($jadwals, $ruang) {

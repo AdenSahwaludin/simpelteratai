@@ -30,7 +30,7 @@
                                 {{ $siswa->id_siswa }}
                             </span>
                             <span class="inline-block px-3 py-1 bg-blue-900 text-white rounded-full text-sm font-semibold">
-                                {{ $siswa->kelas }}
+                                {{ $siswa->kelas->id_kelas ?? ' ' }}
                             </span>
                         </div>
                         <h1 class="text-3xl font-bold">{{ $siswa->nama }}</h1>
@@ -208,10 +208,11 @@
                             @foreach ($siswa->absensi->take(5) as $absen)
                                 <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm text-gray-600">{{ $absen->tanggal->translatedFormat('d F Y') }}
+                                        <p class="text-sm text-gray-600">
+                                            {{ $absen->pertemuan?->tanggal?->translatedFormat('d F Y') ?? 'N/A' }}
                                         </p>
                                         <p class="text-gray-800 font-medium">
-                                            {{ $absen->jadwal->mataPelajaran->nama_mapel }}</p>
+                                            {{ $absen->pertemuan?->jadwal?->mataPelajaran?->nama_mapel ?? 'N/A' }}</p>
                                     </div>
                                     <span
                                         class="inline-block px-3 py-1 rounded-full text-sm font-semibold

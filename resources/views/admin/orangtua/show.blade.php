@@ -127,7 +127,7 @@
                                             <td class="border border-gray-200 px-4 py-3 text-gray-800">
                                                 <span
                                                     class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                                                    {{ $siswa->kelas }}
+                                                    {{ $siswa->kelas->id_kelas ?? ' ' }}
                                                 </span>
                                             </td>
                                             <td class="border border-gray-200 px-4 py-3 text-gray-800">

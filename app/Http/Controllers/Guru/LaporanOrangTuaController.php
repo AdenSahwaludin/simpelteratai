@@ -13,7 +13,7 @@ class LaporanOrangTuaController extends Controller
     {
         $guru = auth('guru')->user();
         $search = $request->input('search');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
         $mataPelajaran = $request->input('mata_pelajaran');
 
         /** @var \App\Models\Guru $guru */
@@ -31,7 +31,7 @@ class LaporanOrangTuaController extends Controller
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->whereHas('siswa', function ($q) use ($kelas) {
-                    $q->where('kelas', $kelas);
+                    $q->where('id_kelas', $kelas);
                 });
             })
             ->when($mataPelajaran, function ($query, $mataPelajaran) {

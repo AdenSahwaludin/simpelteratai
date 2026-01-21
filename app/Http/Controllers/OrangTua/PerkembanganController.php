@@ -19,7 +19,8 @@ class PerkembanganController extends Controller
         $search = $request->input('search');
         $anakId = $request->input('anak_id');
 
-        $anakList = Siswa::where('id_orang_tua', $orangTua->id_orang_tua)
+        $anakList = Siswa::with('kelas')
+            ->where('id_orang_tua', $orangTua->id_orang_tua)
             ->orderBy('nama')
             ->get();
 

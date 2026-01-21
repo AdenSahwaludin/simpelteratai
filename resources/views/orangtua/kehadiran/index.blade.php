@@ -83,7 +83,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                                <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
+                                <div class="text-xs text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</div>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900">
                                 {{ $item->pertemuan->jadwal->mataPelajaran->nama_mapel ?? '-' }}</td>

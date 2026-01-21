@@ -53,7 +53,8 @@
                         </div>
                         <div>
                             <span class="text-gray-600">Kelas:</span>
-                            <span class="font-medium text-gray-800 ml-2">{{ $perkembangan->siswa->kelas }}</span>
+                            <span
+                                class="font-medium text-gray-800 ml-2">{{ $perkembangan->siswa->kelas->id_kelas ?? ' ' }}</span>
                         </div>
                     </div>
                 </div>

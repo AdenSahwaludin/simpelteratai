@@ -45,7 +45,7 @@
                         </div>
                         <div>
                             <p class="text-gray-500">Kelas</p>
-                            <p class="font-medium text-gray-800">{{ $laporan->siswa->kelas }}</p>
+                            <p class="font-medium text-gray-800">{{ $laporan->siswa->kelas->id_kelas ?? ' ' }}</p>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         @foreach ($siswaList as $siswa)
                             <option value="{{ $siswa->id_siswa }}"
                                 {{ old('id_siswa', $laporan->id_siswa) == $siswa->id_siswa ? 'selected' : '' }}>
-                                {{ $siswa->nama }} ({{ $siswa->kelas }})
+                                {{ $siswa->nama }} ({{ $siswa->kelas?->id_kelas ?? 'N/A' }})
                             </option>
                         @endforeach
                     </select>

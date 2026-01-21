@@ -38,7 +38,7 @@
                             <div class="flex items-center gap-2 text-sm">
                                 <i class="fas fa-school text-blue-600 w-5"></i>
                                 <span class="text-gray-600">Kelas:</span>
-                                <span class="font-medium text-gray-800">{{ $child->kelas }}</span>
+                                <span class="font-medium text-gray-800">{{ $child->kelas?->id_kelas ?? 'N/A' }}</span>
                             </div>
                             <div class="flex items-center gap-2 text-sm">
                                 <i class="fas fa-map-marker-alt text-red-600 w-5"></i>

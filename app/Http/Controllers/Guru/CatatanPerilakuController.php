@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\Perilaku;
 use App\Models\Siswa;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class CatatanPerilakuController extends Controller
     {
         $guru = auth('guru')->user();
         $search = $request->input('search');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
 
         $perilaku = Perilaku::query()
             ->with(['siswa', 'guru'])
@@ -29,21 +30,25 @@ class CatatanPerilakuController extends Controller
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->whereHas('siswa', function ($q) use ($kelas) {
-                    $q->where('kelas', $kelas);
+                    $q->where('id_kelas', $kelas);
                 });
             })
             ->latest()
             ->paginate(15)
             ->appends($request->query());
 
-        $kelasList = Siswa::distinct()->pluck('kelas')->sort()->values();
+        $kelasList = Kelas::all();
 
         return view('guru.catatan-perilaku.index', compact('perilaku', 'kelasList', 'search', 'kelas'));
     }
 
     public function create(): View
     {
-        $siswaList = Siswa::orderBy('nama')->get();
+        $guru = auth('guru')->user();
+        // Only show siswa from kelas where guru is wali
+        $siswaList = Siswa::whereHas('kelas', function ($q) use ($guru) {
+            $q->where('id_guru_wali', $guru->id_guru);
+        })->orderBy('nama')->get();
 
         return view('guru.catatan-perilaku.create', compact('siswaList'));
     }
@@ -51,6 +56,14 @@ class CatatanPerilakuController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $guru = auth('guru')->user();
+
+        // Validate that siswa is in guru's wali kelas
+        $siswaId = $request->input('id_siswa');
+        $siswa = Siswa::findOrFail($siswaId);
+
+        if (! $siswa->kelas || $siswa->kelas->id_guru_wali !== $guru->id_guru) {
+            return redirect()->back()->withErrors('Anda hanya dapat menginput catatan perilaku untuk siswa yang menjadi tanggung jawab Anda sebagai wali kelas.');
+        }
 
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswa,id_siswa',
@@ -95,15 +108,39 @@ class CatatanPerilakuController extends Controller
 
     public function edit(string $id): View
     {
+        $guru = auth('guru')->user();
         $perilaku = Perilaku::with('siswa')->findOrFail($id);
-        $siswaList = Siswa::orderBy('nama')->get();
+
+        // Check authorization: hanya guru wali kelas dari siswa yang dapat edit
+        if ($perilaku->siswa->kelas->id_guru_wali !== $guru->id_guru) {
+            abort(403, 'Anda tidak memiliki akses untuk mengedit catatan perilaku ini.');
+        }
+
+        // Only show siswa from kelas where guru is wali
+        $siswaList = Siswa::whereHas('kelas', function ($q) use ($guru) {
+            $q->where('id_guru_wali', $guru->id_guru);
+        })->orderBy('nama')->get();
 
         return view('guru.catatan-perilaku.edit', compact('perilaku', 'siswaList'));
     }
 
     public function update(Request $request, string $id): RedirectResponse
     {
+        $guru = auth('guru')->user();
         $perilaku = Perilaku::findOrFail($id);
+
+        // Check authorization: hanya guru wali kelas dari siswa yang dapat update
+        if ($perilaku->siswa->kelas->id_guru_wali !== $guru->id_guru) {
+            abort(403, 'Anda tidak memiliki akses untuk mengubah catatan perilaku ini.');
+        }
+
+        // Validate that siswa is in guru's wali kelas
+        $siswaId = $request->input('id_siswa');
+        $siswa = Siswa::findOrFail($siswaId);
+
+        if (! $siswa->kelas || $siswa->kelas->id_guru_wali !== $guru->id_guru) {
+            return redirect()->back()->withErrors('Anda hanya dapat mengubah catatan perilaku untuk siswa yang menjadi tanggung jawab Anda sebagai wali kelas.');
+        }
 
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswa,id_siswa',

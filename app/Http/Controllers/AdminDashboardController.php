@@ -26,9 +26,9 @@ class AdminDashboardController extends Controller
         $totalMataPelajaran = MataPelajaran::count();
 
         // Kelas Statistics
-        $kelasDistribution = Siswa::selectRaw('kelas, COUNT(*) as count')
-            ->groupBy('kelas')
-            ->orderBy('kelas')
+        $kelasDistribution = Siswa::selectRaw('id_kelas, COUNT(*) as count')
+            ->groupBy('id_kelas')
+            ->orderBy('id_kelas')
             ->get();
 
         // Recent Students

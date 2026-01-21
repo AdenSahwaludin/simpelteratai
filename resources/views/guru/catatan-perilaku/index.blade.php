@@ -40,13 +40,14 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                 </div>
                 <div class="w-full md:w-48">
-                    <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
-                    <select name="kelas" id="kelas"
+                    <label for="id_kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                    <select name="id_kelas" id="id_kelas"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         <option value="">Semua Kelas</option>
                         @foreach ($kelasList as $kls)
-                            <option value="{{ $kls }}" {{ request('kelas') == $kls ? 'selected' : '' }}>
-                                {{ $kls }}</option>
+                            <option value="{{ $kls->id_kelas }}"
+                                {{ request('id_kelas') == $kls->id_kelas ? 'selected' : '' }}>
+                                {{ $kls->id_kelas }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -99,7 +100,7 @@
                                         {{ $item->tanggal ? $item->tanggal->format('d M Y') : '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                                        <div class="text-xs text-gray-500">{{ $item->siswa->kelas }}</div>
+                                        <div class="text-xs text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                         {{ $item->siswa->orangTua->nama ?? '-' }}
@@ -183,7 +184,7 @@
                             <div class="flex justify-between items-start mb-3">
                                 <div>
                                     <p class="font-semibold text-gray-800">{{ $item->siswa->nama }}</p>
-                                    <p class="text-sm text-gray-600">{{ $item->siswa->kelas }} •
+                                    <p class="text-sm text-gray-600">{{ $item->siswa->kelas->id_kelas ?? ' ' }} •
                                         {{ $item->tanggal ? $item->tanggal->format('d M Y') : '-' }}</p>
                                     <p class="text-xs text-gray-500 mt-1">Orang Tua:
                                         {{ $item->siswa->orangTua->nama ?? '-' }}</p>

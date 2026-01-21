@@ -111,10 +111,17 @@
                 <div class="mb-4">
                     <label for="kelas" class="block text-sm font-medium text-gray-700 mb-2">Kelas <span
                             class="text-red-500">*</span></label>
-                    <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}"
-                        placeholder="Contoh: Kelompok A1, Kelompok B2, dll"
+                    <select id="kelas" name="kelas"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('kelas') border-red-500 @enderror"
                         required>
+                        <option value="">Pilih Kelas</option>
+                        @foreach ($kelasList as $kelas)
+                            <option value="{{ $kelas->id_kelas }}"
+                                {{ old('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
+                                {{ $kelas->id_kelas }}
+                            </option>
+                        @endforeach
+                    </select>
                     @error('kelas')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror

@@ -26,7 +26,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Jadwal {{ $siswa->nama }}</h1>
-                    <p class="text-gray-600 text-sm font-medium">Kelas {{ $siswa->kelas }}</p>
+                    <p class="text-gray-600 text-sm font-medium">Kelas {{ $siswa->kelas?->id_kelas ?? 'N/A' }}</p>
                 </div>
             </div>
         </div>
@@ -158,7 +158,8 @@
             <div class="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
                 <i class="fas fa-calendar-times text-6xl mb-4 text-gray-300"></i>
                 <p class="text-lg font-medium">Belum Ada Jadwal</p>
-                <p class="text-sm mt-2">Jadwal pelajaran untuk {{ $siswa->nama }} (Kelas {{ $siswa->kelas }}) belum
+                <p class="text-sm mt-2">Jadwal pelajaran untuk {{ $siswa->nama }} (Kelas
+                    {{ $siswa->kelas?->id_kelas ?? ' ' }}) belum
                     tersedia</p>
             </div>
         @endif

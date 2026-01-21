@@ -35,7 +35,7 @@
                         <h3 class="text-xl font-bold text-gray-800">{{ $laporan->siswa->nama }}</h3>
                         <p class="text-gray-600 text-sm mt-1">{{ $laporan->siswa->id_siswa }}</p>
                         <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full mt-2">
-                            {{ $laporan->siswa->kelas }}
+                            {{ $laporan->siswa->kelas->id_kelas ?? ' ' }}
                         </span>
                     </div>
 

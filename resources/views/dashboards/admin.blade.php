@@ -205,7 +205,7 @@
                     <div class="space-y-3">
                         @foreach ($kelasDistribution as $kelas)
                             <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600 font-medium">{{ $kelas->kelas }}</span>
+                                <span class="text-sm text-gray-600 font-medium">{{ $kelas->id_kelas }}</span>
                                 <div class="flex items-center gap-2">
                                     <div class="w-32 bg-gray-200 rounded-full h-2">
                                         <div class="bg-purple-500 h-2 rounded-full"
@@ -275,7 +275,7 @@
                                 </div>
                                 <div class="flex-1">
                                     <p class="font-medium text-gray-800 text-sm">{{ $siswa->nama }}</p>
-                                    <p class="text-xs text-gray-500">{{ $siswa->kelas }}</p>
+                                    <p class="text-xs text-gray-500">{{ $siswa->kelas?->id_kelas ?? 'N/A' }}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold text-gray-800">{{ round($siswa->average_score, 1) }}</p>
@@ -352,7 +352,7 @@
                                 @foreach ($recentSiswa as $siswa)
                                     <tr class="border-b hover:bg-gray-50 transition">
                                         <td class="px-4 py-3 text-gray-800 font-medium">{{ $siswa->nama }}</td>
-                                        <td class="px-4 py-3 text-gray-600">{{ $siswa->kelas }}</td>
+                                        <td class="px-4 py-3 text-gray-600">{{ $siswa->kelas->id_kelas ?? ' ' }}</td>
                                         <td class="px-4 py-3 text-gray-600">{{ $siswa->orangTua->nama ?? '-' }}</td>
                                     </tr>
                                 @endforeach

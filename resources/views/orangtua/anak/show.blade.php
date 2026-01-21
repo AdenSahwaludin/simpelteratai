@@ -36,7 +36,7 @@
                         <p class="text-gray-600 text-sm mt-1">ID: {{ $anak->id_siswa }}</p>
                         <span
                             class="inline-block mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                            {{ $anak->kelas }}
+                            {{ $anak->kelas?->id_kelas ?? 'N/A' }}
                         </span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-gray-500">Kelas</p>
-                            <p class="font-medium text-gray-800">{{ $anak->kelas }}</p>
+                            <p class="font-medium text-gray-800">{{ $anak->kelas?->id_kelas ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>

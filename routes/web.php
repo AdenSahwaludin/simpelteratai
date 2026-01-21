@@ -38,6 +38,11 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     // Data Guru
     Route::resource('guru', \App\Http\Controllers\Admin\GuruController::class);
 
+    // Kelola Wali Kelas
+    Route::get('/kelas', [\App\Http\Controllers\Admin\KelasController::class, 'index'])->name('kelas.index');
+    Route::get('/kelas/{kelas}/edit', [\App\Http\Controllers\Admin\KelasController::class, 'edit'])->name('kelas.edit');
+    Route::put('/kelas/{kelas}', [\App\Http\Controllers\Admin\KelasController::class, 'update'])->name('kelas.update');
+
     // Kelola Jadwal
     Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
     Route::get('/jadwal-siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'index'])->name('jadwal-siswa.index');

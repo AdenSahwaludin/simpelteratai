@@ -34,7 +34,7 @@
                 <div class="bg-gray-50 rounded-lg p-4">
                     <h3 class="text-sm font-medium text-gray-700 mb-2">Siswa</h3>
                     <p class="text-lg font-semibold text-gray-800">{{ $laporan->siswa->nama }}
-                        ({{ $laporan->siswa->kelas }})</p>
+                        ({{ $laporan->siswa->kelas->id_kelas ?? ' ' }})</p>
                 </div>
 
                 <!-- Periode -->

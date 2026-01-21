@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ class KelolaAbsensiController extends Controller
         $guru = auth('guru')->user();
         $search = $request->input('search');
         $tanggal = $request->input('tanggal');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
         $id_jadwal = $request->input('id_jadwal');
 
         // Only query if at least one filter is provided
@@ -41,7 +42,7 @@ class KelolaAbsensiController extends Controller
                 })
                 ->when($kelas, function ($query, $kelas) {
                     return $query->whereHas('siswa', function ($q) use ($kelas) {
-                        $q->where('kelas', $kelas);
+                        $q->where('id_kelas', $kelas);
                     });
                 })
                 ->when($id_jadwal, function ($query, $id_jadwal) {
@@ -54,7 +55,7 @@ class KelolaAbsensiController extends Controller
         }
 
         // Get unique classes from guru's students
-        $kelasList = Siswa::distinct('kelas')->pluck('kelas');
+        $kelasList = Kelas::all();
 
         /** @var \App\Models\Guru $guru */
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
@@ -85,7 +86,7 @@ class KelolaAbsensiController extends Controller
                 $query->where('jadwal.id_jadwal', $id_jadwal);
             })
             ->orderBy('nama')
-            ->get(['id_siswa', 'nama', 'kelas']);
+            ->get(['id_siswa', 'nama', 'id_kelas']);
 
         // Get existing attendance records through pertemuan
         $existingAbsensi = [];

@@ -33,7 +33,7 @@ class JadwalSiswaController extends Controller
         $jadwal = Jadwal::with(['guru', 'mataPelajaran', 'siswa'])->findOrFail($id);
 
         // Get all students grouped by class
-        $siswaByClass = Siswa::orderBy('kelas')->orderBy('nama')->get()->groupBy('kelas');
+        $siswaByClass = Siswa::orderBy('id_kelas')->orderBy('nama')->get()->groupBy('id_kelas');
 
         // Get IDs of already assigned students
         $assignedSiswaIds = $jadwal->siswa()->pluck('siswa.id_siswa')->toArray();

@@ -62,7 +62,7 @@
                         </div>
                         <div class="flex-1">
                             <h3 class="text-lg font-bold text-gray-800">{{ $item->siswa->nama }}</h3>
-                            <p class="text-sm text-gray-600">{{ $item->siswa->kelas }}</p>
+                            <p class="text-sm text-gray-600">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</p>
                             <p class="text-xs text-gray-500 mt-1">
                                 <i class="fas fa-clock"></i> {{ $item->created_at->format('d M Y H:i') }}
                             </p>

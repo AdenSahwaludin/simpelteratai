@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\LaporanPerkembangan;
 use App\Models\Siswa;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class InputNilaiController extends Controller
     {
         $guru = auth('guru')->user();
         $search = $request->input('search');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
         $mataPelajaran = $request->input('mata_pelajaran');
 
         /** @var \App\Models\Guru $guru */
@@ -32,7 +33,7 @@ class InputNilaiController extends Controller
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->whereHas('siswa', function ($q) use ($kelas) {
-                    $q->where('kelas', $kelas);
+                    $q->where('id_kelas', $kelas);
                 });
             })
             ->when($mataPelajaran, function ($query, $mataPelajaran) {
@@ -42,7 +43,7 @@ class InputNilaiController extends Controller
             ->paginate(20)
             ->appends($request->query());
 
-        $kelasList = Siswa::distinct()->pluck('kelas')->sort()->values();
+        $kelasList = Kelas::all();
 
         return view('guru.input-nilai.index', compact('laporan', 'mataPelajaranList', 'kelasList', 'search', 'kelas', 'mataPelajaran'));
     }
@@ -54,7 +55,7 @@ class InputNilaiController extends Controller
             ->where('id_guru', $guru->id_guru)
             ->findOrFail($id);
         $mataPelajaranList = $guru->jadwal()->with('mataPelajaran')->get()->pluck('mataPelajaran')->unique('id_mata_pelajaran');
-        $siswaList = Siswa::orderBy('nama')->get();
+        $siswaList = Siswa::with('kelas')->orderBy('nama')->get();
 
         return view('guru.input-nilai.edit', compact('laporan', 'mataPelajaranList', 'siswaList'));
     }
@@ -102,7 +103,7 @@ class InputNilaiController extends Controller
         $jadwalList = $guru->jadwal()->with('mataPelajaran')->get();
 
         // Get unique class list
-        $kelasList = Siswa::distinct()->pluck('kelas')->sort()->values();
+        $kelasList = Kelas::all();
 
         return view('guru.input-nilai.bulk-create', compact('jadwalList', 'kelasList'));
     }
@@ -142,7 +143,7 @@ class InputNilaiController extends Controller
             'siswa' => $siswa->map(fn ($s) => [
                 'id_siswa' => $s->id_siswa,
                 'nama' => $s->nama,
-                'kelas' => $s->kelas,
+                'id_kelas' => $s->id_kelas,
             ]),
             'pertemuan' => $pertemuanList,
             'mata_pelajaran' => $jadwal->mataPelajaran->nama_mapel,

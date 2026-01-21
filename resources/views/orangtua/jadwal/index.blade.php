@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="text-white">
                                     <h2 class="text-xl font-bold">{{ $siswa->nama }}</h2>
-                                    <p class="text-sm text-purple-100">Kelas {{ $siswa->kelas }}</p>
+                                    <p class="text-sm text-purple-100">Kelas {{ $siswa->kelas?->id_kelas ?? 'N/A' }}</p>
                                 </div>
                             </div>
                             <a href="{{ route('orangtua.jadwal.show', $siswa->id_siswa) }}"
@@ -156,7 +156,8 @@
                         <div class="p-12 text-center text-gray-500">
                             <i class="fas fa-calendar-times text-6xl mb-4 text-gray-300"></i>
                             <p class="text-lg font-medium">Belum Ada Jadwal</p>
-                            <p class="text-sm mt-2">Jadwal pelajaran untuk kelas {{ $siswa->kelas }} belum tersedia</p>
+                            <p class="text-sm mt-2">Jadwal pelajaran untuk kelas {{ $siswa->kelas?->id_kelas ?? 'N/A' }}
+                                belum tersedia</p>
                         </div>
                     @endif
                 </div>

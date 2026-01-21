@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <p class="text-gray-600">Kelas</p>
-                        <p class="font-semibold text-gray-900">{{ $absensi->siswa->kelas }}</p>
+                        <p class="font-semibold text-gray-900">{{ $absensi->siswa->kelas->id_kelas ?? ' ' }}</p>
                     </div>
                     <div>
                         <p class="text-gray-600">Mata Pelajaran</p>

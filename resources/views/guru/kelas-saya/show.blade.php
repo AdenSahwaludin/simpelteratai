@@ -78,7 +78,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-600">
-                                            {{ $item->kelas }}
+                                            {{ $item->kelas?->id_kelas ?? 'N/A' }}
                                         </span>
                                     </td>
                                 </tr>
@@ -125,7 +125,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div>
                                             <div class="text-sm font-medium text-gray-900">{{ $item->nama }}</div>
-                                            <div class="text-xs text-gray-500">{{ $item->kelas }}</div>
+                                            <div class="text-xs text-gray-500">{{ $item->kelas?->id_kelas ?? 'N/A' }}</div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -153,7 +153,8 @@
                             <div class="flex justify-between items-start mb-2">
                                 <div>
                                     <p class="font-semibold text-gray-800">{{ $item->nama }}</p>
-                                    <p class="text-sm text-gray-600">{{ $item->id_siswa }} • {{ $item->kelas }}</p>
+                                    <p class="text-sm text-gray-600">{{ $item->id_siswa }} •
+                                        {{ $item->kelas?->id_kelas ?? 'N/A' }}</p>
                                 </div>
                             </div>
                             <div class="space-y-1 text-sm">

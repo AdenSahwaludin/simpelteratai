@@ -147,7 +147,7 @@
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-800">{{ $child->nama_siswa }}</h3>
-                                    <p class="text-sm text-gray-600">Kelas {{ $child->kelas }}</p>
+                                    <p class="text-sm text-gray-600">Kelas {{ $child->kelas?->id_kelas ?? 'N/A' }}</p>
                                 </div>
                             </div>
                             <a href="{{ route('orangtua.anak.show', $child->id_siswa) }}"
@@ -226,7 +226,8 @@
                             <div class="bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
-                                        <h4 class="font-semibold text-gray-800">{{ $perilaku->siswa->nama_siswa ?? '-' }}
+                                        <h4 class="font-semibold text-gray-800">
+                                            {{ $perilaku->siswa->nama ?? '-' }}
                                         </h4>
                                         <p class="text-sm text-gray-600 mt-1 line-clamp-2">
                                             {{ $perilaku->catatan_perilaku }}</p>

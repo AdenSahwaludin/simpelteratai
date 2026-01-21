@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\OrangTua;
 use App\Models\Siswa;
 use Illuminate\Http\JsonResponse;
@@ -19,12 +20,12 @@ class SiswaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
         $sort = $request->input('sort', 'nama');
         $direction = $request->input('direction', 'asc');
 
         // Validasi sort column untuk mencegah SQL injection
-        $allowedSort = ['id_siswa', 'nama', 'kelas'];
+        $allowedSort = ['id_siswa', 'nama', 'id_kelas'];
         if (! in_array($sort, $allowedSort)) {
             $sort = 'nama';
         }
@@ -36,13 +37,13 @@ class SiswaController extends Controller
                     ->orWhere('id_siswa', 'like', "%{$search}%");
             })
             ->when($kelas, function ($query, $kelas) {
-                return $query->where('kelas', $kelas);
+                return $query->where('id_kelas', $kelas);
             })
             ->orderBy($sort, $direction)
             ->paginate(20)
             ->appends($request->query());
 
-        $kelasList = Siswa::query()->distinct()->pluck('kelas')->sort();
+        $kelasList = Kelas::all();
 
         return view('admin.siswa.index', compact('siswa', 'kelasList', 'search', 'kelas', 'sort', 'direction'));
     }
@@ -53,8 +54,9 @@ class SiswaController extends Controller
     public function create(): View
     {
         $orangTuaList = OrangTua::query()->orderBy('nama')->get();
+        $kelasList = Kelas::all();
 
-        return view('admin.siswa.create', compact('orangTuaList'));
+        return view('admin.siswa.create', compact('orangTuaList', 'kelasList'));
     }
 
     /**
@@ -67,7 +69,7 @@ class SiswaController extends Controller
             'jenis_kelamin' => 'nullable|in:L,P',
             'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'kelas' => 'required|string|max:255',
+            'id_kelas' => 'required|exists:kelas,id_kelas',
             'alamat' => 'required|string|max:500',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
@@ -76,7 +78,8 @@ class SiswaController extends Controller
             'tempat_lahir.required' => 'Tempat lahir wajib diisi',
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi',
             'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'kelas.required' => 'Kelas wajib diisi',
+            'id_kelas.required' => 'Kelas wajib diisi',
+            'id_kelas.exists' => 'Kelas tidak ditemukan',
             'alamat.required' => 'Alamat wajib diisi',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
@@ -88,7 +91,7 @@ class SiswaController extends Controller
         $siswa->jenis_kelamin = $validated['jenis_kelamin'];
         $siswa->tempat_lahir = $validated['tempat_lahir'];
         $siswa->tanggal_lahir = $validated['tanggal_lahir'];
-        $siswa->kelas = $validated['kelas'];
+        $siswa->id_kelas = $validated['id_kelas'];
         $siswa->alamat = $validated['alamat'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
@@ -116,8 +119,9 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
         $orangTuaList = OrangTua::query()->orderBy('nama')->get();
+        $kelasList = Kelas::all();
 
-        return view('admin.siswa.edit', compact('siswa', 'orangTuaList'));
+        return view('admin.siswa.edit', compact('siswa', 'orangTuaList', 'kelasList'));
     }
 
     /**
@@ -132,7 +136,7 @@ class SiswaController extends Controller
             'jenis_kelamin' => 'nullable|in:L,P',
             'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'kelas' => 'required|string|max:255',
+            'id_kelas' => 'required|exists:kelas,id_kelas',
             'alamat' => 'required|string|max:500',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
@@ -141,7 +145,8 @@ class SiswaController extends Controller
             'tempat_lahir.required' => 'Tempat lahir wajib diisi',
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi',
             'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'kelas.required' => 'Kelas wajib diisi',
+            'id_kelas.required' => 'Kelas wajib diisi',
+            'id_kelas.exists' => 'Kelas tidak ditemukan',
             'alamat.required' => 'Alamat wajib diisi',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
@@ -151,7 +156,7 @@ class SiswaController extends Controller
         $siswa->jenis_kelamin = $validated['jenis_kelamin'];
         $siswa->tempat_lahir = $validated['tempat_lahir'];
         $siswa->tanggal_lahir = $validated['tanggal_lahir'];
-        $siswa->kelas = $validated['kelas'];
+        $siswa->id_kelas = $validated['id_kelas'];
         $siswa->alamat = $validated['alamat'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
@@ -250,20 +255,20 @@ class SiswaController extends Controller
      */
     public function showBulkTransfer(Request $request): View
     {
-        $sourceKelas = $request->input('source_kelas');
+        $sourceKelasId = $request->input('source_kelas');
 
         $siswaList = collect();
-        if ($sourceKelas) {
+        if ($sourceKelasId) {
             $siswaList = Siswa::query()
-                ->where('kelas', $sourceKelas)
-                ->with('orangTua')
+                ->where('id_kelas', $sourceKelasId)
+                ->with(['orangTua', 'kelas'])
                 ->orderBy('nama')
                 ->get();
         }
 
-        $kelasList = Siswa::query()->distinct()->pluck('kelas')->sort();
+        $kelasList = Kelas::all();
 
-        return view('admin.siswa.bulk-transfer', compact('siswaList', 'kelasList', 'sourceKelas'));
+        return view('admin.siswa.bulk-transfer', compact('siswaList', 'kelasList', 'sourceKelasId'));
     }
 
     /**
@@ -274,18 +279,25 @@ class SiswaController extends Controller
         $validated = $request->validate([
             'siswa_ids' => 'required|array|min:1',
             'siswa_ids.*' => 'exists:siswa,id_siswa',
-            'target_kelas' => 'required|string|max:255',
+            'target_kelas_nama' => 'required|string|max:50',
         ], [
             'siswa_ids.required' => 'Pilih minimal 1 siswa untuk dipindahkan',
             'siswa_ids.min' => 'Pilih minimal 1 siswa untuk dipindahkan',
-            'target_kelas.required' => 'Kelas tujuan wajib diisi',
+            'target_kelas_nama.required' => 'Nama kelas tujuan wajib diisi',
         ]);
 
+        // Auto-create kelas if doesn't exist
+        $kelas = Kelas::firstOrCreate(
+            ['id_kelas' => $validated['target_kelas_nama']],
+            []
+        );
+
+        // Update siswa with id_kelas
         $updatedCount = Siswa::whereIn('id_siswa', $validated['siswa_ids'])
-            ->update(['kelas' => $validated['target_kelas']]);
+            ->update(['id_kelas' => $kelas->id_kelas]);
 
         return redirect()
-            ->route('admin.siswa.bulk-transfer', ['source_kelas' => $validated['target_kelas']])
-            ->with('success', "Berhasil memindahkan {$updatedCount} siswa ke kelas {$validated['target_kelas']}");
+            ->route('admin.siswa.bulk-transfer')
+            ->with('success', "Berhasil memindahkan {$updatedCount} siswa ke kelas {$validated['target_kelas_nama']}");
     }
 }

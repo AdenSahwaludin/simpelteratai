@@ -31,11 +31,12 @@
                         placeholder="Cari nama siswa...">
                 </div>
                 <div class="w-full md:w-48">
-                    <select name="kelas"
+                    <select name="id_kelas"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         <option value="">Semua Kelas</option>
                         @foreach ($kelasList as $k)
-                            <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>{{ $k }}
+                            <option value="{{ $k->id_kelas }}" {{ $kelas == $k->id_kelas ? 'selected' : '' }}>
+                                {{ $k->id_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -75,7 +76,7 @@
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">{{ $item->siswa->nama }}</div>
-                                <div class="text-sm text-gray-500">{{ $item->siswa->kelas }}</div>
+                                <div class="text-sm text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {{ $item->periode_mulai->format('d M') }} - {{ $item->periode_selesai->format('d M Y') }}
@@ -136,7 +137,7 @@
                     <div class="flex justify-between items-start mb-3">
                         <div class="flex-1">
                             <h3 class="font-semibold text-gray-900">{{ $item->siswa->nama }}</h3>
-                            <p class="text-sm text-gray-500">{{ $item->siswa->kelas }}</p>
+                            <p class="text-sm text-gray-500">{{ $item->siswa->kelas->id_kelas ?? ' ' }}</p>
                         </div>
                         @if ($item->dikirim_ke_ortu)
                             <span

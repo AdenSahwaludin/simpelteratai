@@ -58,8 +58,9 @@ class JadwalController extends Controller
     {
         $guruList = Guru::query()->orderBy('nama')->get();
         $mataPelajaranList = MataPelajaran::query()->orderBy('nama_mapel')->get();
+        $kelasList = \App\Models\Kelas::query()->orderBy('id_kelas')->get();
 
-        return view('admin.jadwal.create', compact('guruList', 'mataPelajaranList'));
+        return view('admin.jadwal.create', compact('guruList', 'mataPelajaranList', 'kelasList'));
     }
 
     /**

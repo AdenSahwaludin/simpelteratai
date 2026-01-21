@@ -26,7 +26,7 @@ class Siswa extends Model
         'jenis_kelamin',
         'tempat_lahir',
         'tanggal_lahir',
-        'kelas',
+        'id_kelas',
         'alamat',
         'id_orang_tua',
     ];
@@ -37,6 +37,14 @@ class Siswa extends Model
     public function orangTua(): BelongsTo
     {
         return $this->belongsTo(OrangTua::class, 'id_orang_tua', 'id_orang_tua');
+    }
+
+    /**
+     * Get the kelas that the siswa belongs to.
+     */
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
 
     /**

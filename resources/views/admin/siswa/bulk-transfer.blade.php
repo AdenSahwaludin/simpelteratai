@@ -53,9 +53,10 @@
                         <select name="source_kelas" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             <option value="">-- Pilih Kelas Asal --</option>
-                            @foreach ($kelasList as $k)
-                                <option value="{{ $k }}" {{ $sourceKelas == $k ? 'selected' : '' }}>
-                                    Kelas {{ $k }}
+                            @foreach ($kelasList as $kelas)
+                                <option value="{{ $kelas->id_kelas }}"
+                                    {{ $sourceKelasId == $kelas->id_kelas ? 'selected' : '' }}>
+                                    {{ $kelas->id_kelas }}
                                 </option>
                             @endforeach
                         </select>
@@ -68,7 +69,7 @@
             </form>
         </div>
 
-        @if ($sourceKelas && $siswaList->isNotEmpty())
+        @if ($sourceKelasId && $siswaList->isNotEmpty())
             <!-- Step 2: Select Students and Target Class -->
             <form action="{{ route('admin.siswa.bulk-transfer.process') }}" method="POST" id="bulkTransferForm">
                 @csrf
@@ -76,14 +77,14 @@
                 <div class="bg-white rounded-lg shadow p-6 mb-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">
                         <i class="fas fa-users mr-2 text-blue-600"></i>Langkah 2: Pilih Siswa dari Kelas
-                        {{ $sourceKelas }}
+                        {{ $siswaList->first()->kelas->id_kelas }}
                     </h3>
 
                     <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                         <label class="flex items-center cursor-pointer">
                             <input type="checkbox" id="selectAll" class="mr-2 w-4 h-4">
                             <span class="font-medium text-blue-800">
-                                <i class="fas fa-check-square mr-1"></i>Pilih Semua Siswa ({{ $siswaList->count() }} siswa)
+                                Pilih Semua Siswa ({{ $siswaList->count() }} siswa)
                             </span>
                         </label>
                     </div>
@@ -118,10 +119,10 @@
 
                     <div class="flex gap-4 items-end">
                         <div class="flex-1">
-                            <label for="target_kelas" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="target_kelas_nama" class="block text-sm font-medium text-gray-700 mb-2">
                                 Kelas Tujuan <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="target_kelas" id="target_kelas" required
+                            <input type="text" name="target_kelas_nama" id="target_kelas_nama" required
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Contoh: 5A, 6B, atau kelas lainnya">
                             <p class="text-xs text-gray-500 mt-1">
@@ -137,10 +138,10 @@
                     </div>
                 </div>
             </form>
-        @elseif($sourceKelas && $siswaList->isEmpty())
+        @elseif($sourceKelasId && $siswaList->isEmpty())
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
                 <i class="fas fa-exclamation-circle text-5xl text-yellow-400 mb-3"></i>
-                <p class="text-yellow-800 font-medium">Tidak ada siswa di kelas {{ $sourceKelas }}</p>
+                <p class="text-yellow-800 font-medium">Tidak ada siswa di kelas ini</p>
                 <p class="text-yellow-600 text-sm mt-2">Pilih kelas lain yang memiliki siswa</p>
             </div>
         @else
@@ -182,7 +183,7 @@
 
             function confirmTransfer() {
                 const checkedCount = document.querySelectorAll('.siswa-checkbox:checked').length;
-                const targetKelas = document.getElementById('target_kelas').value;
+                const targetKelas = document.getElementById('target_kelas_nama').value;
 
                 if (checkedCount === 0) {
                     alert('Pilih minimal 1 siswa untuk dipindahkan!');

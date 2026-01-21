@@ -47,11 +47,12 @@
                         placeholder="Cari nama atau ID siswa...">
                 </div>
                 <div class="w-full md:w-48">
-                    <select name="kelas"
+                    <select name="id_kelas"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="">Semua Kelas</option>
                         @foreach ($kelasList as $k)
-                            <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>{{ $k }}
+                            <option value="{{ $k->id_kelas }}" {{ $kelas == $k->id_kelas ? 'selected' : '' }}>
+                                {{ $k->id_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -79,7 +80,7 @@
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                <x-sort-header column="kelas" label="Kelas" />
+                                <x-sort-header column="id_kelas" label="Kelas" />
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orang
                                 Tua</th>
@@ -98,7 +99,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                        {{ $item->kelas }}
+                                        {{ $item->kelas?->id_kelas ?? ' ' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">

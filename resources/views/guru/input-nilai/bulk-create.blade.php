@@ -347,7 +347,7 @@
                     tr.innerHTML = `
                         <td class="px-6 py-4 text-sm text-gray-600">${index + 1}</td>
                         <td class="px-6 py-4 text-sm font-medium text-gray-900">${siswa.nama}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">${siswa.kelas}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">${siswa.id_kelas || 'N/A'}</td>
                         <td class="px-6 py-4">
                             <input type="hidden" name="id_absensi[${siswa.id_siswa}]" value="${id_absensi_siswa}" />
                             <input 
@@ -379,7 +379,7 @@
                     card.innerHTML = `
                         <div class="mb-3">
                             <p class="font-semibold text-gray-800">${siswa.nama}</p>
-                            <p class="text-sm text-gray-600">${siswa.kelas}</p>
+                            <p class="text-sm text-gray-600">Kelas ${siswa.id_kelas || 'N/A'}</p>
                         </div>
                         <div class="space-y-3">
                             <input type="hidden" name="id_absensi[${siswa.id_siswa}]" value="${id_absensi_siswa}" />

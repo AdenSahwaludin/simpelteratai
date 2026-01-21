@@ -154,7 +154,7 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-500">Kelas</p>
-                                    <p class="font-medium text-gray-800">{{ $item->kelas }}</p>
+                                    <p class="font-medium text-gray-800">{{ $item->kelas?->id_kelas ?? 'N/A' }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500">Ruang</p>

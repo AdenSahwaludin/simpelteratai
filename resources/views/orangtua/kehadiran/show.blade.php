@@ -70,7 +70,7 @@
                     </div>
                     <div class="ml-9">
                         <p class="text-lg font-medium text-gray-900">{{ $kehadiran->siswa->nama }}</p>
-                        <p class="text-sm text-gray-600">Kelas {{ $kehadiran->siswa->kelas }}</p>
+                        <p class="text-sm text-gray-600">Kelas {{ $kehadiran->siswa->kelas->id_kelas ?? ' ' }}</p>
                     </div>
                 </div>
 

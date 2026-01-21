@@ -47,6 +47,14 @@ class Guru extends Authenticatable
     }
 
     /**
+     * Get the kelas where this guru is wali kelas (homeroom teacher).
+     */
+    public function kelasWali(): HasMany
+    {
+        return $this->hasMany(Kelas::class, 'id_guru_wali', 'id_guru');
+    }
+
+    /**
      * Generate unique ID with format G00001, G00002, etc.
      * Safe from duplicate even when data is deleted.
      * varchar(6): G + 5 digits = 6 characters

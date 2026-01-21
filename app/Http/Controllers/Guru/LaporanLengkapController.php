@@ -17,7 +17,7 @@ class LaporanLengkapController extends Controller
     {
         $guru = Auth::guard('guru')->user();
         $search = $request->input('search');
-        $kelas = $request->input('kelas');
+        $kelas = $request->input('id_kelas');
 
         $laporan = LaporanLengkap::query()
             ->where('id_guru', $guru->id_guru)
@@ -29,14 +29,14 @@ class LaporanLengkapController extends Controller
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->whereHas('siswa', function ($q) use ($kelas) {
-                    $q->where('kelas', $kelas);
+                    $q->where('id_kelas', $kelas);
                 });
             })
             ->orderBy('created_at', 'desc')
             ->paginate(15)
             ->appends($request->query());
 
-        $kelasList = ['5A', '5B', '6A', '6B'];
+        $kelasList = \App\Models\Kelas::query()->orderBy('id_kelas')->get();
 
         return view('guru.laporan-lengkap.index', compact('laporan', 'search', 'kelas', 'kelasList'));
     }
@@ -45,8 +45,9 @@ class LaporanLengkapController extends Controller
     {
         $guru = Auth::guard('guru')->user();
 
-        $siswa = Siswa::whereHas('jadwal', function ($query) use ($guru) {
-            $query->where('id_guru', $guru->id_guru);
+        // Ambil hanya siswa yang berada di kelas yang diampu guru sebagai wali kelas
+        $siswa = Siswa::with('kelas')->whereHas('kelas', function ($query) use ($guru) {
+            $query->where('id_guru_wali', $guru->id_guru);
         })->orderBy('nama')->get();
 
         return view('guru.laporan-lengkap.create', compact('siswa'));
@@ -115,7 +116,7 @@ class LaporanLengkapController extends Controller
             ->where('id_guru', $guru->id_guru)
             ->firstOrFail();
 
-        $siswa = Siswa::whereHas('jadwal', function ($query) use ($guru) {
+        $siswa = Siswa::with('kelas')->whereHas('jadwal', function ($query) use ($guru) {
             $query->where('id_guru', $guru->id_guru);
         })->orderBy('nama')->get();
 
@@ -214,7 +215,7 @@ class LaporanLengkapController extends Controller
                 return [
                     'nilai' => $item->nilai,
                     'catatan' => $item->catatan,
-                    'tanggal' => $item->tanggal,
+                    'tanggal' => $item->created_at->toDateString(),
                     'mata_pelajaran' => [
                         'nama_mapel' => $item->mataPelajaran->nama_mapel ?? '-',
                     ],

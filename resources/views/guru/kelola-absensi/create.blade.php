@@ -177,7 +177,7 @@
                                 <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
                                     <div>
                                         <p class="font-medium text-gray-900">${siswa.nama}</p>
-                                        <p class="text-sm text-gray-600">${siswa.kelas}</p>
+                                        <p class="text-sm text-gray-600">Kelas ${siswa.id_kelas || 'N/A'}</p>
                                     </div>
                                     <select name="absensi[${siswa.id_siswa}]" 
                                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"

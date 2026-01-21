@@ -28,6 +28,12 @@
                             'color' => 'text-blue-500',
                             'route' => 'admin.siswa.index',
                         ],
+                        [
+                            'label' => 'Kelola Wali Kelas',
+                            'icon' => 'fa-school',
+                            'color' => 'text-indigo-500',
+                            'route' => 'admin.kelas.index',
+                        ],
                     ],
                 ],
                 [

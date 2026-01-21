@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Jadwal;
+use App\Models\Kelas;
 use App\Models\Komentar;
 use App\Models\LaporanLengkap;
 use App\Models\LaporanPerkembangan;
@@ -19,6 +20,21 @@ class SeederDua extends Seeder
      */
     public function run(): void
     {
+
+        // ========================================
+        // 3.5. KELAS (2 data - created before siswa)
+        // ========================================
+        Kelas::create([
+            'id_kelas' => 'K00001',
+            'nama_kelas' => 'A',
+            'id_guru_wali' => 'G00001',
+        ]);
+
+        Kelas::create([
+            'id_kelas' => 'K00002',
+            'nama_kelas' => 'B',
+            'id_guru_wali' => 'G00002',
+        ]);
 
         // ========================================
         // 4. MATA PELAJARAN (2 data)
@@ -43,6 +59,7 @@ class SeederDua extends Seeder
             'tempat_lahir' => 'Cirebon',
             'tanggal_lahir' => '2019-05-15',
             'kelas' => 'A',
+            'id_kelas' => 'K00001',
             'alamat' => 'Jl. Merdeka No. 123',
             'id_orang_tua' => 'OT00001',
         ]);
@@ -53,7 +70,8 @@ class SeederDua extends Seeder
             'jenis_kelamin' => 'P',
             'tempat_lahir' => 'Cirebon',
             'tanggal_lahir' => '2019-08-20',
-            'kelas' => 'A',
+            'kelas' => 'B',
+            'id_kelas' => 'K00002',
             'alamat' => 'Jl. Sudirman No. 456',
             'id_orang_tua' => 'OT00002',
         ]);

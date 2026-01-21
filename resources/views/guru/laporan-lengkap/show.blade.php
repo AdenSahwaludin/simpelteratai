@@ -49,7 +49,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">Kelas</label>
-                    <p class="text-lg font-semibold text-gray-800">{{ $laporan->siswa->kelas }}</p>
+                    <p class="text-lg font-semibold text-gray-800">{{ $laporan->siswa->kelas->id_kelas ?? ' ' }}</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">Periode Laporan</label>
