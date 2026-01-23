@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\OrangTua;
 use App\Models\Siswa;
@@ -267,8 +268,9 @@ class SiswaController extends Controller
         }
 
         $kelasList = Kelas::all();
+        $guruAvailable = Guru::whereDoesntHave('kelasWali')->get();
 
-        return view('admin.siswa.bulk-transfer', compact('siswaList', 'kelasList', 'sourceKelasId'));
+        return view('admin.siswa.bulk-transfer', compact('siswaList', 'kelasList', 'sourceKelasId', 'guruAvailable'));
     }
 
     /**

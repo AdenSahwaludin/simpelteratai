@@ -122,18 +122,22 @@
                             <label for="target_kelas_nama" class="block text-sm font-medium text-gray-700 mb-2">
                                 Kelas Tujuan <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="target_kelas_nama" id="target_kelas_nama" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Contoh: 5A, 6B, atau kelas lainnya">
-                            <p class="text-xs text-gray-500 mt-1">
-                                <i class="fas fa-lightbulb mr-1"></i>Anda dapat memasukkan nama kelas yang sudah ada atau
-                                membuat kelas baru
-                            </p>
+                            <select name="target_kelas_nama" id="target_kelas_nama" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">-- Pilih Kelas Tujuan --</option>
+                                @foreach ($kelasList as $kelas)
+                                    <option value="{{ $kelas->id_kelas }}">{{ $kelas->id_kelas }}</option>
+                                @endforeach
+                            </select>
                         </div>
+                        <button type="button" id="btnTambahKelas"
+                            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition font-medium">
+                            <i class="fas fa-plus mr-2"></i>Tambah Kelas
+                        </button>
                         <button type="submit"
                             class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition font-medium"
                             onclick="return confirmTransfer()">
-                            <i class="fas fa-check-circle mr-2"></i>Proses Perpindahan Kelas
+                            <i class="fas fa-check-circle mr-2"></i>Proses Perpindahan
                         </button>
                     </div>
                 </div>
@@ -154,25 +158,41 @@
 
     @push('scripts')
         <script>
-            // Select all checkbox functionality
-            document.getElementById('selectAll')?.addEventListener('change', function() {
-                const checkboxes = document.querySelectorAll('.siswa-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = this.checked;
-                });
-                updateSelectedCount();
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeForm();
             });
 
-            // Update selected count
-            document.querySelectorAll('.siswa-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', updateSelectedCount);
-            });
+            function initializeForm() {
+                setupCheckboxes();
+                setupModalHandlers();
+            }
+
+            function setupCheckboxes() {
+                const selectAll = document.getElementById('selectAll');
+                if (selectAll) {
+                    selectAll.addEventListener('change', function() {
+                        const checkboxes = document.querySelectorAll('.siswa-checkbox');
+                        checkboxes.forEach(checkbox => {
+                            checkbox.checked = this.checked;
+                        });
+                        updateSelectedCount();
+                    });
+                }
+
+                document.querySelectorAll('.siswa-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSelectedCount);
+                });
+
+                updateSelectedCount();
+            }
 
             function updateSelectedCount() {
                 const checked = document.querySelectorAll('.siswa-checkbox:checked').length;
-                document.getElementById('selectedCount').textContent = checked;
+                const selectedCountEl = document.getElementById('selectedCount');
+                if (selectedCountEl) {
+                    selectedCountEl.textContent = checked;
+                }
 
-                // Update "select all" checkbox state
                 const selectAll = document.getElementById('selectAll');
                 const allCheckboxes = document.querySelectorAll('.siswa-checkbox');
                 if (selectAll && allCheckboxes.length > 0) {
@@ -200,8 +220,187 @@
                 );
             }
 
-            // Initial count update
-            updateSelectedCount();
+            function setupModalHandlers() {
+                const btnTambahKelas = document.getElementById('btnTambahKelas');
+                const modalTambahKelas = document.getElementById('modalTambahKelas');
+                const btnCloseModal = document.getElementById('btnCloseModal');
+                const btnBatalModal = document.getElementById('btnBatalModal');
+                const formTambahKelas = document.getElementById('formTambahKelas');
+
+                console.log('Setting up modal handlers...');
+
+                if (btnTambahKelas) {
+                    btnTambahKelas.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Opening modal');
+                        modalTambahKelas?.classList.remove('hidden');
+                    });
+                }
+
+                if (btnCloseModal) {
+                    btnCloseModal.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modalTambahKelas?.classList.add('hidden');
+                    });
+                }
+
+                if (btnBatalModal) {
+                    btnBatalModal.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modalTambahKelas?.classList.add('hidden');
+                    });
+                }
+
+                if (formTambahKelas) {
+                    formTambahKelas.addEventListener('submit', handleFormSubmit);
+                } else {
+                    console.error('Form not found!');
+                }
+            }
+
+            async function handleFormSubmit(e) {
+                e.preventDefault();
+                console.log('Form submitted');
+
+                const idKelas = document.getElementById('newIdKelas').value.trim();
+                const guruWali = document.getElementById('newGuruWali').value;
+                const btnSubmit = this.querySelector('button[type="submit"]');
+                const modalTambahKelas = document.getElementById('modalTambahKelas');
+
+                if (!idKelas || !guruWali) {
+                    alert('Isi semua field!');
+                    return false;
+                }
+
+                console.log('Submitting with:', {
+                    idKelas,
+                    guruWali
+                });
+
+                btnSubmit.disabled = true;
+                const originalHTML = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
+                        '{{ csrf_token() }}';
+
+                    const response = await fetch('{{ route('admin.kelas.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id_kelas: idKelas,
+                            id_guru_wali: guruWali
+                        })
+                    });
+
+                    console.log('Response status:', response.status);
+
+                    const data = await response.json();
+                    console.log('Response data:', data);
+
+                    if (response.ok && data.success) {
+                        // Add to dropdown
+                        const select = document.getElementById('target_kelas_nama');
+                        const option = document.createElement('option');
+                        option.value = data.kelas.id_kelas;
+                        option.textContent = data.kelas.id_kelas;
+                        option.selected = true;
+                        select.appendChild(option);
+
+                        // Close modal and reset form
+                        modalTambahKelas.classList.add('hidden');
+                        this.reset();
+
+                        // Show success message
+                        showNotification('Kelas <strong>' + idKelas + '</strong> berhasil ditambahkan!', 'success');
+                    } else {
+                        throw new Error(data.message || 'Gagal menyimpan kelas');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Error: ' + error.message, 'error');
+                } finally {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = originalHTML;
+                }
+
+                return false;
+            }
+
+            function showNotification(message, type) {
+                const div = document.createElement('div');
+                const bgClass = type === 'success' ? 'bg-green-100 border-green-400 text-green-700' :
+                    'bg-red-100 border-red-400 text-red-700';
+                const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+                div.className = `fixed top-4 right-4 ${bgClass} border px-4 py-3 rounded z-50 shadow-lg`;
+                div.innerHTML = `<i class="fas ${icon} mr-2"></i>${message}`;
+                document.body.appendChild(div);
+
+                if (type === 'success') {
+                    setTimeout(() => div.remove(), 3000);
+                } else {
+                    setTimeout(() => div.remove(), 5000);
+                }
+            }
         </script>
+
+        <!-- Modal Tambah Kelas -->
+        <div id="modalTambahKelas" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">Tambah Kelas Baru</h3>
+                        <button id="btnCloseModal" type="button" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+
+                    <form id="formTambahKelas" class="space-y-4">
+                        <div>
+                            <label for="newIdKelas" class="block text-sm font-medium text-gray-700 mb-2">
+                                ID Kelas <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="newIdKelas" name="id_kelas" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="Contoh: A, B, C, 5A, 6B, dll">
+                        </div>
+
+                        <div>
+                            <label for="newGuruWali" class="block text-sm font-medium text-gray-700 mb-2">
+                                Wali Kelas <span class="text-red-500">*</span>
+                            </label>
+                            <select id="newGuruWali" name="id_guru_wali" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option value="">-- Pilih Guru --</option>
+                                @foreach ($guruAvailable as $guru)
+                                    <option value="{{ $guru->id_guru }}">{{ $guru->nama }}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2 italic">
+                                <i class="fas fa-info-circle mr-1"></i>Setiap guru hanya dapat menjadi wali kelas untuk 1
+                                (satu) kelas
+                            </p>
+                        </div>
+
+                        <div class="flex gap-3 pt-4 border-t border-gray-200">
+                            <button type="button" id="btnBatalModal"
+                                class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium border border-gray-300">
+                                <i class="fas fa-times mr-2"></i>Batal
+                            </button>
+                            <button type="submit"
+                                class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium">
+                                <i class="fas fa-save mr-2"></i>Simpan Kelas
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     @endpush
 @endsection

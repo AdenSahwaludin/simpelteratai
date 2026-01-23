@@ -25,12 +25,12 @@ class SeederDua extends Seeder
         // 3.5. KELAS (2 data - created before siswa)
         // ========================================
         Kelas::create([
-            'id_kelas' => 'K00001',
+            'id_kelas' => 'A',
             'id_guru_wali' => 'G00001',
         ]);
 
         Kelas::create([
-            'id_kelas' => 'K00002',
+            'id_kelas' => 'B',
             'id_guru_wali' => 'G00002',
         ]);
 
@@ -56,7 +56,7 @@ class SeederDua extends Seeder
             'jenis_kelamin' => 'L',
             'tempat_lahir' => 'Cirebon',
             'tanggal_lahir' => '2019-05-15',
-            'id_kelas' => 'K00001',
+            'id_kelas' => 'A',
             'alamat' => 'Jl. Merdeka No. 123',
             'id_orang_tua' => 'OT00001',
         ]);
@@ -67,7 +67,7 @@ class SeederDua extends Seeder
             'jenis_kelamin' => 'P',
             'tempat_lahir' => 'Cirebon',
             'tanggal_lahir' => '2019-08-20',
-            'id_kelas' => 'K00002',
+            'id_kelas' => 'B',
             'alamat' => 'Jl. Sudirman No. 456',
             'id_orang_tua' => 'OT00002',
         ]);
@@ -80,7 +80,7 @@ class SeederDua extends Seeder
             'id_guru' => 'G00001',
             'id_mata_pelajaran' => 'MP0001',
             'ruang' => 'A',
-            'kelas' => 'K00001',
+            'kelas' => 'A',
             'hari' => 'Senin',
             'waktu_mulai' => '07:00:00',
             'waktu_selesai' => '08:00:00',
@@ -96,7 +96,7 @@ class SeederDua extends Seeder
             'id_guru' => 'G00002',
             'id_mata_pelajaran' => 'MP0002',
             'ruang' => 'B',
-            'kelas' => 'K00002',
+            'kelas' => 'B',
             'hari' => 'Selasa',
             'waktu_mulai' => '08:00:00',
             'waktu_selesai' => '09:00:00',

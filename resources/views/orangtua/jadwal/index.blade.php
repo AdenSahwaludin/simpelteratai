@@ -105,7 +105,7 @@
                                         </div>
 
                                         <!-- Schedule List -->
-                                        <div class="{{ $hariColors[$hari]['bg'] }} p-4">
+                                        <div class="{{ $hariColors[$hari]['bg'] }} p-4 h-full">
                                             @if (isset($jadwalBySiswa[$siswa->id_siswa][$hari]))
                                                 <div class="space-y-3">
                                                     @foreach ($jadwalBySiswa[$siswa->id_siswa][$hari] as $jadwal)

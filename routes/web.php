@@ -42,6 +42,7 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     Route::get('/kelas', [\App\Http\Controllers\Admin\KelasController::class, 'index'])->name('kelas.index');
     Route::get('/kelas/{kelas}/edit', [\App\Http\Controllers\Admin\KelasController::class, 'edit'])->name('kelas.edit');
     Route::put('/kelas/{kelas}', [\App\Http\Controllers\Admin\KelasController::class, 'update'])->name('kelas.update');
+    Route::post('/kelas', [\App\Http\Controllers\Admin\KelasController::class, 'store'])->name('kelas.store');
 
     // Kelola Jadwal
     Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
