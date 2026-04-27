@@ -110,16 +110,10 @@
         </div>
 
         <div class="footer">
-            <p>© <span id="year"></span> TK Teratai Kota Cirebon. Semua hak dilindungi.</p>
+            <p>© {{ date('Y') }} TK Teratai Kota Cirebon. Semua hak dilindungi.</p>
             <p>Email ini dikirim karena adanya permintaan reset password. Jika Anda tidak memintanya, abaikan email ini.
             </p>
         </div>
     </div>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("year").textContent = new Date().getFullYear();
-    });
-</script>
-
 </html>
