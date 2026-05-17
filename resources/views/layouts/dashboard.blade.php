@@ -19,10 +19,13 @@
             class="w-64 bg-white shadow-lg transition-all duration-300 flex flex-col overflow-hidden fixed lg:relative left-0 top-0 h-full z-40 lg:flex whitespace-nowrap"
             style="display: none;" data-collapsed="false">
             <!-- Sidebar Header -->
-            <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20 ">
-                <div id="sidebar-header-content" class="transition-opacity duration-300">
-                    <h2 class="text-lg font-bold">@yield('school-name', 'TK Teratai')</h2>
-                    <p class="text-xs text-gray-200">Kota Cirebon</p>
+            <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20 flex items-center">
+                <div id="sidebar-header-content" class="transition-opacity duration-300 flex items-center gap-3">
+                    <img src="{{ asset('Logo Tk Teratai.png') }}" alt="Logo TK Teratai" class="w-10 h-10 object-contain bg-white rounded-full p-0.5">
+                    <div>
+                        <h2 class="text-base font-bold leading-tight">@yield('school-name', 'TK Teratai')</h2>
+                        <p class="text-xs text-gray-200">Kota Cirebon</p>
+                    </div>
                 </div>
             </div>
 
