@@ -54,13 +54,14 @@ class GuruController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nip' => 'required|string|max:255|unique:guru,nip',
+            'nip' => 'required|string|max:18|unique:guru,nip',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:guru,email',
             'password' => 'required|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
             'nip.required' => 'NIP wajib diisi',
+            'nip.max' => 'NIP maksimal 18 karakter',
             'nip.unique' => 'NIP sudah digunakan',
             'nama.required' => 'Nama guru wajib diisi',
             'email.required' => 'Email wajib diisi',
@@ -115,13 +116,14 @@ class GuruController extends Controller
         $guru = Guru::findOrFail($id);
 
         $validated = $request->validate([
-            'nip' => 'required|string|max:255|unique:guru,nip,'.$id.',id_guru',
+            'nip' => 'required|string|max:18|unique:guru,nip,'.$id.',id_guru',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:guru,email,'.$id.',id_guru',
             'password' => 'nullable|string|min:6|confirmed',
             'no_telpon' => 'required|string|max:20',
         ], [
             'nip.required' => 'NIP wajib diisi',
+            'nip.max' => 'NIP maksimal 18 karakter',
             'nip.unique' => 'NIP sudah digunakan',
             'nama.required' => 'Nama guru wajib diisi',
             'email.required' => 'Email wajib diisi',

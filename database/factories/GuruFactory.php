@@ -22,7 +22,7 @@ class GuruFactory extends Factory
 
         return [
             'id_guru' => 'G'.str_pad((string) $counter, 3, '0', STR_PAD_LEFT),
-            'nip' => fake()->unique()->numerify('####################'),
+            'nip' => fake()->unique()->numerify('##################'),
             'nama' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'no_telpon' => fake()->phoneNumber(),
