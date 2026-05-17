@@ -71,14 +71,13 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
                                             {{ $item->mataPelajaran->nama_mapel }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-600">
-                                            {{ $item->kelas?->id_kelas ?? 'N/A' }}
+                                            {{ $item->kelas }}
                                         </span>
                                     </td>
                                 </tr>
@@ -154,7 +153,8 @@
                                 <div>
                                     <p class="font-semibold text-gray-800">{{ $item->nama }}</p>
                                     <p class="text-sm text-gray-600">{{ $item->id_siswa }} •
-                                        {{ $item->kelas?->id_kelas ?? 'N/A' }}</p>
+                                        {{ $item->kelas?->id_kelas ?? 'N/A' }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="space-y-1 text-sm">

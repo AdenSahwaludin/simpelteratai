@@ -173,7 +173,7 @@ class SeederDua extends Seeder
             'id_guru' => 'G00001',
             'periode_mulai' => '2026-01-01',
             'periode_selesai' => '2026-01-31',
-            'catatan_guru' => 'Aden menunjukkan perkembangan yang sangat baik di bulan ini',
+            'catatan_guru' => 'Afi menunjukkan perkembangan yang sangat baik di bulan ini',
             'target_pembelajaran' => 'Meningkatkan kemampuan membaca dan berhitung',
             'pencapaian' => 'Sudah bisa membaca kata sederhana',
             'saran' => 'Terus latihan membaca di rumah',
@@ -210,7 +210,7 @@ class SeederDua extends Seeder
             'id_laporan_lengkap' => 'LL00000000001',
             'id_orang_tua' => 'OT00001',
             'parent_id' => 'KM00001',
-            'komentar' => 'Terima kasih Bu, kami akan terus mendampingi Aden di rumah',
+            'komentar' => 'Terima kasih Bu, kami akan terus mendampingi Afi di rumah',
         ]);
 
         // ========================================
