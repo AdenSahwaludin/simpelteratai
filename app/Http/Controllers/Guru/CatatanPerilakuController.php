@@ -45,9 +45,14 @@ class CatatanPerilakuController extends Controller
     public function create(): View
     {
         $guru = auth('guru')->user();
-        // Only show siswa from kelas where guru is wali
-        $siswaList = Siswa::whereHas('kelas', function ($q) use ($guru) {
-            $q->where('id_guru_wali', $guru->id_guru);
+        
+        // Show siswa that are taught by this guru OR in their wali kelas
+        $siswaList = Siswa::where(function ($query) use ($guru) {
+            $query->whereHas('jadwal', function ($q) use ($guru) {
+                $q->where('id_guru', $guru->id_guru);
+            })->orWhereHas('kelas', function ($q) use ($guru) {
+                $q->where('id_guru_wali', $guru->id_guru);
+            });
         })->orderBy('nama')->get();
 
         return view('guru.catatan-perilaku.create', compact('siswaList'));
@@ -57,12 +62,15 @@ class CatatanPerilakuController extends Controller
     {
         $guru = auth('guru')->user();
 
-        // Validate that siswa is in guru's wali kelas
+        // Validate that siswa is taught by guru or in their wali kelas
         $siswaId = $request->input('id_siswa');
         $siswa = Siswa::findOrFail($siswaId);
 
-        if (! $siswa->kelas || $siswa->kelas->id_guru_wali !== $guru->id_guru) {
-            return redirect()->back()->withErrors('Anda hanya dapat menginput catatan perilaku untuk siswa yang menjadi tanggung jawab Anda sebagai wali kelas.');
+        $isAuthorized = $siswa->jadwal()->where('id_guru', $guru->id_guru)->exists() 
+            || ($siswa->kelas && $siswa->kelas->id_guru_wali === $guru->id_guru);
+
+        if (!$isAuthorized) {
+            return redirect()->back()->withErrors('Anda hanya dapat menginput catatan perilaku untuk siswa yang Anda ajar atau siswa di kelas perwalian Anda.');
         }
 
         $validated = $request->validate([
@@ -111,14 +119,21 @@ class CatatanPerilakuController extends Controller
         $guru = auth('guru')->user();
         $perilaku = Perilaku::with('siswa')->findOrFail($id);
 
-        // Check authorization: hanya guru wali kelas dari siswa yang dapat edit
-        if ($perilaku->siswa->kelas->id_guru_wali !== $guru->id_guru) {
+        // Check authorization: hanya guru yang menginput catatan ini ATAU wali kelas dari siswa yang dapat edit
+        $isAuthorized = $perilaku->id_guru === $guru->id_guru 
+            || ($perilaku->siswa->kelas && $perilaku->siswa->kelas->id_guru_wali === $guru->id_guru);
+
+        if (!$isAuthorized) {
             abort(403, 'Anda tidak memiliki akses untuk mengedit catatan perilaku ini.');
         }
 
-        // Only show siswa from kelas where guru is wali
-        $siswaList = Siswa::whereHas('kelas', function ($q) use ($guru) {
-            $q->where('id_guru_wali', $guru->id_guru);
+        // Show siswa that are taught by this guru OR in their wali kelas
+        $siswaList = Siswa::where(function ($query) use ($guru) {
+            $query->whereHas('jadwal', function ($q) use ($guru) {
+                $q->where('id_guru', $guru->id_guru);
+            })->orWhereHas('kelas', function ($q) use ($guru) {
+                $q->where('id_guru_wali', $guru->id_guru);
+            });
         })->orderBy('nama')->get();
 
         return view('guru.catatan-perilaku.edit', compact('perilaku', 'siswaList'));
@@ -129,17 +144,23 @@ class CatatanPerilakuController extends Controller
         $guru = auth('guru')->user();
         $perilaku = Perilaku::findOrFail($id);
 
-        // Check authorization: hanya guru wali kelas dari siswa yang dapat update
-        if ($perilaku->siswa->kelas->id_guru_wali !== $guru->id_guru) {
+        // Check authorization: hanya guru yang membuat catatan ini ATAU wali kelas dari siswa yang dapat update
+        $isAuthorized = $perilaku->id_guru === $guru->id_guru 
+            || ($perilaku->siswa->kelas && $perilaku->siswa->kelas->id_guru_wali === $guru->id_guru);
+
+        if (!$isAuthorized) {
             abort(403, 'Anda tidak memiliki akses untuk mengubah catatan perilaku ini.');
         }
 
-        // Validate that siswa is in guru's wali kelas
+        // Validate that siswa is taught by guru or in their wali kelas
         $siswaId = $request->input('id_siswa');
         $siswa = Siswa::findOrFail($siswaId);
 
-        if (! $siswa->kelas || $siswa->kelas->id_guru_wali !== $guru->id_guru) {
-            return redirect()->back()->withErrors('Anda hanya dapat mengubah catatan perilaku untuk siswa yang menjadi tanggung jawab Anda sebagai wali kelas.');
+        $isSiswaAuthorized = $siswa->jadwal()->where('id_guru', $guru->id_guru)->exists() 
+            || ($siswa->kelas && $siswa->kelas->id_guru_wali === $guru->id_guru);
+
+        if (!$isSiswaAuthorized) {
+            return redirect()->back()->withErrors('Anda hanya dapat mengubah catatan perilaku untuk siswa yang Anda ajar atau siswa di kelas perwalian Anda.');
         }
 
         $validated = $request->validate([
@@ -187,7 +208,17 @@ class CatatanPerilakuController extends Controller
 
     public function destroy(string $id): RedirectResponse
     {
+        $guru = auth('guru')->user();
         $perilaku = Perilaku::findOrFail($id);
+
+        // Check authorization: hanya guru yang membuat catatan ini ATAU wali kelas dari siswa yang dapat menghapus
+        $isAuthorized = $perilaku->id_guru === $guru->id_guru 
+            || ($perilaku->siswa->kelas && $perilaku->siswa->kelas->id_guru_wali === $guru->id_guru);
+
+        if (!$isAuthorized) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus catatan perilaku ini.');
+        }
+
         $perilaku->delete();
 
         return redirect()->route('guru.catatan-perilaku.index')->with('success', 'Catatan perilaku berhasil dihapus.');
