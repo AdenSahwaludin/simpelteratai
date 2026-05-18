@@ -20,7 +20,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Siswa Card -->
             <div
-                class="bg-linear-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+                class="bg-linear-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-100 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-blue-100 text-sm font-medium">Total Siswa</p>
@@ -39,7 +39,7 @@
 
             <!-- Total Guru Card -->
             <div
-                class="bg-linear-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+                class="bg-linear-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-100 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-green-100 text-sm font-medium">Total Guru</p>
@@ -58,7 +58,7 @@
 
             <!-- Total Orang Tua Card -->
             <div
-                class="bg-linear-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+                class="bg-linear-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-100 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-purple-100 text-sm font-medium">Total Orang Tua</p>
@@ -77,7 +77,7 @@
 
             <!-- Total Mata Pelajaran Card -->
             <div
-                class="bg-linear-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-105 transition">
+                class="bg-linear-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white transform hover:scale-100 transition">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-orange-100 text-sm font-medium">Mata Pelajaran</p>

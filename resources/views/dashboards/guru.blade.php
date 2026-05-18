@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="container mx-auto px-4 py-6">
+    <div class="container mx-auto px-4">
         <!-- Welcome Message -->
         <div class="bg-linear-to-r from-green-500 to-green-600 rounded-lg shadow-md p-6 mb-6 text-white">
             <h2 class="text-2xl font-bold mb-2">Selamat Datang, {{ auth('guru')->user()->nama }}!</h2>

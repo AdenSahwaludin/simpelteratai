@@ -21,7 +21,8 @@
             <!-- Sidebar Header -->
             <div class="@yield('sidebar-color', 'bg-blue-600') text-white p-4 shrink-0 min-h-20 flex items-center">
                 <div id="sidebar-header-content" class="transition-opacity duration-300 flex items-center gap-3">
-                    <img src="{{ asset('Logo Tk Teratai.png') }}" alt="Logo TK Teratai" class="w-10 h-10 object-contain bg-white rounded-full p-0.5">
+                    <img src="{{ asset('Logo Tk Teratai.png') }}" alt="Logo TK Teratai"
+                        class="w-10 h-10 object-contain">
                     <div>
                         <h2 class="text-base font-bold leading-tight">@yield('school-name', 'TK Teratai')</h2>
                         <p class="text-xs text-gray-200">Kota Cirebon</p>
@@ -91,7 +92,8 @@
                                 <p class="text-xs text-gray-500">@yield('user-role')</p>
                                 @if (Auth::guard('guru')->check())
                                     <p class="text-xs text-gray-600 mt-1">NIP:
-                                        {{ Auth::guard('guru')->user()->nip ?? '-' }}</p>
+                                        {{ Auth::guard('guru')->user()->nip ?? '-' }}
+                                    </p>
                                 @endif
                             </div>
                             <a href="{{ route('profile.edit') }}"
@@ -127,6 +129,7 @@
                         </div>
                     @endif
 
+                    @php /** @var \Illuminate\Support\ViewErrorBag $errors */ @endphp
                     @if ($errors->any())
                         <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
                             @foreach ($errors->all() as $error)
