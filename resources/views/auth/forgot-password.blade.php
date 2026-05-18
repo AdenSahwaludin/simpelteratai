@@ -34,6 +34,7 @@
                     Masukkan email Anda dan kami akan mengirimkan link untuk reset password.
                 </p>
 
+                @php /** @var \Illuminate\Support\ViewErrorBag $errors */ @endphp
                 @if ($errors->any())
                     <div class="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
                         @foreach ($errors->all() as $error)
