@@ -18,10 +18,16 @@ class LaporanLengkapController extends Controller
         $guru = Auth::guard('guru')->user();
         $search = $request->input('search');
         $kelas = $request->input('id_kelas');
+        $status = $request->input('status', 'Aktif');
 
         $laporan = LaporanLengkap::query()
             ->where('id_guru', $guru->id_guru)
             ->with(['siswa', 'guru'])
+            ->whereHas('siswa', function ($query) use ($status) {
+                if ($status !== 'Semua') {
+                    $query->where('status', $status);
+                }
+            })
             ->when($search, function ($query, $search) {
                 return $query->whereHas('siswa', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
@@ -38,7 +44,7 @@ class LaporanLengkapController extends Controller
 
         $kelasList = \App\Models\Kelas::query()->orderBy('id_kelas')->get();
 
-        return view('guru.laporan-lengkap.index', compact('laporan', 'search', 'kelas', 'kelasList'));
+        return view('guru.laporan-lengkap.index', compact('laporan', 'search', 'kelas', 'status', 'kelasList'));
     }
 
     public function create(): View
@@ -46,7 +52,7 @@ class LaporanLengkapController extends Controller
         $guru = Auth::guard('guru')->user();
 
         // Ambil hanya siswa yang berada di kelas yang diampu guru sebagai wali kelas
-        $siswa = Siswa::with('kelas')->whereHas('kelas', function ($query) use ($guru) {
+        $siswa = Siswa::with('kelas')->where('status', 'Aktif')->whereHas('kelas', function ($query) use ($guru) {
             $query->where('id_guru_wali', $guru->id_guru);
         })->orderBy('nama')->get();
 
@@ -116,7 +122,7 @@ class LaporanLengkapController extends Controller
             ->where('id_guru', $guru->id_guru)
             ->firstOrFail();
 
-        $siswa = Siswa::with('kelas')->whereHas('jadwal', function ($query) use ($guru) {
+        $siswa = Siswa::with('kelas')->where('status', 'Aktif')->whereHas('jadwal', function ($query) use ($guru) {
             $query->where('id_guru', $guru->id_guru);
         })->orderBy('nama')->get();
 

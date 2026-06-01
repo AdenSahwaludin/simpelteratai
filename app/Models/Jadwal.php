@@ -84,14 +84,13 @@ class Jadwal extends Model
     /**
      * Get the siswa for the jadwal.
      */
-    public function siswa(): BelongsToMany
+    public function siswa(): HasMany
     {
-        return $this->belongsToMany(
+        return $this->hasMany(
             Siswa::class,
-            'jadwal_siswa',
-            'id_jadwal',
-            'id_siswa'
-        )->withTimestamps();
+            'id_kelas',
+            'kelas'
+        );
     }
 
     /**
@@ -143,8 +142,8 @@ class Jadwal extends Model
      */
     public function assignSiswaToPertemuan(): void
     {
-        // Hanya assign siswa yang terdaftar di jadwal_siswa, bukan semua siswa di kelas
-        $siswaList = $this->siswa;
+        // Ambil semua siswa aktif di kelas tersebut
+        $siswaList = $this->siswa()->where('status', 'Aktif')->get();
         $pertemuanList = $this->pertemuan;
 
         foreach ($pertemuanList as $pertemuan) {

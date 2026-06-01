@@ -45,6 +45,19 @@
                     </select>
                 </div>
 
+                <!-- Status Filter -->
+                <div class="w-full md:w-48">
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select name="status" id="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="Semua" {{ request('status') === 'Semua' ? 'selected' : '' }}>Semua</option>
+                        <option value="Aktif" {{ request('status', 'Aktif') === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Alumni" {{ request('status') === 'Alumni' ? 'selected' : '' }}>Alumni</option>
+                        <option value="Pindah" {{ request('status') === 'Pindah' ? 'selected' : '' }}>Pindah</option>
+                        <option value="Mengundurkan Diri" {{ request('status') === 'Mengundurkan Diri' ? 'selected' : '' }}>Mengundurkan Diri</option>
+                    </select>
+                </div>
+
                 <!-- Buttons -->
                 <div class="flex gap-2 items-end">
                     <button type="submit"
@@ -57,6 +70,13 @@
                     </a>
                 </div>
             </form>
+        </div>
+
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('guru.siswa.graduation') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition shadow-sm font-medium">
+                <i class="fas fa-graduation-cap mr-2"></i>Proses Kelulusan
+            </a>
         </div>
 
         <!-- Siswa List -->

@@ -20,19 +20,21 @@ class AdminDashboardController extends Controller
     public function index(): View
     {
         // Total Statistics
-        $totalSiswa = Siswa::count();
+        $totalSiswa = Siswa::where('status', 'Aktif')->count();
         $totalGuru = Guru::count();
         $totalOrangTua = OrangTua::count();
         $totalMataPelajaran = MataPelajaran::count();
 
         // Kelas Statistics
         $kelasDistribution = Siswa::selectRaw('id_kelas, COUNT(*) as count')
+            ->where('status', 'Aktif')
             ->groupBy('id_kelas')
             ->orderBy('id_kelas')
             ->get();
 
         // Recent Students
         $recentSiswa = Siswa::with('orangTua')
+            ->where('status', 'Aktif')
             ->latest()
             ->limit(5)
             ->get();
@@ -55,10 +57,13 @@ class AdminDashboardController extends Controller
         $alpha = $todayAttendance->where('status_kehadiran', 'Alpha')->count();
 
         // Average Score Statistics
-        $averageScore = LaporanPerkembangan::avg('nilai') ?? 0;
+        $averageScore = LaporanPerkembangan::whereHas('siswa', function ($query) {
+            $query->where('status', 'Aktif');
+        })->avg('nilai') ?? 0;
 
         // Top Students by Average Score
         $topStudents = Siswa::with('laporanPerkembangan')
+            ->where('status', 'Aktif')
             ->get()
             ->map(function ($siswa) {
                 $siswa->average_score = $siswa->laporanPerkembangan->avg('nilai') ?? 0;

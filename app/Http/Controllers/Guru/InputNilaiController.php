@@ -25,6 +25,9 @@ class InputNilaiController extends Controller
 
         $laporan = LaporanPerkembangan::query()
             ->with(['siswa', 'mataPelajaran', 'absensi.pertemuan'])
+            ->whereHas('siswa', function ($query) {
+                $query->where('status', 'Aktif');
+            })
             ->where('id_guru', $guru->id_guru)
             ->when($search, function ($query, $search) {
                 return $query->whereHas('siswa', function ($q) use ($search) {
@@ -122,8 +125,9 @@ class InputNilaiController extends Controller
             ->with('mataPelajaran', 'siswa', 'pertemuan')
             ->firstOrFail();
 
-        // Get siswa registered for this jadwal
+        // Get active siswa registered for this jadwal
         $siswa = $jadwal->siswa()
+            ->where('status', 'Aktif')
             ->orderBy('siswa.nama')
             ->get();
 

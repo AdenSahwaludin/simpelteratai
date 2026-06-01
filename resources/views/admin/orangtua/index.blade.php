@@ -36,6 +36,13 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Cari nama, ID, email, atau no telepon...">
                 </div>
+                <div class="w-full md:w-56">
+                    <select name="status_anak" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="this.form.submit()">
+                        <option value="aktif" {{ $status_anak === 'aktif' ? 'selected' : '' }}>Ada Anak Aktif (Default)</option>
+                        <option value="tidak_aktif" {{ $status_anak === 'tidak_aktif' ? 'selected' : '' }}>Anak Tidak Aktif</option>
+                        <option value="semua" {{ $status_anak === 'semua' ? 'selected' : '' }}>Semua Orang Tua</option>
+                    </select>
+                </div>
                 <button type="submit"
                     class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium">
                     <i class="fas fa-search mr-2"></i>Cari

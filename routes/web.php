@@ -21,16 +21,20 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    // Kelulusan Masal
+    Route::get('/siswa/kelulusan', [App\Http\Controllers\Admin\SiswaController::class, 'showGraduation'])->name('siswa.graduation');
+    Route::post('/siswa/kelulusan/proses', [App\Http\Controllers\Admin\SiswaController::class, 'processGraduation'])->name('siswa.process-graduation');
+
+    // Bulk class transfer
+    Route::get('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'showBulkTransfer'])->name('siswa.bulk-transfer');
+    Route::post('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'processBulkTransfer'])->name('siswa.bulk-transfer.process');
+
     // Data Siswa
     Route::resource('siswa', \App\Http\Controllers\Admin\SiswaController::class);
 
     // AJAX routes untuk siswa
     Route::get('/siswa-search-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'searchOrangTua'])->name('siswa.search-orangtua');
     Route::post('/siswa-store-orangtua', [\App\Http\Controllers\Admin\SiswaController::class, 'storeOrangTua'])->name('siswa.store-orangtua');
-
-    // Bulk class transfer
-    Route::get('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'showBulkTransfer'])->name('siswa.bulk-transfer');
-    Route::post('/siswa-bulk-transfer', [\App\Http\Controllers\Admin\SiswaController::class, 'processBulkTransfer'])->name('siswa.bulk-transfer.process');
 
     // Data Orang Tua
     Route::resource('orangtua', \App\Http\Controllers\Admin\OrangTuaController::class);
@@ -42,13 +46,12 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
     Route::get('/kelas', [\App\Http\Controllers\Admin\KelasController::class, 'index'])->name('kelas.index');
     Route::get('/kelas/{kelas}/edit', [\App\Http\Controllers\Admin\KelasController::class, 'edit'])->name('kelas.edit');
     Route::put('/kelas/{kelas}', [\App\Http\Controllers\Admin\KelasController::class, 'update'])->name('kelas.update');
+    Route::put('/kelas/{kelas}/nama', [\App\Http\Controllers\Admin\KelasController::class, 'updateNama'])->name('kelas.updateNama');
     Route::post('/kelas', [\App\Http\Controllers\Admin\KelasController::class, 'store'])->name('kelas.store');
+    Route::delete('/kelas/{kelas}', [\App\Http\Controllers\Admin\KelasController::class, 'destroy'])->name('kelas.destroy');
 
     // Kelola Jadwal
     Route::resource('jadwal', \App\Http\Controllers\Admin\JadwalController::class);
-    Route::get('/jadwal-siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'index'])->name('jadwal-siswa.index');
-    Route::get('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'edit'])->name('jadwal-siswa.edit');
-    Route::put('/jadwal/{id}/siswa', [\App\Http\Controllers\Admin\JadwalSiswaController::class, 'update'])->name('jadwal-siswa.update');
 
     // Mata Pelajaran
     Route::resource('mata-pelajaran', \App\Http\Controllers\Admin\MataPelajaranController::class);
@@ -61,11 +64,13 @@ Route::middleware('check.admin.role')->prefix('admin')->name('admin.')->group(fu
 Route::middleware('check.guru.role')->prefix('guru')->name('guru.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Guru\DashboardController::class, 'index'])->name('dashboard');
 
-    // Kelas Saya
+    // Pindah Kelas Masal
     Route::get('/kelas-saya', [\App\Http\Controllers\Guru\KelasSayaController::class, 'index'])->name('kelas-saya.index');
-    Route::get('/kelas-saya/{ruang}', [\App\Http\Controllers\Guru\KelasSayaController::class, 'show'])->name('kelas-saya.show');
+    Route::get('/kelas-saya/{kelas}', [\App\Http\Controllers\Guru\KelasSayaController::class, 'show'])->name('kelas-saya.show');
 
     // Data Siswa
+    Route::get('/siswa/kelulusan', [\App\Http\Controllers\Guru\SiswaController::class, 'showGraduation'])->name('siswa.graduation');
+    Route::post('/siswa/kelulusan/proses', [\App\Http\Controllers\Guru\SiswaController::class, 'processGraduation'])->name('siswa.process-graduation');
     Route::get('/siswa', [\App\Http\Controllers\Guru\SiswaController::class, 'index'])->name('siswa.index');
     Route::get('/siswa/{id}', [\App\Http\Controllers\Guru\SiswaController::class, 'show'])->name('siswa.show');
 

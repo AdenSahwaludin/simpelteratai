@@ -14,6 +14,10 @@
         <div class="w-full max-w-md">
             <!-- Header -->
             <div class="text-center mb-6 sm:mb-8">
+                <div class="flex justify-center mb-4">
+                    <img src="{{ asset('Logo Tk Teratai.png') }}" alt="Logo TK Teratai"
+                        class="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md">
+                </div>
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">SELAMAT DATANG</h1>
                 <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">TK TERATAI KOTA CIREBON</h2>
                 <p class="text-xs sm:text-sm text-gray-700 mb-1 px-2">

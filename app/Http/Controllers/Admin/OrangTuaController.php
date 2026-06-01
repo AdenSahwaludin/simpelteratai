@@ -17,6 +17,7 @@ class OrangTuaController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
+        $status_anak = $request->input('status_anak', 'aktif'); // 'aktif', 'tidak_aktif', 'semua'
         $sort = $request->input('sort', 'nama');
         $direction = $request->input('direction', 'asc');
 
@@ -28,6 +29,20 @@ class OrangTuaController extends Controller
 
         $orangTua = OrangTua::query()
             ->withCount('siswa')
+            ->when($status_anak === 'aktif', function ($query) {
+                // Orang tua yang memiliki setidaknya 1 anak dengan status Aktif
+                $query->whereHas('siswa', function ($q) {
+                    $q->where('status', 'Aktif');
+                });
+            })
+            ->when($status_anak === 'tidak_aktif', function ($query) {
+                // Orang tua yang memiliki anak TETAPI tidak ada satu pun yang berstatus Aktif
+                // ATAU yang sama sekali tidak punya anak (opsional, tapi biasanya konteksnya yang mahasiswanya tidak aktif lagi)
+                $query->whereHas('siswa')
+                      ->whereDoesntHave('siswa', function ($q) {
+                          $q->where('status', 'Aktif');
+                      });
+            })
             ->when($search, function ($query, $search) {
                 return $query->where('nama', 'like', "%{$search}%")
                     ->orWhere('id_orang_tua', 'like', "%{$search}%")
@@ -37,7 +52,7 @@ class OrangTuaController extends Controller
             ->paginate(20)
             ->appends($request->query());
 
-        return view('admin.orangtua.index', compact('orangTua', 'search', 'sort', 'direction'));
+        return view('admin.orangtua.index', compact('orangTua', 'search', 'status_anak', 'sort', 'direction'));
     }
 
     /**

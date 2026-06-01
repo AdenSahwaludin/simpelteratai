@@ -27,6 +27,8 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'id_kelas',
+        'status',
+        'keterangan_status',
         'alamat',
         'id_orang_tua',
     ];
@@ -92,13 +94,12 @@ class Siswa extends Model
     /**
      * Get the jadwal for the siswa.
      */
-    public function jadwal(): BelongsToMany
+    public function jadwal(): HasMany
     {
-        return $this->belongsToMany(
+        return $this->hasMany(
             Jadwal::class,
-            'jadwal_siswa',
-            'id_siswa',
-            'id_jadwal'
+            'kelas',
+            'id_kelas'
         );
     }
 }

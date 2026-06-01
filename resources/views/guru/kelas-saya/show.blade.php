@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Detail Kelas ' . $ruang)
+@section('title', 'Detail Kelas ' . $kelas)
 @section('nav-color', 'bg-green-600')
 @section('sidebar-color', 'bg-green-600')
 @section('dashboard-title', 'Detail Kelas')
@@ -16,7 +16,7 @@
         <!-- Page Header with Back Button -->
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Detail Kelas {{ $ruang }}</h2>
+                <h2 class="text-2xl font-bold text-gray-800">Detail Kelas {{ $kelas }}</h2>
                 <p class="text-gray-600 mt-2">Daftar siswa dan jadwal mengajar di kelas ini</p>
             </div>
             <a href="{{ route('guru.kelas-saya.index') }}"
@@ -29,7 +29,7 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-calendar-alt text-green-600 mr-2"></i>
-                Jadwal Mengajar di Kelas {{ $ruang }}
+                Jadwal Mengajar di Kelas {{ $kelas }} (Ruangan: {{ $ruang }})
             </h3>
 
             @if ($jadwal->isEmpty())
@@ -92,7 +92,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-users text-green-600 mr-2"></i>
-                Daftar Siswa Kelas {{ $ruang }} ({{ $total }} siswa)
+                Daftar Siswa Kelas {{ $kelas }} ({{ $total }} siswa)
             </h3>
 
             @if ($siswa->isEmpty())

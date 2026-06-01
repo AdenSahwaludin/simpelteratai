@@ -16,7 +16,7 @@ class KelolaAbsensiController extends Controller
     {
         $guru = auth('guru')->user();
         $search = $request->input('search');
-        $tanggal = $request->input('tanggal');
+        $tanggal = $request->input('tanggal', date('Y-m-d'));
         $kelas = $request->input('id_kelas');
         $id_jadwal = $request->input('id_jadwal');
 
@@ -80,8 +80,9 @@ class KelolaAbsensiController extends Controller
         $id_jadwal = $request->input('id_jadwal');
         $tanggal = $request->input('tanggal');
 
-        // Get students registered for this schedule from jadwal_siswa pivot table
+        // Get students registered for this schedule from the related class
         $siswa = Siswa::query()
+            ->where('status', 'Aktif')
             ->whereHas('jadwal', function ($query) use ($id_jadwal) {
                 $query->where('jadwal.id_jadwal', $id_jadwal);
             })
@@ -157,8 +158,8 @@ class KelolaAbsensiController extends Controller
             ]);
         }
 
-        // Get students registered for this schedule from pivot table
-        $siswaList = $jadwal->siswa()->get();
+        // Get students registered for this schedule
+        $siswaList = $jadwal->siswa()->where('status', 'Aktif')->get();
 
         if ($siswaList->isEmpty()) {
             return back()->with('error', 'Tidak ada siswa yang terdaftar untuk jadwal ini.');

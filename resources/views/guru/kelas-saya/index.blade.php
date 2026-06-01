@@ -40,8 +40,8 @@
                         <div class="bg-green-600 text-white p-6 rounded-t-lg">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-2xl font-bold">{{ $kelas['ruang'] }}</h3>
-                                    <p class="text-green-100 text-sm mt-1">Kelas</p>
+                                    <h3 class="text-2xl font-bold">Kelas {{ $kelas['kelas'] }}</h3>
+                                    <p class="text-green-100 text-sm mt-1">Ruangan: {{ $kelas['ruang'] }}</p>
                                 </div>
                                 <div class="bg-green-500 bg-opacity-50 p-3 rounded-lg">
                                     <i class="fas fa-school text-3xl"></i>
@@ -81,7 +81,7 @@
                             </div>
 
                             <!-- View Details Button -->
-                            <a href="{{ route('guru.kelas-saya.show', $kelas['ruang']) }}"
+                            <a href="{{ route('guru.kelas-saya.show', $kelas['kelas']) }}"
                                 class="block w-full bg-green-600 hover:bg-green-700 text-white text-center py-3 rounded-lg transition-colors duration-300 font-medium">
                                 <i class="fas fa-eye mr-2"></i>Lihat Detail Kelas
                             </a>

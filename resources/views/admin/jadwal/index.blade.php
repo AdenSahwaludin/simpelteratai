@@ -75,6 +75,10 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <x-sort-header column="kelas" label="Kelas" />
+                        </th>
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                             <x-sort-header column="ruang" label="Ruang" />
                         </th>
                         <th
@@ -97,6 +101,7 @@
                                 {{ $item->guru->nama }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {{ $item->mataPelajaran->nama_mapel }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">{{ $item->kelas }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $item->ruang }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
@@ -168,6 +173,7 @@
                     </div>
                     <div class="space-y-2 mb-3 text-sm text-gray-600">
                         <p><i class="fas fa-user w-5"></i> {{ $item->guru->nama }}</p>
+                        <p><i class="fas fa-chalkboard text-blue-600 w-5"></i> Kelas {{ $item->kelas }}</p>
                         <p><i class="fas fa-door-open w-5"></i> Ruang {{ $item->ruang }}</p>
                         <p><i class="fas fa-calendar w-5"></i> <span
                                 class="font-semibold text-blue-600">{{ $item->hari ?? '-' }}</span></p>

@@ -22,6 +22,7 @@ class SiswaController extends Controller
     {
         $search = $request->input('search');
         $kelas = $request->input('id_kelas');
+        $status = $request->has('status') ? $request->input('status') : 'Aktif';
         $sort = $request->input('sort', 'nama');
         $direction = $request->input('direction', 'asc');
 
@@ -34,11 +35,16 @@ class SiswaController extends Controller
         $siswa = Siswa::query()
             ->with('orangTua')
             ->when($search, function ($query, $search) {
-                return $query->where('nama', 'like', "%{$search}%")
-                    ->orWhere('id_siswa', 'like', "%{$search}%");
+                return $query->where(function($q) use ($search) {
+                    $q->where('nama', 'like', "%{$search}%")
+                      ->orWhere('id_siswa', 'like', "%{$search}%");
+                });
             })
             ->when($kelas, function ($query, $kelas) {
                 return $query->where('id_kelas', $kelas);
+            })
+            ->when($status, function ($query, $status) {
+                return $query->where('status', $status);
             })
             ->orderBy($sort, $direction)
             ->paginate(20)
@@ -46,7 +52,7 @@ class SiswaController extends Controller
 
         $kelasList = Kelas::all();
 
-        return view('admin.siswa.index', compact('siswa', 'kelasList', 'search', 'kelas', 'sort', 'direction'));
+        return view('admin.siswa.index', compact('siswa', 'kelasList', 'search', 'kelas', 'status', 'sort', 'direction'));
     }
 
     /**
@@ -71,6 +77,8 @@ class SiswaController extends Controller
             'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
             'id_kelas' => 'required|exists:kelas,id_kelas',
+            'status' => 'required|in:Aktif,Alumni,Pindah,Mengundurkan Diri',
+            'keterangan_status' => 'nullable|string|max:500',
             'alamat' => 'required|string|max:500',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
@@ -84,6 +92,8 @@ class SiswaController extends Controller
             'alamat.required' => 'Alamat wajib diisi',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
+            'status.required' => 'Status siswa wajib dipilih',
+            'status.in' => 'Status tidak valid',
         ]);
 
         $siswa = new Siswa;
@@ -93,6 +103,8 @@ class SiswaController extends Controller
         $siswa->tempat_lahir = $validated['tempat_lahir'];
         $siswa->tanggal_lahir = $validated['tanggal_lahir'];
         $siswa->id_kelas = $validated['id_kelas'];
+        $siswa->status = $validated['status'];
+        $siswa->keterangan_status = $validated['keterangan_status'] ?? null;
         $siswa->alamat = $validated['alamat'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
@@ -138,6 +150,8 @@ class SiswaController extends Controller
             'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
             'id_kelas' => 'required|exists:kelas,id_kelas',
+            'status' => 'required|in:Aktif,Alumni,Pindah,Mengundurkan Diri',
+            'keterangan_status' => 'nullable|string|max:500',
             'alamat' => 'required|string|max:500',
             'id_orang_tua' => 'required|exists:orang_tua,id_orang_tua',
         ], [
@@ -151,6 +165,8 @@ class SiswaController extends Controller
             'alamat.required' => 'Alamat wajib diisi',
             'id_orang_tua.required' => 'Orang tua wajib dipilih',
             'id_orang_tua.exists' => 'Data orang tua tidak ditemukan',
+            'status.required' => 'Status siswa wajib dipilih',
+            'status.in' => 'Status tidak valid',
         ]);
 
         $siswa->nama = $validated['nama'];
@@ -158,6 +174,8 @@ class SiswaController extends Controller
         $siswa->tempat_lahir = $validated['tempat_lahir'];
         $siswa->tanggal_lahir = $validated['tanggal_lahir'];
         $siswa->id_kelas = $validated['id_kelas'];
+        $siswa->status = $validated['status'];
+        $siswa->keterangan_status = $validated['keterangan_status'] ?? null;
         $siswa->alamat = $validated['alamat'];
         $siswa->id_orang_tua = $validated['id_orang_tua'];
         $siswa->save();
@@ -262,6 +280,7 @@ class SiswaController extends Controller
         if ($sourceKelasId) {
             $siswaList = Siswa::query()
                 ->where('id_kelas', $sourceKelasId)
+                ->where('status', 'Aktif')
                 ->with(['orangTua', 'kelas'])
                 ->orderBy('nama')
                 ->get();
@@ -301,5 +320,52 @@ class SiswaController extends Controller
         return redirect()
             ->route('admin.siswa.bulk-transfer')
             ->with('success', "Berhasil memindahkan {$updatedCount} siswa ke kelas {$validated['target_kelas_nama']}");
+    }
+
+    /**
+     * Show graduation form (bulk update status to Alumni).
+     */
+    public function showGraduation(Request $request): View
+    {
+        $sourceKelasId = $request->input('source_kelas');
+
+        $siswaList = collect();
+        if ($sourceKelasId) {
+            $siswaList = Siswa::query()
+                ->where('id_kelas', $sourceKelasId)
+                ->where('status', 'Aktif')
+                ->with(['orangTua', 'kelas'])
+                ->orderBy('nama')
+                ->get();
+        }
+
+        $kelasList = Kelas::all();
+
+        return view('admin.siswa.graduation', compact('siswaList', 'kelasList', 'sourceKelasId'));
+    }
+
+    /**
+     * Process graduation (bulk update status to Alumni).
+     */
+    public function processGraduation(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'siswa_ids' => 'required|array|min:1',
+            'siswa_ids.*' => 'exists:siswa,id_siswa',
+        ], [
+            'siswa_ids.required' => 'Pilih minimal 1 siswa untuk diproses',
+            'siswa_ids.min' => 'Pilih minimal 1 siswa untuk diproses',
+        ]);
+
+        $updatedCount = Siswa::whereIn('id_siswa', $validated['siswa_ids'])
+            ->update([
+                'status' => 'Alumni',
+                'keterangan_status' => 'Lulus',
+                // Opsional: 'id_kelas' => null // Tergantung kebutuhan sistem, biasanya alumni tidak punya kelas
+            ]);
+
+        return redirect()
+            ->route('admin.siswa.graduation')
+            ->with('success', "Berhasil memproses {$updatedCount} siswa menjadi Alumni.");
     }
 }

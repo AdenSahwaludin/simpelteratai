@@ -16,9 +16,9 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
             <h2 class="text-2xl font-bold text-gray-800">Daftar Siswa</h2>
             <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <a href="{{ route('admin.siswa.bulk-transfer') }}"
+                <a href="{{ route('admin.siswa.graduation') }}"
                     class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
-                    <i class="fas fa-exchange-alt mr-2"></i>Pindah Kelas Massal
+                    <i class="fas fa-graduation-cap mr-2"></i>Proses Kelulusan
                 </a>
                 <a href="{{ route('admin.siswa.create') }}"
                     class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium text-center">
@@ -57,6 +57,17 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="w-full md:w-48">
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Semua Status</option>
+                        @foreach (['Aktif', 'Alumni', 'Pindah', 'Mengundurkan Diri'] as $s)
+                            <option value="{{ $s }}" {{ $status == $s ? 'selected' : '' }}>
+                                {{ $s }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition font-medium">
                     <i class="fas fa-search mr-2"></i>Cari
@@ -82,6 +93,8 @@
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
                                 <x-sort-header column="id_kelas" label="Kelas" />
                             </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status
+                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orang
                                 Tua</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
@@ -100,6 +113,20 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                                         {{ $item->kelas?->id_kelas ?? ' ' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @php
+                                        $statusColors = [
+                                            'Aktif' => 'bg-green-100 text-green-800',
+                                            'Alumni' => 'bg-purple-100 text-purple-800',
+                                            'Pindah' => 'bg-yellow-100 text-yellow-800',
+                                            'Mengundurkan Diri' => 'bg-red-100 text-red-800',
+                                        ];
+                                        $colorClass = $statusColors[$item->status ?? 'Aktif'] ?? 'bg-gray-100 text-gray-800';
+                                    @endphp
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $colorClass }}">
+                                        {{ $item->status ?? 'Aktif' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -159,6 +186,18 @@
                                 </span>
                                 <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">
                                     {{ $item->kelas }}
+                                </span>
+                                @php
+                                    $statusColors = [
+                                        'Aktif' => 'bg-green-100 text-green-800',
+                                        'Alumni' => 'bg-purple-100 text-purple-800',
+                                        'Pindah' => 'bg-yellow-100 text-yellow-800',
+                                        'Mengundurkan Diri' => 'bg-red-100 text-red-800',
+                                    ];
+                                    $colorClass = $statusColors[$item->status ?? 'Aktif'] ?? 'bg-gray-100 text-gray-800';
+                                @endphp
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded-full {{ $colorClass }}">
+                                    {{ $item->status ?? 'Aktif' }}
                                 </span>
                             </div>
                             <h3 class="font-semibold text-gray-900 text-lg">{{ $item->nama }}</h3>

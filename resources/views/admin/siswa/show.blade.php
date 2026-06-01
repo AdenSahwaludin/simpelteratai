@@ -32,6 +32,13 @@
                             <span class="inline-block px-3 py-1 bg-blue-900 text-white rounded-full text-sm font-semibold">
                                 {{ $siswa->kelas->id_kelas ?? ' ' }}
                             </span>
+                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                                {{ $siswa->status === 'Aktif' ? 'bg-green-100 text-green-800' : 
+                                   ($siswa->status === 'Alumni' ? 'bg-blue-100 text-blue-800' : 
+                                   ($siswa->status === 'Pindah' ? 'bg-orange-100 text-orange-800' : 
+                                   'bg-red-100 text-red-800')) }}">
+                                {{ $siswa->status }}
+                            </span>
                         </div>
                         <h1 class="text-3xl font-bold">{{ $siswa->nama }}</h1>
                         <p class="text-blue-100 mt-1">
@@ -84,6 +91,12 @@
                             </p>
                         </div>
                     </div>
+                    @if(in_array($siswa->status, ['Pindah', 'Mengundurkan Diri']) && $siswa->keterangan_status)
+                    <div class="mt-6 border border-orange-200 bg-orange-50 rounded-lg p-4">
+                        <label class="text-xs font-semibold text-orange-600 uppercase tracking-wide">Keterangan {{ $siswa->status }}</label>
+                        <p class="text-gray-800 mt-2 leading-relaxed">{{ $siswa->keterangan_status }}</p>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Data Kontak & Alamat -->

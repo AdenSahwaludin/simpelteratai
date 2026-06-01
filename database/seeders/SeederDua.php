@@ -86,8 +86,7 @@ class SeederDua extends Seeder
             'waktu_selesai' => '08:00:00',
             'tanggal_mulai' => '2026-01-01',
         ]);
-        // Daftarkan siswa kelas A ke jadwal SEBELUM generate pertemuan
-        $jadwal1->siswa()->attach(['S000001']);
+        // Siswa di kelas A otomatis terdaftar di jadwal ini
         // Auto-generate 14 pertemuan (akan assign siswa yang sudah terdaftar)
         $jadwal1->generatePertemuan();
 
@@ -102,8 +101,7 @@ class SeederDua extends Seeder
             'waktu_selesai' => '09:00:00',
             'tanggal_mulai' => '2026-01-01',
         ]);
-        // Daftarkan siswa kelas B ke jadwal SEBELUM generate pertemuan
-        $jadwal2->siswa()->attach(['S000002']);
+        // Siswa di kelas B otomatis terdaftar di jadwal ini
         // Auto-generate 14 pertemuan (akan assign siswa yang sudah terdaftar)
         $jadwal2->generatePertemuan();
 

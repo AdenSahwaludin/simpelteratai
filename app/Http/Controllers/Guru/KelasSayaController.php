@@ -14,10 +14,12 @@ class KelasSayaController extends Controller
 
         /** @var \App\Models\Guru $guru */
         $kelasData = $guru->jadwal()
-            ->with(['mataPelajaran', 'siswa.kelas'])
+            ->with(['mataPelajaran', 'siswa' => function ($query) {
+                $query->where('status', 'Aktif')->with('kelas');
+            }])
             ->get()
-            ->groupBy('ruang')
-            ->map(function ($jadwals, $ruang) {
+            ->groupBy('kelas')
+            ->map(function ($jadwals, $kelas) {
                 // Get unique students from all jadwal in this class
                 $siswaIds = $jadwals
                     ->pluck('siswa')
@@ -26,7 +28,8 @@ class KelasSayaController extends Controller
                     ->unique();
 
                 return [
-                    'ruang' => $ruang,
+                    'kelas' => $kelas,
+                    'ruang' => $jadwals->first()->ruang ?? '-',
                     'jadwal_count' => $jadwals->count(),
                     'siswa_count' => $siswaIds->count(),
                     'mata_pelajaran' => $jadwals->pluck('mataPelajaran.nama_mapel')->unique()->values(),
@@ -36,15 +39,19 @@ class KelasSayaController extends Controller
         return view('guru.kelas-saya.index', compact('kelasData'));
     }
 
-    public function show(string $ruang): View
+    public function show(string $kelas): View
     {
         $guru = auth('guru')->user();
 
         /** @var \App\Models\Guru $guru */
         $jadwal = $guru->jadwal()
-            ->where('ruang', $ruang)
-            ->with(['mataPelajaran', 'siswa.orangTua'])
+            ->where('kelas', $kelas)
+            ->with(['mataPelajaran', 'siswa' => function ($query) {
+                $query->where('status', 'Aktif')->with('orangTua');
+            }])
             ->get();
+            
+        $ruang = $jadwal->first()?->ruang ?? '-';
 
         // Get unique students from all jadwal in this class (from pivot table)
         $siswaCollection = $jadwal
@@ -67,6 +74,6 @@ class KelasSayaController extends Controller
             ]
         );
 
-        return view('guru.kelas-saya.show', compact('siswa', 'jadwal', 'ruang', 'total'));
+        return view('guru.kelas-saya.show', compact('siswa', 'jadwal', 'kelas', 'ruang', 'total'));
     }
 }

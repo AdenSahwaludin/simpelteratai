@@ -21,6 +21,9 @@ class CatatanPerilakuController extends Controller
 
         $perilaku = Perilaku::query()
             ->with(['siswa', 'guru'])
+            ->whereHas('siswa', function ($query) {
+                $query->where('status', 'Aktif');
+            })
             ->where('id_guru', $guru->id_guru)
             ->when($search, function ($query, $search) {
                 return $query->whereHas('siswa', function ($q) use ($search) {
@@ -46,8 +49,8 @@ class CatatanPerilakuController extends Controller
     {
         $guru = auth('guru')->user();
         
-        // Show siswa that are taught by this guru OR in their wali kelas
-        $siswaList = Siswa::where(function ($query) use ($guru) {
+        // Show active siswa that are taught by this guru OR in their wali kelas
+        $siswaList = Siswa::where('status', 'Aktif')->where(function ($query) use ($guru) {
             $query->whereHas('jadwal', function ($q) use ($guru) {
                 $q->where('id_guru', $guru->id_guru);
             })->orWhereHas('kelas', function ($q) use ($guru) {
@@ -127,8 +130,8 @@ class CatatanPerilakuController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk mengedit catatan perilaku ini.');
         }
 
-        // Show siswa that are taught by this guru OR in their wali kelas
-        $siswaList = Siswa::where(function ($query) use ($guru) {
+        // Show active siswa that are taught by this guru OR in their wali kelas
+        $siswaList = Siswa::where('status', 'Aktif')->where(function ($query) use ($guru) {
             $query->whereHas('jadwal', function ($q) use ($guru) {
                 $q->where('id_guru', $guru->id_guru);
             })->orWhereHas('kelas', function ($q) use ($guru) {

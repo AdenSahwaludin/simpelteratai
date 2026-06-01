@@ -72,12 +72,12 @@
 
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-users mr-2"></i>Siswa di Kelas ({{ $kelas->siswa()->count() }})
+                        <i class="fas fa-users mr-2"></i>Siswa Aktif di Kelas ({{ $kelas->siswa()->where('status', 'Aktif')->count() }})
                     </label>
                     <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto">
-                        @if ($kelas->siswa()->count() > 0)
+                        @if ($kelas->siswa()->where('status', 'Aktif')->count() > 0)
                             <ul class="space-y-2">
-                                @foreach ($kelas->siswa()->get() as $siswa)
+                                @foreach ($kelas->siswa()->where('status', 'Aktif')->orderBy('nama')->get() as $siswa)
                                     <li class="flex items-center text-sm text-gray-700 p-2 hover:bg-gray-100 rounded">
                                         <i class="fas fa-user-circle mr-2 text-blue-600"></i>
                                         {{ $siswa->id_siswa }} - {{ $siswa->nama }}
@@ -85,10 +85,10 @@
                                 @endforeach
                             </ul>
                         @else
-                            <p class="text-sm text-gray-500 text-center py-4">
-                                <i class="fas fa-inbox text-2xl mb-2"></i>
-                            <p>Tidak ada siswa di kelas ini</p>
-                            </p>
+                            <div class="text-sm text-gray-500 text-center py-4">
+                                <i class="fas fa-inbox text-2xl mb-2 block"></i>
+                                <p>Tidak ada siswa aktif di kelas ini</p>
+                            </div>
                         @endif
                     </div>
                 </div>

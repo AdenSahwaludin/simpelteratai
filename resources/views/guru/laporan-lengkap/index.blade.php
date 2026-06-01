@@ -41,6 +41,16 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="w-full md:w-48">
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="Semua" {{ $status == 'Semua' ? 'selected' : '' }}>Semua Status</option>
+                        <option value="Aktif" {{ $status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Alumni" {{ $status == 'Alumni' ? 'selected' : '' }}>Alumni</option>
+                        <option value="Pindah" {{ $status == 'Pindah' ? 'selected' : '' }}>Pindah</option>
+                        <option value="Mengundurkan Diri" {{ $status == 'Mengundurkan Diri' ? 'selected' : '' }}>Mengundurkan Diri</option>
+                    </select>
+                </div>
                 <button type="submit"
                     class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition font-medium">
                     <i class="fas fa-search mr-2"></i>Cari

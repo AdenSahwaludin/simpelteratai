@@ -28,6 +28,12 @@
                             'color' => 'text-blue-500',
                             'route' => 'admin.siswa.index',
                         ],
+                        [
+                            'label' => 'Data Kelas',
+                            'icon' => 'fa-school',
+                            'color' => 'text-indigo-500',
+                            'route' => 'admin.kelas.index',
+                        ],
                     ],
                 ],
                 [
@@ -38,12 +44,6 @@
                             'icon' => 'fa-calendar-alt',
                             'color' => 'text-teal-500',
                             'route' => 'admin.jadwal.index',
-                        ],
-                        [
-                            'label' => 'Kelola Jadwal Siswa',
-                            'icon' => 'fa-user-clock',
-                            'color' => 'text-cyan-500',
-                            'route' => 'admin.jadwal-siswa.index',
                         ],
                         [
                             'label' => 'Mata Pelajaran',

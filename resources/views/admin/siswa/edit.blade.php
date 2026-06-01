@@ -131,6 +131,39 @@
                 </div>
 
                 <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                        Status <span class="text-red-500">*</span>
+                    </label>
+                    <select name="status" id="status"
+                        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('status') border-red-500 @enderror"
+                        required>
+                        <option value="Aktif" {{ old('status', $siswa->status ?? 'Aktif') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Alumni" {{ old('status', $siswa->status ?? '') == 'Alumni' ? 'selected' : '' }}>Alumni</option>
+                        <option value="Pindah" {{ old('status', $siswa->status ?? '') == 'Pindah' ? 'selected' : '' }}>Pindah</option>
+                        <option value="Mengundurkan Diri" {{ old('status', $siswa->status ?? '') == 'Mengundurkan Diri' ? 'selected' : '' }}>Mengundurkan Diri</option>
+                    </select>
+                    @error('status')
+                        <p class="text-red-500 text-xs mt-1 flex items-center">
+                            <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div id="keterangan_status_container" class="{{ in_array(old('status', $siswa->status), ['Pindah', 'Mengundurkan Diri']) ? '' : 'hidden' }}">
+                    <label for="keterangan_status" class="block text-sm font-medium text-gray-700 mb-2">
+                        Keterangan Status (Alasan/Tujuan) <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="keterangan_status" id="keterangan_status" rows="2"
+                        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('keterangan_status') border-red-500 @enderror"
+                        placeholder="Contoh: Pindah ke TK Cempaka">{{ old('keterangan_status', $siswa->keterangan_status) }}</textarea>
+                    @error('keterangan_status')
+                        <p class="text-red-500 text-xs mt-1 flex items-center">
+                            <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div>
                     <label for="alamat" class="block text-sm font-medium text-gray-700 mb-2">
                         Alamat <span class="text-red-500">*</span>
                     </label>
@@ -180,3 +213,26 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle Keterangan Status
+            $('#status').change(function() {
+                const status = $(this).val();
+                if (status === 'Pindah' || status === 'Mengundurkan Diri') {
+                    $('#keterangan_status_container').removeClass('hidden');
+                    $('#keterangan_status').prop('required', true);
+                } else {
+                    $('#keterangan_status_container').addClass('hidden');
+                    $('#keterangan_status').prop('required', false);
+                    $('#keterangan_status').val('');
+                }
+            });
+            // Initial toggle check
+            $('#status').trigger('change');
+        });
+    </script>
+@endpush
