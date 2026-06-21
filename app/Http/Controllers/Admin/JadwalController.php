@@ -106,11 +106,6 @@ class JadwalController extends Controller
         $jadwal->tanggal_mulai = $validated['tanggal_mulai'];
         $jadwal->save();
 
-        // Auto-attach semua siswa dari kelas yang bersangkutan
-        $siswaIds = \App\Models\Siswa::where('id_kelas', $jadwal->kelas)
-            ->where('status', 'Aktif')
-            ->pluck('id_siswa');
-        $jadwal->siswa()->attach($siswaIds);
 
         // Auto-generate 14 pertemuan dan assign semua siswa
         try {

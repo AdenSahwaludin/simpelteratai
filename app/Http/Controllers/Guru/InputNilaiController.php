@@ -131,9 +131,8 @@ class InputNilaiController extends Controller
             ->orderBy('siswa.nama')
             ->get();
 
-        // Get all pertemuan for this jadwal with past dates only
+        // Get all pertemuan for this jadwal
         $pertemuanList = $jadwal->pertemuan()
-            ->whereDate('tanggal', '<=', today())
             ->orderBy('tanggal')
             ->get()
             ->map(fn ($p) => [

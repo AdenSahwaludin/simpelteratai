@@ -16,13 +16,15 @@ class PerkembanganController extends Controller
     public function index(Request $request): View
     {
         $orangTua = auth('orangtua')->user();
-        $search = $request->input('search');
+        $mapelId = $request->input('mapel_id');
         $anakId = $request->input('anak_id');
 
         $anakList = Siswa::with('kelas')
             ->where('id_orang_tua', $orangTua->id_orang_tua)
             ->orderBy('nama')
             ->get();
+
+        $mapelList = \App\Models\MataPelajaran::orderBy('nama_mapel')->get();
 
         $perkembangan = LaporanPerkembangan::query()
             ->with(['siswa', 'mataPelajaran', 'absensi.pertemuan'])
@@ -32,18 +34,14 @@ class PerkembanganController extends Controller
             ->when($anakId, function ($query, $anakId) {
                 return $query->where('id_siswa', $anakId);
             })
-            ->when($search, function ($query, $search) {
-                return $query->whereHas('mataPelajaran', function ($q) use ($search) {
-                    $q->where('nama_mapel', 'like', "%{$search}%");
-                })->orWhereHas('siswa', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
-                });
+            ->when($mapelId, function ($query, $mapelId) {
+                return $query->where('id_mata_pelajaran', $mapelId);
             })
             ->latest()
             ->paginate(15)
             ->appends($request->query());
 
-        return view('orangtua.perkembangan.index', compact('perkembangan', 'anakList', 'search', 'anakId'));
+        return view('orangtua.perkembangan.index', compact('perkembangan', 'anakList', 'mapelId', 'anakId', 'mapelList'));
     }
 
     /**
